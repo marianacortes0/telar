@@ -1,0 +1,120 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import { NEGOCIO } from '../../lib/constantes';
+---
+
+<LegalLayout
+  titulo="Política de tratamiento de datos"
+  descripcion="Política de Tratamiento de Datos Personales de Telar conforme a la Ley 1581 de 2012 y el Decreto 1377 de 2013."
+>
+  <p>
+    En cumplimiento de la Ley 1581 de 2012, el Decreto 1377 de 2013 y demás normas concordantes,
+    {NEGOCIO.nombre} adopta la presente Política de Tratamiento de Datos Personales, que aplica a
+    toda la información recolectada en el marco de sus servicios.
+  </p>
+
+  <h2>1. Responsable del tratamiento</h2>
+  <ul>
+    <li><strong>Responsable:</strong> {NEGOCIO.nombre}</li>
+    <li><strong>Domicilio:</strong> {NEGOCIO.ciudad}, {NEGOCIO.pais}</li>
+    <li><strong>Correo:</strong> {NEGOCIO.email}</li>
+    <li><strong>WhatsApp:</strong> {NEGOCIO.telefonoVisible}</li>
+  </ul>
+
+  <h2>2. Definiciones</h2>
+  <ul>
+    <li><strong>Dato personal:</strong> cualquier información vinculada a una persona natural identificada o identificable.</li>
+    <li><strong>Titular:</strong> la persona a quien se refieren los datos.</li>
+    <li><strong>Tratamiento:</strong> recolección, almacenamiento, uso, circulación o supresión de datos.</li>
+    <li><strong>Encargado:</strong> quien trata los datos por cuenta del responsable (por ejemplo, el proveedor de hosting).</li>
+  </ul>
+
+  <h2>3. Datos que tratamos</h2>
+  <p>Según el servicio, podemos tratar:</p>
+  <ul>
+    <li>Datos de contacto que nos comparte (nombre, teléfono, correo).</li>
+    <li>Información del proyecto necesaria para cotizar y ejecutar el trabajo.</li>
+    <li>Datos de facturación cuando corresponde emitir un comprobante.</li>
+    <li>En proyectos de domótica con cámaras o control de acceso: imágenes y registros de eventos, tratados en calidad de encargado (ver punto 11).</li>
+  </ul>
+  <p>
+    Este sitio no tiene formularios ni inicio de sesión: el contacto es directo por WhatsApp, así
+    que no recolectamos datos personales de forma automática desde la web.
+  </p>
+
+  <h2>4. Finalidades del tratamiento</h2>
+  <ul>
+    <li>Atender solicitudes, consultas y cotizaciones.</li>
+    <li>Ejecutar y hacer seguimiento al servicio contratado.</li>
+    <li>Facturar y cumplir obligaciones contables y tributarias.</li>
+    <li>Enviar información relacionada con su proyecto y su mantenimiento.</li>
+    <li>Cumplir obligaciones legales y responder requerimientos de autoridades.</li>
+  </ul>
+
+  <h2>5. Autorización del titular</h2>
+  <p>
+    Al contactarnos y entregarnos sus datos para una cotización o un proyecto, usted autoriza su
+    tratamiento para las finalidades anteriores. La autorización puede constar por cualquier medio
+    que permita su consulta posterior (chat, correo o documento firmado). Puede revocarla en
+    cualquier momento, salvo que exista un deber legal o contractual de conservar la información.
+  </p>
+
+  <h2>6. Derechos del titular</h2>
+  <ul>
+    <li>Conocer, actualizar y rectificar sus datos.</li>
+    <li>Solicitar prueba de la autorización otorgada.</li>
+    <li>Ser informado sobre el uso que se ha dado a sus datos.</li>
+    <li>Revocar la autorización y/o solicitar la supresión cuando proceda.</li>
+    <li>Presentar quejas ante la Superintendencia de Industria y Comercio (SIC).</li>
+    <li>Acceder de forma gratuita a los datos que sean objeto de tratamiento.</li>
+  </ul>
+
+  <h2>7. Procedimiento para ejercer sus derechos</h2>
+  <p>
+    Escriba a {NEGOCIO.email} o al WhatsApp {NEGOCIO.telefonoVisible} indicando su solicitud y los
+    datos que la sustentan. Atenderemos <strong>consultas</strong> y <strong>reclamos</strong> en
+    los plazos que fija la ley
+    <span class="marcador">[10 días hábiles para consultas y 15 días hábiles para reclamos, con las
+    prórrogas de ley; confirmar con abogado]</span>. Si el reclamo está incompleto, le pediremos
+    completarlo antes de continuar.
+  </p>
+
+  <h2>8. Medidas de seguridad</h2>
+  <p>
+    Aplicamos medidas razonables para proteger la información contra acceso no autorizado, pérdida o
+    alteración: acceso restringido, cuentas nominales, autenticación de dos factores en los sistemas
+    que lo permiten y respaldos cifrados de la información sensible.
+  </p>
+
+  <h2>9. Encargados y terceros</h2>
+  <p>
+    Para prestar el servicio podemos apoyarnos en proveedores que actúan como encargados, entre
+    ellos el <span class="marcador">[proveedor de hosting]</span> y la herramienta de analítica
+    <span class="marcador">[Umami / Plausible]</span>. Estos terceros solo tratan los datos para las
+    finalidades aquí descritas. No vendemos ni cedemos sus datos con fines comerciales de terceros.
+  </p>
+
+  <h2>10. Vigencia</h2>
+  <p>
+    Esta política rige desde su publicación. Los datos se conservan mientras dure la relación
+    comercial y por los plazos legales aplicables luego de terminada, tras lo cual se suprimen o
+    anonimizan.
+  </p>
+
+  <h2>11. Tratamiento de imágenes y video (Telar Casa)</h2>
+  <p>
+    En proyectos de domótica que incluyen cámaras o control de acceso, {NEGOCIO.nombre} actúa como
+    <strong>encargado del tratamiento</strong> de datos de los que el cliente es responsable. En
+    esos casos se firma un acuerdo específico que define qué información puede tratarse y bajo qué
+    condiciones. Nos comprometemos a no acceder a grabaciones salvo por solicitud del cliente o
+    necesidad técnica documentada, y mantenemos confidencialidad indefinida sobre todo lo observado
+    en el sistema del cliente. Corresponde al cliente informar a empleados, visitantes o residentes
+    sobre la existencia de cámaras.
+  </p>
+
+  <h2>12. Cambios a esta política</h2>
+  <p>
+    Podemos actualizar esta política para reflejar cambios legales u operativos. La versión vigente
+    será siempre la publicada en este sitio, con su fecha de actualización.
+  </p>
+</LegalLayout>

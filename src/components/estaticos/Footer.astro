@@ -1,0 +1,149 @@
+---
+import LogoTelar from '../marca/LogoTelar.astro';
+import { NEGOCIO } from '../../lib/constantes';
+import { linkWhatsApp, MENSAJES } from '../../lib/whatsapp';
+import { NAV_SERVICIOS, NAV_EMPRESAS, NAV_EMPRESA, NAV_LEGAL } from '../../lib/navegacion';
+
+const anio = new Date().getFullYear();
+const wa = linkWhatsApp(MENSAJES.general);
+---
+
+<footer class="pie">
+  <div class="contenedor">
+    <div class="rejilla">
+      <div class="marca">
+        <LogoTelar tamano={30} variante="mono" />
+        <p class="lema">{NEGOCIO.eslogan}.</p>
+        <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-linea">
+          Hablemos por WhatsApp
+        </a>
+      </div>
+
+      <nav class="columna" aria-label="Servicios">
+        <h2>Servicios</h2>
+        <ul>
+          {NAV_SERVICIOS.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
+        </ul>
+      </nav>
+
+      <nav class="columna" aria-label="Empresas">
+        <h2>Empresas · IA</h2>
+        <ul>
+          {NAV_EMPRESAS.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
+        </ul>
+      </nav>
+
+      <nav class="columna" aria-label="Compañía">
+        <h2>Compañía</h2>
+        <ul>
+          {NAV_EMPRESA.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
+        </ul>
+      </nav>
+
+      <nav class="columna" aria-label="Legal">
+        <h2>Legal</h2>
+        <ul>
+          {NAV_LEGAL.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
+        </ul>
+      </nav>
+    </div>
+
+    <div class="identificacion">
+      <p>
+        <strong>{NEGOCIO.nombre}</strong> — {NEGOCIO.ciudad}, {NEGOCIO.pais}<br />
+        WhatsApp: {NEGOCIO.telefonoVisible} · {NEGOCIO.email}
+      </p>
+      <p class="iva">Precios en pesos colombianos. No somos responsables de IVA.</p>
+      <p class="copy">© {anio} {NEGOCIO.nombre}. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .pie {
+    margin-top: 4rem;
+    border-top: 1px solid var(--color-borde);
+    background: color-mix(in srgb, var(--color-fondo) 40%, var(--color-abismo));
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+    font-size: 0.95rem;
+  }
+
+  .rejilla {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .marca {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    color: var(--color-lino);
+  }
+  .lema {
+    color: var(--color-humo);
+    margin: 0;
+    max-width: 22rem;
+  }
+
+  .columna h2 {
+    font-family: var(--fuente-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-teal-luz);
+    margin: 0 0 1rem;
+  }
+  .columna ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+  .columna a {
+    color: var(--color-humo);
+    text-decoration: none;
+    display: inline-block;
+    padding: 0.15rem 0;
+  }
+  .columna a:hover {
+    color: var(--color-lino);
+  }
+
+  .identificacion {
+    margin-top: 2.5rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--color-borde);
+    color: var(--color-humo);
+    line-height: 1.8;
+  }
+  .identificacion .iva {
+    color: var(--color-lino);
+    font-weight: 600;
+    margin: 0.75rem 0;
+  }
+  .copy {
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .rejilla {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+    .marca {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (min-width: 64rem) {
+    .rejilla {
+      grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+    }
+    .marca {
+      grid-column: auto;
+    }
+  }
+</style>

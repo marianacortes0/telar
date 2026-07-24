@@ -1,0 +1,49 @@
+---
+import ServicioSimple from '../../layouts/ServicioSimple.astro';
+import TablaPrecios from '../../components/ui/TablaPrecios.astro';
+import Aviso from '../../components/ui/Aviso.astro';
+import { MENSAJES } from '../../lib/whatsapp';
+
+const filas = [
+  { celdas: ['Tarjeta NFC — grabado a un enlace existente', '$45.000'] },
+  { celdas: ['Tarjeta NFC + diseño de perfil digital', '$85.000'] },
+  { celdas: ['Tarjeta premium (PVC negro mate / metalizado, diseño exclusivo, QR de respaldo)', '$130.000'] },
+  { celdas: ['Pack 5 tarjetas (equipo comercial)', '$190.000'] },
+  { celdas: ['Pack 10 tarjetas', '$340.000'] },
+  { celdas: ['Reprogramación de tarjeta existente', '$15.000'] },
+];
+---
+
+<ServicioSimple
+  titulo="Tarjetas de presentación NFC"
+  descripcion="Tarjetas NFC en PVC que abren su perfil profesional de un toque: datos, redes, portafolio y pago. Desde $45.000, con QR de respaldo."
+  eyebrow="Telar Tag · Tarjetas NFC"
+  heroTitulo="Su tarjeta, sin papel"
+  heroSub="Reemplace la tarjeta de papel: el contacto acerca el celular a la tarjeta PVC y se abre su perfil —datos, redes, portafolio, pago y ubicación—."
+  waMensaje={MENSAJES.tarjetas}
+  precioNota="Desde $45.000"
+  cierreTitulo="¿Listo para su tarjeta?"
+  cierreTexto="Cuéntenos a qué debe apuntar y se la dejamos lista, probada en Android e iOS."
+>
+  <section class="seccion">
+    <div class="contenedor">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Precios</p>
+        <h2>Una tarjeta que no se bota</h2>
+        <p class="intro">Precios en pesos colombianos, sin IVA.</p>
+      </header>
+      <div data-revelar>
+        <TablaPrecios filas={filas} />
+      </div>
+      <div class="tras-tabla" data-revelar>
+        <Aviso variante="dato" titulo="Qué incluye">
+          <p>Diseño gráfico de la tarjeta, grabado del chip, pruebas en Android e iOS y entrega en Bogotá.</p>
+        </Aviso>
+      </div>
+    </div>
+  </section>
+</ServicioSimple>
+
+<style>
+  .tras-tabla { margin-top: 1.5rem; }
+</style>

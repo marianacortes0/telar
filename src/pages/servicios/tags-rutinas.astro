@@ -1,0 +1,56 @@
+---
+import ServicioSimple from '../../layouts/ServicioSimple.astro';
+import TablaPrecios from '../../components/ui/TablaPrecios.astro';
+import Aviso from '../../components/ui/Aviso.astro';
+import { MENSAJES } from '../../lib/whatsapp';
+
+const filas = [
+  { celdas: ['Sticker individual programado', '$15.000'] },
+  { celdas: ['<strong>Kit 5 stickers + configuración de rutinas</strong>', '<strong>$70.000</strong>'], destacado: true },
+  { celdas: ['Kit 10 stickers + configuración', '$120.000'] },
+  { celdas: ['Configuración a domicilio (Bogotá)', '+$40.000'] },
+];
+---
+
+<ServicioSimple
+  titulo="Tags de rutinas para el celular"
+  descripcion="Stickers NFC que disparan rutinas del celular: No molestar, silencio, abrir apps. Kit desde $70.000. Lo que se vende es la configuración."
+  eyebrow="Telar Tag · Rutinas del celular"
+  heroTitulo="Un toque, y su celular obedece"
+  heroSub="Stickers programados para disparar rutinas del celular. Un tag en la mesa de noche activa No molestar y apaga el WiFi. Uno en el escritorio silencia el teléfono y abre el calendario."
+  waMensaje={MENSAJES.tagsRutinas}
+  precioNota="Kit desde $70.000"
+  cierreTitulo="¿Armamos sus rutinas?"
+  cierreTexto="Nos cuenta su día y programamos los stickers para que el celular haga el resto."
+>
+  <section class="seccion">
+    <div class="contenedor">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Precios</p>
+        <h2>Lo que compra no es el sticker: es la configuración</h2>
+        <p class="intro">Precios en pesos colombianos, sin IVA.</p>
+      </header>
+      <div data-revelar>
+        <TablaPrecios filas={filas} />
+      </div>
+
+      <div class="tras-tabla" data-revelar>
+        <Aviso variante="dato" titulo="¿Busca controlar su casa de verdad?">
+          <p>
+            Estos tags actúan sobre el <strong>celular</strong>, no sobre la casa: no encienden
+            luces ni abren puertas. Para controlar luces, cerraduras o cámaras reales, eso es
+            <a href="/servicios/domotica">Telar Casa → domótica con Home Assistant</a>.
+          </p>
+        </Aviso>
+      </div>
+    </div>
+  </section>
+</ServicioSimple>
+
+<style>
+  .tras-tabla { margin-top: 1.5rem; }
+  .tras-tabla :global(a) {
+    color: var(--color-oro);
+    text-underline-offset: 3px;
+  }
+</style>

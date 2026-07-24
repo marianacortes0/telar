@@ -1,0 +1,215 @@
+---
+interface Props {
+  titulo: string;
+  subtitulo?: string;
+  eyebrow?: string;
+  class?: string;
+}
+const { titulo, subtitulo, eyebrow = 'Bogotá · Desarrollo, NFC y domótica', class: clase = '' } =
+  Astro.props;
+
+const N = {
+  L: { x: 246, y: 148 },
+  TR: { x: 954, y: 114 },
+  R: { x: 1088, y: 260 },
+  BR: { x: 966, y: 400 },
+  BL: { x: 264, y: 396 },
+};
+
+const hilos = [
+  { a: 'L', b: 'TR', color: 'teal' },
+  { a: 'L', b: 'BR', color: 'teal' },
+  { a: 'BL', b: 'R', color: 'teal' },
+  { a: 'R', b: 'BR', color: 'teal' },
+  { a: 'BL', b: 'TR', color: 'oro' },
+  { a: 'TR', b: 'BR', color: 'oro' },
+].map((h, i) => {
+  const p = N[h.a as keyof typeof N];
+  const q = N[h.b as keyof typeof N];
+  return {
+    ...h,
+    x1: p.x,
+    y1: p.y,
+    x2: q.x,
+    y2: q.y,
+    largo: Math.round(Math.hypot(q.x - p.x, q.y - p.y)),
+    i,
+  };
+});
+
+const nodos = [
+  { ...N.L, color: 'teal', i: 0 },
+  { ...N.TR, color: 'oro', i: 1 },
+  { ...N.R, color: 'teal', i: 2 },
+  { ...N.BR, color: 'teal', i: 3 },
+  { ...N.BL, color: 'oro', i: 4 },
+];
+
+const barras = [430, 600, 770];
+---
+
+<section class={`hero ${clase}`}>
+  <svg
+    class="trama"
+    viewBox="0 0 1200 520"
+    preserveAspectRatio="xMidYMid slice"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <g fill="none" stroke-linecap="round">
+      <g class="urdimbre" stroke="var(--color-borde)" stroke-width="2">
+        {barras.map((x, i) => (
+          <line class="hebra" x1={x} y1={70} x2={x} y2={450} style={`--largo:380; --i:${i}`} />
+        ))}
+        <line class="hebra" x1={120} y1={260} x2={1080} y2={260} style="--largo:960; --i:3" />
+      </g>
+
+      <g class="hilos">
+        {hilos.map((h) => (
+          <line
+            class="hebra"
+            x1={h.x1}
+            y1={h.y1}
+            x2={h.x2}
+            y2={h.y2}
+            stroke={h.color === 'oro' ? 'var(--color-oro)' : 'var(--color-teal)'}
+            stroke-width="1.6"
+            style={`--largo:${h.largo}; --i:${h.i + 4}`}
+          />
+        ))}
+      </g>
+
+      <g class="nodos">
+        {nodos.map((n) => (
+          <circle
+            class="nodo"
+            cx={n.x}
+            cy={n.y}
+            r="7"
+            fill={n.color === 'oro' ? 'var(--color-oro)' : 'var(--color-teal)'}
+            style={`--i:${n.i}`}
+          />
+        ))}
+      </g>
+    </g>
+  </svg>
+
+  <div class="contenido">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h1>{titulo}</h1>
+    {subtitulo && <p class="sub">{subtitulo}</p>}
+    <div class="acciones"><slot /></div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    align-items: center;
+    min-height: clamp(440px, 62vh, 620px);
+    min-height: clamp(440px, 62dvh, 620px);
+    padding: clamp(3rem, 8vw, 6rem) clamp(1.25rem, 5vw, 4rem);
+    overflow: hidden;
+  }
+
+  .trama {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.55;
+  }
+
+  .contenido {
+    max-width: 46rem;
+    width: min(100%, 72rem);
+    margin-inline: auto;
+  }
+
+  .contenido h1 {
+    font-size: clamp(2.1rem, 6vw, 4rem);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    color: var(--color-lino);
+    margin: 0;
+  }
+
+  .sub {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.6;
+    color: var(--color-humo);
+    margin: 1.25rem 0 0;
+    max-width: 34rem;
+    text-wrap: pretty;
+  }
+
+  .acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+  .acciones:empty {
+    display: none;
+  }
+
+  .hebra {
+    stroke-dasharray: var(--largo);
+    stroke-dashoffset: var(--largo);
+    animation: tejer var(--dur-trama) var(--ease-precision) forwards;
+    animation-delay: calc(var(--i) * var(--stagger));
+  }
+
+  .nodo {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: encender var(--dur-medio) var(--ease-nodo) forwards;
+    animation-delay: calc(var(--dur-trama) * 0.62 + var(--i) * var(--stagger));
+  }
+
+  @keyframes tejer {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes encender {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    62% {
+      opacity: 1;
+      transform: scale(1.45);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hebra {
+      animation: none;
+      stroke-dashoffset: 0;
+    }
+    .nodo {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .trama {
+      opacity: 0.38;
+    }
+    .urdimbre {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,91 @@
+---
+// Pantalla de carga: el emblema del telar gira mientras carga la página.
+// Se muestra una vez por sesión (sessionStorage) y se oculta al terminar de
+// cargar. El <script> lo empaqueta Astro como módulo externo (CSP: 'self').
+---
+
+<div class="pantalla-carga" role="status" aria-label="Cargando Telar">
+  <svg class="emblema-carga" viewBox="0 0 260 260" aria-hidden="true" focusable="false">
+    <g fill="none" stroke-linecap="round">
+      <g stroke-width="2.2" opacity="0.9">
+        <line x1="42.8" y1="73.4" x2="203.5" y2="56.5" stroke="var(--color-teal)" />
+        <line x1="42.8" y1="73.4" x2="206.1" y2="200.9" stroke="var(--color-teal)" />
+        <line x1="51.5" y1="198.2" x2="234" y2="130" stroke="var(--color-teal)" />
+        <line x1="234" y1="130" x2="206.1" y2="200.9" stroke="var(--color-teal)" />
+        <line x1="51.5" y1="198.2" x2="203.5" y2="56.5" stroke="var(--color-oro)" />
+        <line x1="203.5" y1="56.5" x2="206.1" y2="200.9" stroke="var(--color-oro)" />
+      </g>
+      <g stroke="var(--color-lino)" stroke-width="7">
+        <line x1="104" y1="44" x2="104" y2="216" />
+        <line x1="130" y1="44" x2="130" y2="216" />
+        <line x1="156" y1="44" x2="156" y2="216" />
+        <line x1="46" y1="130" x2="214" y2="130" />
+      </g>
+      <circle cx="130" cy="130" r="104" stroke="var(--color-lino)" stroke-width="7" />
+      <g stroke="var(--color-lino)" stroke-width="4">
+        <circle cx="42.8" cy="73.4" r="13" fill="var(--color-teal)" />
+        <circle cx="203.5" cy="56.5" r="13" fill="var(--color-oro)" />
+        <circle cx="234" cy="130" r="13" fill="var(--color-teal)" />
+        <circle cx="206.1" cy="200.9" r="13" fill="var(--color-teal)" />
+        <circle cx="51.5" cy="198.2" r="13" fill="var(--color-oro)" />
+      </g>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .pantalla-carga {
+    position: fixed;
+    inset: 0;
+    z-index: 10050;
+    display: grid;
+    place-items: center;
+    background: var(--color-abismo);
+    transition:
+      opacity 0.5s var(--ease-salida),
+      visibility 0.5s;
+  }
+  .pantalla-carga.oculto {
+    opacity: 0;
+    visibility: hidden;
+  }
+  .emblema-carga {
+    width: clamp(66px, 14vw, 100px);
+    height: auto;
+    transform-origin: 50% 50%;
+    animation: girar-telar 1.5s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  }
+  @keyframes girar-telar {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .emblema-carga {
+      animation: none;
+    }
+    .pantalla-carga {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  const ov = document.querySelector('.pantalla-carga');
+  if (ov) {
+    const quitar = () => {
+      ov.classList.add('oculto');
+      setTimeout(() => ov.remove(), 550);
+    };
+    if (sessionStorage.getItem('telar-visto')) {
+      ov.remove();
+    } else {
+      sessionStorage.setItem('telar-visto', '1');
+      const inicio = performance.now();
+      const alCargar = () =>
+        setTimeout(quitar, Math.max(0, 850 - (performance.now() - inicio)));
+      if (document.readyState === 'complete') alCargar();
+      else addEventListener('load', alCargar, { once: true });
+    }
+  }
+</script>

@@ -1,0 +1,14 @@
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=(), payment=(), interest-cohort=()
+
+# La Content-Security-Policy la inyecta Astro como <meta http-equiv> con los
+# hashes de sus scripts/estilos inline (ver `csp` en astro.config.mjs). No se
+# duplica aquí porque los hashes cambian en cada build.
+#
+# Nota: `frame-ancestors 'none'` solo funciona como cabecera HTTP; aquí lo cubre
+# X-Frame-Options: DENY. Si el hosting lo permite, replicar la CSP como cabecera
+# mejora la nota en securityheaders.com.

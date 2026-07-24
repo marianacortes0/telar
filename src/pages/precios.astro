@@ -1,0 +1,266 @@
+---
+import Base from '../layouts/Base.astro';
+import TejidoHero from '../components/trama/TejidoHero.astro';
+import TablaPrecios from '../components/ui/TablaPrecios.astro';
+import Aviso from '../components/ui/Aviso.astro';
+import { linkWhatsApp, MENSAJES } from '../lib/whatsapp';
+
+const web = [
+  { celdas: ['Landing page', '$700.000 – $1.100.000'] },
+  { celdas: ['Portafolio profesional', '$1.200.000 – $1.900.000'] },
+  { celdas: ['Sitio corporativo', '$1.900.000 – $3.200.000'] },
+  { celdas: ['Sitio + panel de administración', '$3.500.000 – $6.500.000'] },
+  { celdas: ['Tienda en línea con pagos', '$6.500.000 – $12.000.000'] },
+];
+
+const casa = [
+  { celdas: ['Básico — apartamento, Airbnb (5–10 dispositivos)', '$1.200.000 + $60.000/mes'] },
+  { celdas: ['Intermedio — casa familiar, control por voz', '$1.960.000 + $110.000/mes'] },
+  { celdas: ['Premium — pyme, cámaras, UniFi', '$3.010.000 + $200.000–$300.000/mes'] },
+];
+
+// Telar Empresas — automatización e IA (instalación + mensualidad)
+const ai = [
+  { celdas: ['Básico — 1 canal, FAQ hasta 30 preguntas', '$900.000–$1.400.000 + $120.000/mes'] },
+  { celdas: ['Intermedio — 2 canales, reservas, escalamiento', '$1.800.000–$2.800.000 + $200.000/mes'] },
+  { celdas: ['Avanzado — multi-canal, agentes internos, IA a medida', 'Desde $3.500.000 + $350.000/mes'] },
+];
+
+const flow = [
+  { celdas: ['Un flujo — un proceso automatizado', '$250.000–$400.000 + $40.000/mes'] },
+  { celdas: ['3–5 flujos — varios procesos conectados', '$800.000–$1.500.000 + $100.000–$150.000/mes'] },
+  { celdas: ['Integral — 6+ flujos, API, monitoreo', 'Desde $2.000.000 + $200.000/mes'] },
+];
+
+const monitor = [
+  { celdas: ['Básico — 1 fuente de datos, dashboard simple', '$600.000–$900.000 + $60.000/mes'] },
+  { celdas: ['Completo — solar + consumo, alertas', '$1.200.000–$1.800.000 + $100.000/mes'] },
+  { celdas: ['Multi-sede — varias ubicaciones', 'Desde $2.500.000 + $200.000/mes'] },
+];
+
+const teams = [
+  { celdas: ['Básico — rankings web, hasta 20 usuarios', '$1.200.000–$1.800.000 + $100.000/mes'] },
+  { celdas: ['Intermedio — app móvil, CRM, hasta 50 usuarios', '$2.500.000–$3.500.000 + $180.000/mes'] },
+  { celdas: ['Empresarial — usuarios ilimitados, multi-sede', 'Desde $4.500.000 + $300.000/mes'] },
+];
+
+const office = [
+  { celdas: ['Básico — luces/clima + NFC en 1–2 accesos', '$1.500.000–$2.200.000 + $120.000/mes'] },
+  { celdas: ['Intermedio — cámaras, reservas, ocupación', '$2.800.000–$4.000.000 + $200.000/mes'] },
+  { celdas: ['Empresarial — multi-sede, UniFi, reportes', 'Desde $5.000.000 + $350.000/mes'] },
+];
+
+const tarjetas = [
+  { celdas: ['Tarjeta NFC — grabado a enlace existente', '$45.000'] },
+  { celdas: ['Tarjeta NFC + diseño de perfil', '$85.000'] },
+  { celdas: ['Tarjeta premium', '$130.000'] },
+  { celdas: ['Pack 5 / Pack 10 tarjetas', '$190.000 / $340.000'] },
+  { celdas: ['Reprogramación', '$15.000'] },
+];
+
+const restaurantes = [
+  { celdas: ['Table tent NFC / Sticker de mesa', '$30.000 / $15.000'] },
+  { celdas: ['Tag de WiFi / Tag de reseñas Google', '$25.000 / $25.000'] },
+  { celdas: ['<strong>Paquete Restaurante</strong>', '<strong>$550.000</strong>'], destacado: true },
+  { celdas: ['Actualización mensual de la carta', '$60.000/mes'] },
+];
+
+const otrosTag = [
+  { celdas: ['Merchandising NFC (llavero / pulsera / pin)', 'Desde $28.000'] },
+  { celdas: ['Kit tags de rutinas (5 stickers + config.)', '$70.000'] },
+  { celdas: ['Etiquetas de packaging (lote 100+)', '$8.500 c/u'] },
+];
+
+const mantWeb = [
+  { celdas: ['Esencial — hosting, dominio, SSL, backups, seguridad', '$90.000/mes'] },
+  { celdas: ['Activo — + 2h/mes de cambios y reporte', '$190.000/mes'] },
+  { celdas: ['Gestionado — + 5h/mes, soporte 24h, SEO', '$380.000/mes'] },
+];
+
+const mantCasa = [
+  { celdas: ['Básico — actualizaciones, respaldo, 1 ajuste/mes', '$60.000/mes'] },
+  { celdas: ['Intermedio — + Nabu Casa, 3 ajustes/mes, monitoreo', '$110.000/mes'] },
+  { celdas: ['Premium — respaldo semanal, ajustes ilimitados', '$200.000–$300.000/mes'] },
+];
+
+const paquetes = [
+  { celdas: ['Profesional Independiente — landing + 3 tarjetas + 1 año Esencial', '$1.600.000'] },
+  { celdas: ['Negocio Local — sitio + 10 tags + GSC + 1 año Esencial', '$3.400.000'] },
+  { celdas: ['Restaurante Completo — carta + 15 table tents + WiFi + Reviews', '$2.100.000'] },
+  { celdas: ['Casa Conectada — domótica Intermedio + 5 tags de escenas', '$2.050.000'] },
+  { celdas: ['Oficina Telar — Telar Office Intermedio + sitio corporativo + 10 tags NFC', 'Desde $6.900.000'] },
+];
+
+const wa = linkWhatsApp(MENSAJES.general);
+---
+
+<Base
+  titulo="Precios"
+  descripcion="Rangos públicos de Telar: desarrollo web, tarjetas NFC, domótica con Home Assistant, mantenimiento y paquetes. Precios en pesos colombianos, sin IVA."
+>
+  <TejidoHero
+    eyebrow="Precios"
+    titulo="Rangos claros, sin letra chica"
+    subtitulo="Estos son precios de arranque, en pesos colombianos. Cada cotización llega con alcance detallado y precio cerrado por escrito."
+  >
+    <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">Pedir cotización</a>
+  </TejidoHero>
+
+  <section class="seccion">
+    <div class="contenedor">
+      <div class="tras-tabla" data-revelar>
+        <Aviso variante="legal" titulo="Sobre el IVA">
+          <p>Precios en pesos colombianos. <strong>No somos responsables de IVA.</strong> El desarrollo web y el hosting están excluidos de IVA; el hardware (tarjetas, Raspberry Pi) sí lo causa cuando aplique.</p>
+        </Aviso>
+      </div>
+
+      <div class="grupo">
+        <h2 data-revelar>Telar Web · Desarrollo</h2>
+        <div data-revelar><TablaPrecios encabezados={['Nivel', 'Precio']} filas={web} /></div>
+        <p class="nota-grupo" data-revelar>Ver el alcance de cada nivel y los complementos en <a href="/servicios/desarrollo-web">desarrollo web</a>.</p>
+      </div>
+
+      <div class="grupo">
+        <h2 data-revelar>Telar Casa · Domótica</h2>
+        <div data-revelar><TablaPrecios encabezados={['Nivel', 'Instalación + mensualidad']} filas={casa} /></div>
+        <p class="nota-grupo" data-revelar>Desglose completo y qué incluye cada nivel en <a href="/servicios/domotica">domótica</a>.</p>
+      </div>
+
+      <div class="grupo">
+        <h2 data-revelar>Telar Tag · NFC</h2>
+        <div class="dos-tablas">
+          <div data-revelar><TablaPrecios encabezados={['Tarjetas', 'Precio']} filas={tarjetas} /></div>
+          <div data-revelar><TablaPrecios encabezados={['Restaurantes', 'Precio']} filas={restaurantes} /></div>
+        </div>
+        <div class="tras-tabla" data-revelar><TablaPrecios encabezados={['Otros NFC', 'Desde']} filas={otrosTag} /></div>
+      </div>
+
+      <div class="grupo">
+        <h2 data-revelar>Telar Empresas · Automatización e IA</h2>
+        <div class="dos-tablas">
+          <div data-revelar><TablaPrecios encabezados={['Telar AI', 'Instalación + mensualidad']} filas={ai} /></div>
+          <div data-revelar><TablaPrecios encabezados={['Telar Flow', 'Instalación + mensualidad']} filas={flow} /></div>
+          <div data-revelar><TablaPrecios encabezados={['Telar Monitor', 'Instalación + mensualidad']} filas={monitor} /></div>
+          <div data-revelar><TablaPrecios encabezados={['Telar Teams', 'Instalación + mensualidad']} filas={teams} /></div>
+          <div data-revelar><TablaPrecios encabezados={['Telar Office', 'Instalación + mensualidad']} filas={office} /></div>
+        </div>
+        <p class="nota-grupo" data-revelar>
+          Las herramientas externas (APIs de IA, n8n/Make, hosting) se cobran aparte según el volumen. El alcance completo de cada línea está en
+          <a href="/servicios/telar-ai">Telar AI</a>, <a href="/servicios/telar-flow">Flow</a>,
+          <a href="/servicios/telar-monitor">Monitor</a>, <a href="/servicios/telar-teams">Teams</a>
+          y <a href="/servicios/telar-office">Office</a>.
+        </p>
+      </div>
+
+      <div class="grupo">
+        <h2 data-revelar>Mantenimiento</h2>
+        <div class="dos-tablas">
+          <div data-revelar><TablaPrecios encabezados={['Web', 'Mensual']} filas={mantWeb} /></div>
+          <div data-revelar><TablaPrecios encabezados={['Domótica', 'Mensual']} filas={mantCasa} /></div>
+        </div>
+      </div>
+
+      <div class="grupo">
+        <h2 data-revelar>Paquetes combinados</h2>
+        <div data-revelar><TablaPrecios encabezados={['Paquete', 'Precio']} filas={paquetes} /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion banda">
+    <div class="contenedor">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Condiciones comerciales</p>
+        <h2>Cómo se paga y qué está incluido</h2>
+      </header>
+
+      <div class="condiciones">
+        <div class="card cond" data-revelar>
+          <h3>Forma de pago</h3>
+          <ul>
+            <li>50% de anticipo para iniciar; 50% contra entrega, antes de publicar.</li>
+            <li>Proyectos sobre $5.000.000: 40% / 30% / 30% por hitos.</li>
+            <li>Productos NFC: 100% por anticipado en pedidos bajo $200.000.</li>
+            <li>Telar Casa: el hardware se paga 100% por anticipado; el servicio, 50/50. Facturados en líneas separadas.</li>
+            <li>Medios: transferencia, Nequi o Bancolombia.</li>
+          </ul>
+        </div>
+        <div class="card cond" data-revelar style="--i:1">
+          <h3>Alcance</h3>
+          <ul>
+            <li>Se incluyen 2 rondas de revisión por entregable.</li>
+            <li>Todo lo que no esté en la cotización es alcance nuevo y se cotiza aparte.</li>
+            <li>El alcance nuevo requiere aprobación escrita antes de ejecutarse.</li>
+            <li>Ajustes menores fuera de alcance: $60.000/hora.</li>
+            <li>Garantía de 30 días desde la entrega para corregir errores del desarrollo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion cierre">
+    <div class="contenedor bloque-estrecho centrado" data-revelar>
+      <h2>¿Le cotizamos algo puntual?</h2>
+      <p class="intro">Díganos qué necesita y le llega el alcance con precio cerrado y fecha de entrega.</p>
+      <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">Pedir cotización por WhatsApp</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .grupo {
+    margin-top: 3rem;
+  }
+  .grupo:first-of-type {
+    margin-top: 2rem;
+  }
+  .grupo > h2 {
+    font-family: var(--fuente-display);
+    font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--color-borde);
+  }
+  .nota-grupo {
+    margin: 1rem 0 0;
+    color: var(--color-humo);
+    font-size: 0.92rem;
+  }
+  .nota-grupo a,
+  .cond a {
+    color: var(--color-oro);
+  }
+  .dos-tablas {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .condiciones {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .cond {
+    padding: 1.75rem;
+  }
+  .cond h3 {
+    font-family: var(--fuente-display);
+    font-size: 1.3rem;
+    margin: 0 0 1rem;
+  }
+  .cond ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.6rem;
+    color: var(--color-humo);
+    line-height: 1.6;
+  }
+
+  @media (min-width: 64rem) {
+    .dos-tablas,
+    .condiciones {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

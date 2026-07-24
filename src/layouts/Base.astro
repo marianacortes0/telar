@@ -1,0 +1,104 @@
+---
+import '@fontsource-variable/space-grotesk';
+import '../styles/global.css';
+
+import Cursor from '../components/islas/Cursor.tsx';
+import Header from '../components/estaticos/Header.astro';
+import Footer from '../components/estaticos/Footer.astro';
+import BotonWhatsApp from '../components/estaticos/BotonWhatsApp.astro';
+import HiloScroll from '../components/estaticos/HiloScroll.astro';
+import PantallaCarga from '../components/estaticos/PantallaCarga.astro';
+import { NEGOCIO } from '../lib/constantes';
+
+interface Props {
+  titulo: string;
+  descripcion: string;
+  imagen?: string;
+  noindex?: boolean;
+  waMensaje?: string;
+}
+
+const {
+  titulo,
+  descripcion,
+  imagen = '/og-default.png',
+  noindex = false,
+  waMensaje,
+} = Astro.props;
+
+const base = Astro.site ?? new URL(Astro.url.origin);
+const canonical = new URL(Astro.url.pathname, base);
+const og = new URL(imagen, base);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: NEGOCIO.nombre,
+  description:
+    'Desarrollo web, productos NFC y automatización con Home Assistant en Bogotá.',
+  url: NEGOCIO.url,
+  telephone: `+${NEGOCIO.telefono}`,
+  email: NEGOCIO.email,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Bogotá',
+    addressRegion: 'Bogotá D.C.',
+    addressCountry: 'CO',
+  },
+  areaServed: { '@type': 'Country', name: 'Colombia' },
+  priceRange: '$$',
+};
+---
+
+<!doctype html>
+<html lang="es-CO">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{titulo} · {NEGOCIO.nombre}</title>
+    <meta name="description" content={descripcion} />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Sin esto, cada link que mandes por WhatsApp muestra la portada genérica -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={NEGOCIO.nombre} />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:image" content={og} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="es_CO" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={titulo} />
+    <meta name="twitter:description" content={descripcion} />
+    <meta name="twitter:image" content={og} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0C1826" />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+
+  <body>
+    <PantallaCarga />
+    <a href="#contenido" class="salto">Saltar al contenido</a>
+    <Cursor client:media="(hover: hover) and (pointer: fine)" />
+    <HiloScroll />
+
+    <Header />
+    <main id="contenido"><slot /></main>
+    <Footer />
+
+    <BotonWhatsApp mensaje={waMensaje} />
+
+    <script>
+      import '../scripts/revelar.js';
+    </script>
+  </body>
+</html>

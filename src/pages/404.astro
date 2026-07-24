@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import { linkWhatsApp, MENSAJES } from '../lib/whatsapp';
+
+const wa = linkWhatsApp(MENSAJES.general);
+---
+
+<Base
+  titulo="Página no encontrada"
+  descripcion="La página que busca no existe o cambió de dirección."
+  noindex={true}
+>
+  <section class="seccion error">
+    <div class="contenedor centrado">
+      <p class="codigo mono" aria-hidden="true">404</p>
+      <h1>Página no encontrada</h1>
+      <p class="intro">
+        La página que busca no existe o cambió de dirección.
+      </p>
+      <div class="acciones">
+        <a href="/" class="btn-oro">Ir al inicio</a>
+        <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-linea">
+          Escríbanos por WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .error {
+    min-height: 60vh;
+    display: grid;
+    place-items: center;
+  }
+  .codigo {
+    font-size: clamp(4rem, 18vw, 9rem);
+    line-height: 1;
+    color: var(--color-borde);
+    margin: 0;
+  }
+  .error h1 {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin: 0.5rem 0 0;
+  }
+  .acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+</style>

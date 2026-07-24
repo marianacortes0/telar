@@ -1,0 +1,93 @@
+---
+// Hilo de progreso: se teje de arriba hacia el footer a medida que bajas,
+// con un nodo guía (la lanzadera del telar) en la punta. Refuerza la marca y
+// da retroalimentación de avance. El <script> lo empaqueta Astro como módulo
+// externo (compatible con la CSP); solo muta un custom property por scroll.
+---
+
+<div class="hilo-scroll" aria-hidden="true">
+  <span class="hilo-track"></span>
+  <span class="hilo-fill"></span>
+  <span class="hilo-nodo"></span>
+</div>
+
+<style>
+  .hilo-scroll {
+    position: fixed;
+    left: clamp(0.4rem, 1.8vw, 1.6rem);
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    z-index: 40;
+    pointer-events: none;
+    --p: 0;
+  }
+
+  .hilo-track,
+  .hilo-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 2px;
+  }
+
+  .hilo-track {
+    height: 100%;
+    background: color-mix(in srgb, var(--color-borde) 50%, transparent);
+  }
+
+  .hilo-fill {
+    height: calc(var(--p) * 100%);
+    background: linear-gradient(180deg, var(--color-teal), var(--color-oro));
+  }
+
+  .hilo-nodo {
+    position: absolute;
+    left: 50%;
+    top: calc(var(--p) * 100%);
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-oro);
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--color-oro) 70%, transparent);
+    opacity: 0;
+    transition: opacity var(--dur-rapido) var(--ease-salida);
+  }
+
+  .hilo-scroll.activo .hilo-nodo {
+    opacity: 1;
+  }
+
+  /* En pantallas muy angostas se acerca al borde y adelgaza para no estorbar. */
+  @media (max-width: 30rem) {
+    .hilo-scroll {
+      left: 0.3rem;
+      width: 2px;
+    }
+  }
+</style>
+
+<script>
+  const el = document.querySelector<HTMLElement>('.hilo-scroll');
+  if (el) {
+    let ticking = false;
+    const actualizar = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      el.style.setProperty('--p', p.toFixed(4));
+      el.classList.toggle('activo', window.scrollY > 40);
+      ticking = false;
+    };
+    const alScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(actualizar);
+      }
+    };
+    actualizar();
+    addEventListener('scroll', alScroll, { passive: true });
+    addEventListener('resize', alScroll, { passive: true });
+  }
+</script>

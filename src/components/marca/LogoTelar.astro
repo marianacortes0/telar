@@ -1,0 +1,125 @@
+---
+interface Props {
+  tamano?: number;
+  variante?: 'oscuro' | 'claro' | 'mono';
+  wordmark?: boolean;
+  decorativo?: boolean;
+  enlace?: boolean;
+  class?: string;
+}
+
+const {
+  tamano = 40,
+  variante = 'oscuro',
+  wordmark = true,
+  decorativo = false,
+  enlace = true,
+  class: clase = '',
+} = Astro.props;
+
+const estructura = {
+  oscuro: 'var(--color-lino)',
+  claro: 'var(--color-navy)',
+  mono: 'currentColor',
+}[variante];
+
+const mono = variante === 'mono';
+const oro = mono ? 'currentColor' : 'var(--color-oro)';
+const teal = mono ? 'currentColor' : 'var(--color-teal)';
+
+const Tag = enlace ? 'a' : 'div';
+---
+
+<Tag
+  href={enlace ? '/' : undefined}
+  class={`logo ${clase}`}
+  aria-label={decorativo ? undefined : 'Telar — inicio'}
+  style={`--logo-alto:${tamano}px; --logo-color:${estructura};`}
+>
+  <svg
+    viewBox="0 0 260 260"
+    class="logo-emblema"
+    role={decorativo ? 'presentation' : 'img'}
+    aria-hidden={decorativo ? 'true' : undefined}
+    focusable="false"
+  >
+    <g fill="none" stroke-linecap="round">
+      <g class="hilos" stroke-width="2.2" opacity="0.9">
+        <line x1="42.8" y1="73.4" x2="203.5" y2="56.5" stroke={teal} />
+        <line x1="42.8" y1="73.4" x2="206.1" y2="200.9" stroke={teal} />
+        <line x1="51.5" y1="198.2" x2="234" y2="130" stroke={teal} />
+        <line x1="234" y1="130" x2="206.1" y2="200.9" stroke={teal} />
+        <line x1="51.5" y1="198.2" x2="203.5" y2="56.5" stroke={oro} />
+        <line x1="203.5" y1="56.5" x2="206.1" y2="200.9" stroke={oro} />
+      </g>
+
+      <g class="urdimbre" stroke="currentColor" stroke-width="7">
+        <line x1="104" y1="44" x2="104" y2="216" />
+        <line x1="130" y1="44" x2="130" y2="216" />
+        <line x1="156" y1="44" x2="156" y2="216" />
+        <line x1="46" y1="130" x2="214" y2="130" />
+      </g>
+
+      <circle cx="130" cy="130" r="104" stroke="currentColor" stroke-width="7" />
+
+      <g class="nodos" stroke="currentColor" stroke-width="4">
+        <circle cx="42.8" cy="73.4" r="13" fill={teal} />
+        <circle cx="203.5" cy="56.5" r="13" fill={oro} />
+        <circle cx="234" cy="130" r="13" fill={teal} />
+        <circle cx="206.1" cy="200.9" r="13" fill={teal} />
+        <circle cx="51.5" cy="198.2" r="13" fill={oro} />
+      </g>
+    </g>
+  </svg>
+
+  {wordmark && <span class="logo-texto">Telar</span>}
+</Tag>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--logo-alto) * 0.28);
+    color: var(--logo-color);
+    text-decoration: none;
+  }
+
+  .logo-emblema {
+    width: var(--logo-alto);
+    height: var(--logo-alto);
+    display: block;
+    flex-shrink: 0;
+    overflow: visible;
+  }
+
+  .logo-texto {
+    font-family: var(--fuente-display);
+    font-size: calc(var(--logo-alto) * 0.62);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .logo .nodos circle {
+    transition: r var(--dur-rapido) var(--ease-nodo);
+  }
+  .logo:hover .nodos circle {
+    r: 15;
+  }
+
+  .logo:focus-visible {
+    outline: 2px solid var(--color-oro);
+    outline-offset: 6px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo .nodos circle {
+      transition: none;
+    }
+    .logo:hover .nodos circle {
+      r: 13;
+    }
+  }
+</style>

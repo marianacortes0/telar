@@ -1,0 +1,52 @@
+---
+import Base from './Base.astro';
+import TejidoHero from '../components/trama/TejidoHero.astro';
+import { linkWhatsApp } from '../lib/whatsapp';
+
+interface Props {
+  titulo: string;
+  descripcion: string;
+  eyebrow: string;
+  heroTitulo: string;
+  heroSub: string;
+  waMensaje: string;
+  ctaHero?: string;
+  precioNota?: string;
+  cierreTitulo?: string;
+  cierreTexto?: string;
+}
+
+const {
+  titulo,
+  descripcion,
+  eyebrow,
+  heroTitulo,
+  heroSub,
+  waMensaje,
+  ctaHero = 'Cotizar por WhatsApp',
+  precioNota,
+  cierreTitulo = '¿Hablamos?',
+  cierreTexto = 'Cuéntenos qué necesita. La primera conversación no cuesta nada.',
+} = Astro.props;
+
+const wa = linkWhatsApp(waMensaje);
+---
+
+<Base titulo={titulo} descripcion={descripcion} waMensaje={waMensaje}>
+  <TejidoHero eyebrow={eyebrow} titulo={heroTitulo} subtitulo={heroSub}>
+    <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">{ctaHero}</a>
+    {precioNota && <span class="hero-nota mono">{precioNota}</span>}
+  </TejidoHero>
+
+  <slot />
+
+  <section class="seccion cierre">
+    <div class="contenedor bloque-estrecho centrado" data-revelar>
+      <h2>{cierreTitulo}</h2>
+      <p class="intro">{cierreTexto}</p>
+      <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">
+        Escribir por WhatsApp
+      </a>
+    </div>
+  </section>
+</Base>

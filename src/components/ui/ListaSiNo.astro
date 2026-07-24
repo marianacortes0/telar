@@ -1,0 +1,106 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  incluye: string[];
+  noIncluye: string[];
+  tituloIncluye?: string;
+  tituloNoIncluye?: string;
+}
+const {
+  incluye,
+  noIncluye,
+  tituloIncluye = 'Incluido en el precio',
+  tituloNoIncluye = 'No incluido (lo compra el cliente)',
+} = Astro.props;
+---
+
+<div class="si-no">
+  <div class="columna incluye">
+    <h3>{tituloIncluye}</h3>
+    <ul>
+      {
+        incluye.map((t) => (
+          <li>
+            <Icon name="lucide:check" class="icono si" aria-hidden="true" />
+            <span>{t}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="columna no">
+    <h3>{tituloNoIncluye}</h3>
+    <ul>
+      {
+        noIncluye.map((t) => (
+          <li>
+            <Icon name="lucide:x" class="icono no" aria-hidden="true" />
+            <span>{t}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+
+<style>
+  .si-no {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .columna {
+    background: var(--color-fondo);
+    border: 1px solid var(--color-borde);
+    border-radius: 16px;
+    padding: 1.5rem;
+  }
+  .columna h3 {
+    font-family: var(--fuente-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+  }
+  .incluye h3 {
+    color: var(--color-teal-luz);
+  }
+  .no h3 {
+    color: var(--color-humo);
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+  li {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+  .icono {
+    width: 1.15rem;
+    height: 1.15rem;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+  .icono.si {
+    color: var(--color-teal-luz);
+  }
+  .icono.no {
+    color: var(--color-oro-hondo);
+  }
+  .no li span {
+    color: var(--color-humo);
+  }
+
+  @media (min-width: 48rem) {
+    .si-no {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

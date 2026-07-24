@@ -1,0 +1,45 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import { NEGOCIO } from '../../lib/constantes';
+---
+
+<LegalLayout
+  titulo="Política de cookies"
+  descripcion="Política de cookies de Telar. Hoy el sitio no usa cookies de rastreo ni de publicidad."
+>
+  <h2>Qué son las cookies</h2>
+  <p>
+    Las cookies son archivos pequeños que un sitio guarda en su navegador. Se usan para recordar
+    preferencias, mantener sesiones o rastrear actividad entre sitios.
+  </p>
+
+  <h2>Qué cookies usa este sitio</h2>
+  <p>
+    <strong>Hoy este sitio no usa cookies de rastreo ni de publicidad.</strong> La analítica que
+    empleamos <span class="marcador">[Umami / Plausible]</span> mide las visitas de forma agregada y
+    anónima, sin instalar cookies ni identificar a personas. Por eso no mostramos un banner de
+    consentimiento.
+  </p>
+
+  <h2>Cookies técnicas</h2>
+  <p>
+    El proveedor de hosting puede usar cookies estrictamente técnicas necesarias para servir el
+    sitio de forma segura. No sirven para perfilarte ni para publicidad.
+  </p>
+
+  <h2>Cómo controlarlas</h2>
+  <p>
+    Puede bloquear o borrar cookies desde la configuración de su navegador. Como este sitio no
+    depende de cookies para funcionar, bloquearlas no afecta su experiencia.
+  </p>
+
+  <h2>Si esto cambia</h2>
+  <p>
+    Si en el futuro incorporamos herramientas que sí usen cookies (por ejemplo, Google Analytics),
+    actualizaremos esta página y mostraremos un banner de consentimiento con opción real de
+    rechazarlas, como exige la normativa colombiana.
+  </p>
+
+  <h2>Contacto</h2>
+  <p>Dudas sobre esta política: {NEGOCIO.email}.</p>
+</LegalLayout>

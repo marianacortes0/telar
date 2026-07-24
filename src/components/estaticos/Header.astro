@@ -1,0 +1,208 @@
+---
+import LogoTelar from '../marca/LogoTelar.astro';
+import MenuMovil from '../islas/MenuMovil.tsx';
+import { NAV_PRINCIPAL } from '../../lib/navegacion';
+import { linkWhatsApp, MENSAJES } from '../../lib/whatsapp';
+
+const wa = linkWhatsApp(MENSAJES.general);
+const rutaActual = Astro.url.pathname;
+
+/** Un enlace o su grupo está activo si coincide la ruta actual. */
+const esActivo = (href: string, hijos?: { href: string }[]) =>
+  href === rutaActual || (hijos?.some((h) => h.href === rutaActual) ?? false);
+---
+
+<header class="cabecera">
+  <div class="contenedor barra">
+    <LogoTelar tamano={34} />
+
+    <nav class="nav-escritorio" aria-label="Principal">
+      {
+        NAV_PRINCIPAL.map((e) =>
+          e.hijos ? (
+            <div class="nav-grupo">
+              <a
+                href={e.href}
+                class:list={['nav-enlace', { activo: esActivo(e.href, e.hijos) }]}
+                aria-haspopup="true"
+              >
+                {e.label}
+                <svg class="chevron" width="12" height="12" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M6 9l6 6 6-6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </a>
+              <div class="nav-menu">
+                {e.hijos.map((h) => (
+                  <a
+                    href={h.href}
+                    class="nav-sub"
+                    aria-current={rutaActual === h.href ? 'page' : undefined}
+                  >
+                    {h.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <a
+              href={e.href}
+              class="nav-enlace"
+              aria-current={rutaActual === e.href ? 'page' : undefined}
+            >
+              {e.label}
+            </a>
+          )
+        )
+      }
+    </nav>
+
+    <div class="acciones">
+      <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro cta-escritorio">
+        WhatsApp
+      </a>
+      <MenuMovil client:load enlaces={NAV_PRINCIPAL} whatsapp={wa} />
+    </div>
+  </div>
+</header>
+
+<style>
+  .cabecera {
+    position: sticky;
+    top: 0;
+    z-index: 70;
+    background: color-mix(in srgb, var(--color-abismo) 82%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-borde);
+  }
+
+  .barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    height: 64px;
+  }
+
+  .nav-escritorio {
+    display: none;
+    align-items: center;
+    gap: 0.4rem;
+    margin-left: auto;
+  }
+
+  .nav-enlace {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: var(--color-humo);
+    text-decoration: none;
+    transition: color var(--dur-rapido) var(--ease-precision),
+      background-color var(--dur-rapido) var(--ease-precision);
+  }
+  .nav-enlace:hover,
+  .nav-enlace.activo,
+  .nav-enlace[aria-current='page'] {
+    color: var(--color-lino);
+    background: color-mix(in srgb, var(--color-fondo) 70%, transparent);
+  }
+
+  /* Grupos desplegables (CSS puro: hover + focus-within) */
+  .nav-grupo {
+    position: relative;
+    display: flex;
+  }
+  .chevron {
+    opacity: 0.65;
+    transition: transform var(--dur-rapido) var(--ease-precision);
+  }
+  .nav-grupo:hover .chevron,
+  .nav-grupo:focus-within .chevron {
+    transform: rotate(180deg);
+  }
+
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 0.5rem;
+    min-width: 16rem;
+    padding: 0.4rem;
+    display: grid;
+    gap: 0.1rem;
+    background: color-mix(in srgb, var(--color-fondo) 97%, var(--color-abismo));
+    border: 1px solid var(--color-borde);
+    border-radius: 12px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.38);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px);
+    transition: opacity var(--dur-rapido) var(--ease-salida),
+      transform var(--dur-rapido) var(--ease-salida),
+      visibility var(--dur-rapido) var(--ease-salida);
+    z-index: 80;
+  }
+  /* Puente invisible: evita que el menú se cierre al cruzar el hueco */
+  .nav-menu::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -0.5rem;
+    height: 0.5rem;
+  }
+  .nav-grupo:hover .nav-menu,
+  .nav-grupo:focus-within .nav-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .nav-sub {
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    color: var(--color-humo);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--dur-rapido) var(--ease-precision),
+      background-color var(--dur-rapido) var(--ease-precision);
+  }
+  .nav-sub:hover,
+  .nav-sub[aria-current='page'] {
+    color: var(--color-lino);
+    background: color-mix(in srgb, var(--color-fondo) 55%, var(--color-abismo));
+  }
+
+  .acciones {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .cta-escritorio {
+    display: none;
+  }
+
+  @media (min-width: 64rem) {
+    .nav-escritorio {
+      display: flex;
+    }
+    .cta-escritorio {
+      display: inline-flex;
+    }
+    /* Ocultar el botón hamburguesa en escritorio */
+    .acciones :global(.menu-boton) {
+      display: none;
+    }
+  }
+</style>

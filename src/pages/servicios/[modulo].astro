@@ -1,0 +1,564 @@
+---
+import Base from '../../layouts/Base.astro';
+import TejidoHero from '../../components/trama/TejidoHero.astro';
+import NivelesPrecios from '../../components/ui/NivelesPrecios.astro';
+import Aviso from '../../components/ui/Aviso.astro';
+import FAQ from '../../components/islas/FAQ.tsx';
+import { Icon } from 'astro-icon/components';
+import { linkWhatsApp, MENSAJES } from '../../lib/whatsapp';
+
+interface Nivel {
+  nombre: string;
+  para: string;
+  filas: { celdas: string[]; destacado?: boolean }[];
+  wa: string;
+  ctaLabel?: string;
+}
+
+interface ModuloData {
+  titulo: string;
+  descripcion: string;
+  eyebrow: string;
+  heroTitulo: string;
+  heroSub: string;
+  precioNota: string;
+  wa: string;
+  problemaTitulo: string;
+  problema: string[];
+  paraQuien: string;
+  niveles: Nivel[];
+  incluye: string[];
+  costoAparte?: string;
+  nota?: string;
+  legal?: string;
+  faq: { id: string; pregunta: string; respuesta: string }[];
+  cierreTitulo: string;
+}
+
+export function getStaticPaths() {
+  /** Añade el nivel al mensaje base para saber el presupuesto de entrada. */
+  const conNivel = (base: string, nivel: string) => `${base} (Nivel: ${nivel})`;
+
+  const modulos: Record<string, ModuloData> = {
+    'telar-ai': {
+      titulo: 'Telar AI — Agentes de inteligencia artificial',
+      descripcion:
+        'Agentes de IA para WhatsApp, web e Instagram: respuestas 24/7 entrenadas con su negocio y escalamiento a una persona. Desde $900.000.',
+      eyebrow: 'Telar AI · Agentes de inteligencia artificial',
+      heroTitulo: 'Un agente que atiende por usted, 24/7',
+      heroSub:
+        'Un agente de IA entrenado con la información de su negocio responde en WhatsApp, la web o Instagram: horarios, precios, disponibilidad y preguntas frecuentes. Y escala a una persona cuando hace falta.',
+      precioNota: 'Desde $900.000 · Mant. desde $120.000/mes',
+      wa: MENSAJES.ai,
+      problemaTitulo: 'Su equipo responde lo mismo veinte veces al día',
+      problema: [
+        'Horarios, precios, disponibilidad, «¿todavía tienen?». Las mismas preguntas llegan por WhatsApp, la web y las redes, a toda hora, y alguien tiene que contestarlas una por una.',
+        'Un agente de IA entrenado con la información de su negocio responde solo, 24/7, y solo pasa a una persona cuando de verdad hace falta. <em>Atiende más sin contratar más.</em>',
+      ],
+      paraQuien:
+        'Negocios con alto volumen de mensajes o consultas repetitivas: tiendas online, clínicas, inmobiliarias, restaurantes y empresas de servicios con equipos de soporte pequeños.',
+      niveles: [
+        {
+          nombre: 'Básico',
+          para: 'Agente para 1 canal (WhatsApp o web), FAQ hasta 30 preguntas.',
+          filas: [
+            { celdas: ['Instalación', '$900.000 – $1.400.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', '$120.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.ai, 'Básico'),
+        },
+        {
+          nombre: 'Intermedio',
+          para: '2 canales, integración con calendario/reservas y escalamiento a una persona.',
+          filas: [
+            { celdas: ['Instalación', '$1.800.000 – $2.800.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', '$200.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.ai, 'Intermedio'),
+        },
+        {
+          nombre: 'Avanzado',
+          para: 'Multi-canal, agentes internos, análisis de conversaciones e IA personalizada.',
+          filas: [
+            { celdas: ['Instalación', 'Desde $3.500.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', 'Desde $350.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.ai, 'Avanzado'),
+        },
+      ],
+      incluye: [
+        'Agente conversacional en WhatsApp, web o Instagram, entrenado con la información de su negocio',
+        'Respuestas automáticas 24/7: horarios, precios, disponibilidad y preguntas frecuentes',
+        'Escalamiento a una persona cuando el agente no puede resolver',
+        'Agentes internos: resumen de correos, clasificación de tickets y análisis de datos',
+      ],
+      costoAparte:
+        'El uso de la API de IA (modelos como Claude o GPT) se cobra por consumo, aparte del mantenimiento: aprox. $50.000 – $300.000/mes según el volumen de mensajes.',
+      faq: [
+        {
+          id: 'modelo',
+          pregunta: '¿Con qué IA funciona?',
+          respuesta:
+            'Con modelos líderes como Claude o GPT, elegidos según su caso. Usted no compra licencias: el uso de la API se cobra por consumo, aparte del mantenimiento.',
+        },
+        {
+          id: 'errores',
+          pregunta: '¿El agente se puede equivocar?',
+          respuesta:
+            'Lo entrenamos solo con la información de su negocio y le ponemos límites claros. Cuando no está seguro, no inventa: escala la conversación a una persona de su equipo.',
+        },
+        {
+          id: 'reemplazo',
+          pregunta: '¿Reemplaza a mi equipo?',
+          respuesta:
+            'No: le quita de encima lo repetitivo para que su equipo atienda lo que de verdad necesita una persona. Atiende más sin contratar más.',
+        },
+      ],
+      cierreTitulo: '¿Le montamos su agente de IA?',
+    },
+
+    'telar-flow': {
+      titulo: 'Telar Flow — Automatización de procesos (n8n / Make)',
+      descripcion:
+        'Automatización de procesos con n8n y Make: formularios, WhatsApp, Gmail, CRM y facturación conectados para que la información viaje sola. Desde $250.000.',
+      eyebrow: 'Telar Flow · Automatización de procesos',
+      heroTitulo: 'Que la información viaje sola',
+      heroSub:
+        'Conectamos WhatsApp, Excel, Gmail, formularios y facturación con n8n o Make, para que su negocio deje de copiar y pegar. Los procesos corren solos y usted vuelve a decidir.',
+      precioNota: 'Desde $250.000 · Mant. desde $40.000/mes',
+      wa: MENSAJES.flow,
+      problemaTitulo: 'Copiar y pegar entre WhatsApp, Excel y Gmail no escala',
+      problema: [
+        'El lead llega por WhatsApp, alguien lo copia a un Excel, arma la cotización en Gmail y luego la factura a mano. Cada paso es tiempo, y en cada paso se pierde o se equivoca algo.',
+        'Con n8n o Make conectamos las herramientas que ya usa para que la información viaje sola: del formulario a la hoja, del chat al CRM, del pedido a la factura. <em>Usted deja de operar y vuelve a decidir.</em>',
+      ],
+      paraQuien:
+        'Cualquier negocio que hoy pasa información a mano entre WhatsApp, Excel, Gmail, formularios o facturación: pymes, agencias y negocios con un equipo administrativo pequeño.',
+      niveles: [
+        {
+          nombre: 'Un flujo',
+          para: 'Un solo proceso automatizado (por ejemplo, Formularios → Excel).',
+          filas: [
+            { celdas: ['Instalación', '$250.000 – $400.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', '$40.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.flow, 'Un flujo'),
+          ctaLabel: 'Cotizar un flujo',
+        },
+        {
+          nombre: 'Paquete 3–5 flujos',
+          para: 'Varios procesos conectados: WhatsApp → CRM, Gmail → Sheets, facturación.',
+          filas: [
+            { celdas: ['Instalación', '$800.000 – $1.500.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', '$100.000 – $150.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.flow, 'Paquete 3–5 flujos'),
+          ctaLabel: 'Cotizar el paquete',
+        },
+        {
+          nombre: 'Automatización integral',
+          para: '6+ flujos, integraciones API complejas y monitoreo de errores.',
+          filas: [
+            { celdas: ['Instalación', 'Desde $2.000.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', 'Desde $200.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.flow, 'Automatización integral'),
+          ctaLabel: 'Cotizar automatización integral',
+        },
+      ],
+      incluye: [
+        'Formularios → Excel/Sheets: respuestas organizadas solas',
+        'WhatsApp → CRM: leads ordenados sin copiar y pegar',
+        'Gmail → Google Sheets: pedidos y cotizaciones registrados solos',
+        'Facturación automática y recordatorios de pagos, citas y seguimientos',
+        'Integraciones API a la medida para conectar los sistemas que ya usa',
+      ],
+      costoAparte:
+        'Las herramientas externas se cobran aparte (precios verificados jul. 2026): n8n Cloud Starter €20–24/mes (~$70.000–80.000 COP) o Make Core/Pro $9–19 USD/mes (~$29.000–61.000 COP), según el volumen de ejecuciones.',
+      faq: [
+        {
+          id: 'herramientas',
+          pregunta: '¿Sirve con las herramientas que ya uso?',
+          respuesta:
+            'Sí. n8n y Make se conectan con WhatsApp, Gmail, Google Sheets, formularios, CRMs y cientos de apps más. Si su sistema tiene API, casi siempre se puede integrar.',
+        },
+        {
+          id: 'tecnico',
+          pregunta: '¿Necesito saber de tecnología?',
+          respuesta:
+            'No. Nosotros armamos y probamos los flujos; usted solo los usa. Le explicamos qué hace cada uno y le avisamos si algo falla.',
+        },
+        {
+          id: 'cual',
+          pregunta: '¿n8n o Make?',
+          respuesta:
+            'Depende del volumen y de las integraciones. Le recomendamos el que salga más económico para su caso y le mostramos el costo mensual real antes de arrancar.',
+        },
+      ],
+      cierreTitulo: '¿Qué proceso quiere dejar de hacer a mano?',
+    },
+
+    'telar-monitor': {
+      titulo: 'Telar Monitor — Monitoreo con dashboards',
+      descripcion:
+        'Dashboards de monitoreo de paneles solares y consumo eléctrico en tiempo real, con alertas por WhatsApp. Desde $600.000.',
+      eyebrow: 'Telar Monitor · Dashboards de monitoreo',
+      heroTitulo: 'Sus paneles y su consumo, en un solo tablero',
+      heroSub:
+        'Monitoreo en tiempo real de paneles solares y consumo eléctrico, con alertas por WhatsApp cuando algo se sale de rango. Deje de adivinar dónde se va la energía.',
+      precioNota: 'Desde $600.000 · Mant. desde $60.000/mes',
+      wa: MENSAJES.monitor,
+      problemaTitulo: 'No puede mejorar lo que no está midiendo',
+      problema: [
+        'Tiene paneles solares pero no sabe si rinden lo que deberían. La factura de la luz sube y no sabe qué la dispara. Y cuando algo falla, se entera tarde.',
+        'Telar Monitor lleva esos datos a un dashboard claro y le avisa por WhatsApp cuando algo se sale de rango. <em>Los números dejan de ser una sorpresa a fin de mes.</em>',
+      ],
+      paraQuien:
+        'Casas o negocios con paneles solares, empresas con consumo eléctrico alto que quieren reducir costos y propiedades que necesitan monitoreo remoto.',
+      niveles: [
+        {
+          nombre: 'Básico',
+          para: '1 fuente de datos (solo solar o solo consumo) y dashboard simple.',
+          filas: [
+            { celdas: ['Instalación', '$600.000 – $900.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', '$60.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.monitor, 'Básico'),
+        },
+        {
+          nombre: 'Completo',
+          para: 'Paneles solares + consumo eléctrico integrados, con alertas automáticas.',
+          filas: [
+            { celdas: ['Instalación', '$1.200.000 – $1.800.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', '$100.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.monitor, 'Completo'),
+        },
+        {
+          nombre: 'Multi-sede',
+          para: 'Varias ubicaciones monitoreadas desde un solo dashboard.',
+          filas: [
+            { celdas: ['Instalación', 'Desde $2.500.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', 'Desde $200.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.monitor, 'Multi-sede'),
+        },
+      ],
+      incluye: [
+        'Monitoreo de producción de paneles solares: eficiencia y alertas de falla',
+        'Monitoreo de consumo eléctrico en tiempo real: picos y comparativos históricos',
+        'Dashboard personalizado con las métricas clave',
+        'Alertas automáticas por WhatsApp o correo cuando algo se sale de rango',
+      ],
+      nota:
+        'Requiere que ya tenga (o instale) los medidores o sensores compatibles con lo que quiera monitorear; ese hardware no está incluido. Le entregamos la lista de compras.',
+      faq: [
+        {
+          id: 'hardware',
+          pregunta: '¿Necesito comprar algo?',
+          respuesta:
+            'Sí: los medidores o sensores compatibles con lo que quiera monitorear. Le pasamos la lista de compras; el dashboard y las alertas los montamos nosotros.',
+        },
+        {
+          id: 'compatible',
+          pregunta: '¿Sirve para cualquier panel solar?',
+          respuesta:
+            'Funciona con la mayoría de inversores y medidores del mercado. Antes de cotizar confirmamos que su equipo sea compatible.',
+        },
+        {
+          id: 'celular',
+          pregunta: '¿Puedo verlo desde el celular?',
+          respuesta:
+            'Sí. El dashboard se abre desde cualquier navegador y las alertas le llegan por WhatsApp o correo.',
+        },
+      ],
+      cierreTitulo: '¿Qué quiere empezar a medir?',
+    },
+
+    'telar-teams': {
+      titulo: 'Telar Teams — Gamificación empresarial',
+      descripcion:
+        'Gamificación para equipos: puntos, niveles y rankings en tiempo real integrados con su CRM. Para ventas y call centers. Desde $1.200.000.',
+      eyebrow: 'Telar Teams · Gamificación empresarial',
+      heroTitulo: 'Convierta las metas en un juego que su equipo quiere ganar',
+      heroSub:
+        'Puntos, niveles y rankings en tiempo real, alimentados desde su CRM sin digitar nada. Para equipos de ventas, call centers y cualquier equipo con metas medibles.',
+      precioNota: 'Desde $1.200.000 · Mant. desde $100.000/mes',
+      wa: MENSAJES.teams,
+      problemaTitulo: 'Las metas se pierden en una hoja que nadie abre',
+      problema: [
+        'El equipo tiene metas, pero el avance vive en un Excel que solo revisa el jefe. Sin visibilidad ni reconocimiento en el momento, la motivación se enfría.',
+        'Telar Teams convierte esas metas en puntos, niveles y rankings en tiempo real, alimentados desde su CRM sin que nadie digite nada. <em>Lo que se ve y se reconoce, se cumple.</em>',
+      ],
+      paraQuien:
+        'Empresas con equipos de ventas, call centers o cualquier equipo donde motivar el cumplimiento de metas mejora los resultados (idealmente 10+ personas).',
+      niveles: [
+        {
+          nombre: 'Básico',
+          para: 'Dashboard web de rankings, hasta 20 usuarios.',
+          filas: [
+            { celdas: ['Instalación', '$1.200.000 – $1.800.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', '$100.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.teams, 'Básico'),
+        },
+        {
+          nombre: 'Intermedio',
+          para: 'App móvil, integración con el CRM, hasta 50 usuarios.',
+          filas: [
+            { celdas: ['Instalación', '$2.500.000 – $3.500.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', '$180.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.teams, 'Intermedio'),
+        },
+        {
+          nombre: 'Empresarial',
+          para: 'Usuarios ilimitados, múltiples equipos o sedes y reportes avanzados.',
+          filas: [
+            { celdas: ['Instalación', 'Desde $4.500.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', 'Desde $300.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.teams, 'Empresarial'),
+        },
+      ],
+      incluye: [
+        'Sistema de puntos, niveles y recompensas por metas cumplidas',
+        'Rankings y tableros de desempeño en tiempo real',
+        'Integración automática con el CRM o las herramientas internas (mide sin que nadie digite nada)',
+        'App web o móvil para que cada persona vea su progreso',
+      ],
+      faq: [
+        {
+          id: 'datos',
+          pregunta: '¿De dónde salen los datos?',
+          respuesta:
+            'De su CRM o de las herramientas que ya usa. Se integran para que el marcador se actualice solo, sin que nadie tenga que digitar resultados.',
+        },
+        {
+          id: 'noventas',
+          pregunta: '¿Funciona para equipos que no son de ventas?',
+          respuesta:
+            'Sí. Sirve para soporte, operaciones o cualquier equipo con metas medibles; adaptamos los puntos y las recompensas a lo que quiera incentivar.',
+        },
+        {
+          id: 'app',
+          pregunta: '¿Los empleados necesitan instalar algo?',
+          respuesta:
+            'En el nivel Básico ven todo desde el navegador. Desde Intermedio agregamos una app web o móvil para que cada persona siga su progreso.',
+        },
+      ],
+      cierreTitulo: '¿Ponemos a competir a su equipo?',
+    },
+
+    'telar-office': {
+      titulo: 'Telar Office — Oficinas inteligentes',
+      descripcion:
+        'Oficinas inteligentes: control de acceso NFC, automatización de luces y clima, cámaras y reservas de salas sobre Home Assistant. Desde $1.500.000.',
+      eyebrow: 'Telar Office · Oficinas inteligentes',
+      heroTitulo: 'Su oficina, gestionada desde un solo panel',
+      heroSub:
+        'Accesos con NFC por persona, luces y clima automáticos, cámaras integradas y reservas de salas, todo sobre Home Assistant. Para pymes, consultorios y coworkings.',
+      precioNota: 'Desde $1.500.000 · Mant. desde $120.000/mes',
+      wa: MENSAJES.office,
+      problemaTitulo: 'Cada sistema de la oficina va por su lado',
+      problema: [
+        'El acceso con una llave que se presta, las luces encendidas toda la noche, las cámaras en una app que nadie mira y las salas que siempre están «ocupadas». Ningún sistema se habla con el otro.',
+        'Telar Office los integra sobre Home Assistant: accesos con NFC por persona, luces y clima automáticos, cámaras y reservas de salas, todo en un panel. <em>La oficina se gestiona sola.</em>',
+      ],
+      paraQuien:
+        'Pymes, oficinas, consultorios y coworkings que quieren automatizar accesos, energía y la gestión del espacio de trabajo.',
+      niveles: [
+        {
+          nombre: 'Básico',
+          para: 'Automatización de luces/clima + NFC en 1–2 puntos de acceso.',
+          filas: [
+            { celdas: ['Instalación', '$1.500.000 – $2.200.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', '$120.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.office, 'Básico'),
+        },
+        {
+          nombre: 'Intermedio',
+          para: 'Cámaras, reservas de salas y dashboard de ocupación.',
+          filas: [
+            { celdas: ['Instalación', '$2.800.000 – $4.000.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', '$200.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.office, 'Intermedio'),
+        },
+        {
+          nombre: 'Empresarial',
+          para: 'Múltiples pisos o sedes, integración UniFi completa y reportes ejecutivos.',
+          filas: [
+            { celdas: ['Instalación', 'Desde $5.000.000'], destacado: true },
+            { celdas: ['Mantenimiento mensual', 'Desde $350.000/mes'], destacado: true },
+          ],
+          wa: conNivel(MENSAJES.office, 'Empresarial'),
+        },
+      ],
+      incluye: [
+        'Control de acceso con NFC: tarjetas y horarios de ingreso por persona',
+        'Automatización de luces y climatización con Home Assistant',
+        'Cámaras integradas para monitoreo del espacio (UniFi u otras)',
+        'Reservas inteligentes de salas de reuniones',
+        'Dashboard de gestión: ocupación, consumo y accesos en tiempo real',
+      ],
+      nota:
+        'El hardware físico (lectores NFC, cámaras, sensores) lo compra el cliente con la lista que le entregamos; se incluye la Raspberry Pi configurada cuando aplica. El montaje físico y el cableado los hace un técnico de su confianza.',
+      legal:
+        'Telar Office automatiza y monitorea accesos, energía y espacios, pero no sustituye un sistema de alarma monitoreada, un servicio de vigilancia privada ni una póliza de seguros. Su funcionamiento depende de energía eléctrica, conexión a internet y servicios de terceros (Home Assistant, UniFi). Telar no se hace responsable por pérdidas, daños o incidentes derivados de fallas en cualquiera de estos elementos.',
+      faq: [
+        {
+          id: 'seguridad',
+          pregunta: '¿Esto es un sistema de seguridad?',
+          respuesta:
+            'No. Telar Office automatiza y monitorea accesos, energía y espacios, pero no sustituye una alarma monitoreada, vigilancia privada ni una póliza de seguros.',
+        },
+        {
+          id: 'hardware',
+          pregunta: '¿Quién compra el hardware?',
+          respuesta:
+            'Usted, con la lista que le entregamos: los lectores NFC, cámaras y sensores quedan a su nombre y con su garantía. Se incluye la Raspberry Pi configurada cuando aplica.',
+        },
+        {
+          id: 'sedes',
+          pregunta: '¿Sirve para varias sedes?',
+          respuesta:
+            'Sí. Desde el nivel Empresarial gestionamos varios pisos o sedes desde un solo panel, con integración UniFi completa y reportes ejecutivos.',
+        },
+      ],
+      cierreTitulo: '¿Automatizamos su oficina?',
+    },
+  };
+
+  return Object.entries(modulos).map(([modulo, datos]) => ({
+    params: { modulo },
+    props: { datos },
+  }));
+}
+
+interface Props {
+  datos: ModuloData;
+}
+
+const { datos } = Astro.props;
+const wa = linkWhatsApp(datos.wa);
+---
+
+<Base titulo={datos.titulo} descripcion={datos.descripcion} waMensaje={datos.wa}>
+  <TejidoHero eyebrow={datos.eyebrow} titulo={datos.heroTitulo} subtitulo={datos.heroSub}>
+    <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">Cotizar por WhatsApp</a>
+    <span class="hero-nota mono">{datos.precioNota}</span>
+  </TejidoHero>
+
+  <section class="seccion">
+    <div class="contenedor bloque-lectura">
+      <p class="eyebrow" data-revelar>El problema</p>
+      <h2 data-revelar style="--i:1">{datos.problemaTitulo}</h2>
+      {datos.problema.map((p, i) => <p data-revelar style={`--i:${i + 2}`} set:html={p} />)}
+      <div class="tras-tabla" data-revelar>
+        <Aviso variante="dato" titulo="¿Para quién es?">
+          <p>{datos.paraQuien}</p>
+        </Aviso>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion banda">
+    <div class="contenedor">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Planes</p>
+        <h2>Elija según el tamaño de su operación</h2>
+        <p class="intro">Precios en pesos colombianos, sin IVA. La instalación y la mensualidad se facturan por separado.</p>
+      </header>
+
+      <NivelesPrecios niveles={datos.niveles} encabezados={['Concepto', 'Precio']} />
+
+      {datos.costoAparte && (
+        <div class="tras-tabla" data-revelar>
+          <Aviso variante="dato" titulo="Costo aparte">
+            <p>{datos.costoAparte}</p>
+          </Aviso>
+        </div>
+      )}
+      {datos.nota && (
+        <div class="tras-tabla" data-revelar>
+          <Aviso variante="dato" titulo="Sobre el hardware">
+            <p>{datos.nota}</p>
+          </Aviso>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor bloque-estrecho">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Qué incluye</p>
+        <h2>Qué incluye</h2>
+      </header>
+      <ul class="incluye-lista card" data-revelar>
+        {
+          datos.incluye.map((t) => (
+            <li>
+              <Icon name="lucide:check" class="icono" aria-hidden="true" />
+              <span>{t}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  {datos.legal && (
+    <section class="seccion">
+      <div class="contenedor bloque-estrecho">
+        <Aviso variante="legal" titulo="Importante — léelo">
+          <p>{datos.legal}</p>
+        </Aviso>
+      </div>
+    </section>
+  )}
+
+  <section class="seccion">
+    <div class="contenedor bloque-estrecho">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Preguntas frecuentes</p>
+        <h2>Lo que preguntan antes de contratar</h2>
+      </header>
+      <FAQ client:visible items={datos.faq} />
+    </div>
+  </section>
+
+  <section class="seccion cierre">
+    <div class="contenedor bloque-estrecho centrado" data-revelar>
+      <h2>{datos.cierreTitulo}</h2>
+      <p class="intro">Cuéntenos su caso. La primera conversación no cuesta nada.</p>
+      <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">Escribir por WhatsApp</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .incluye-lista {
+    list-style: none;
+    margin: 0;
+    padding: 1.75rem;
+    display: grid;
+    gap: 0.85rem;
+  }
+  .incluye-lista li {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+    line-height: 1.55;
+    color: var(--color-lino);
+  }
+  .incluye-lista .icono {
+    width: 1.15rem;
+    height: 1.15rem;
+    color: var(--color-teal-luz);
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+</style>

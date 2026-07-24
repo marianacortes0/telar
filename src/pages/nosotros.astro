@@ -1,0 +1,241 @@
+---
+import Base from '../layouts/Base.astro';
+import TejidoHero from '../components/trama/TejidoHero.astro';
+import Pasos from '../components/estaticos/Pasos.astro';
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import fotoMariana from '../assets/equipo/mariana.png';
+import fotoAndres from '../assets/equipo/andres.png';
+import { linkWhatsApp, MENSAJES } from '../lib/whatsapp';
+
+const equipo = [
+  {
+    nombre: 'Mariana',
+    foto: fotoMariana,
+    rol: 'Desarrollo & Diseño',
+    bio: 'Lleva proyectos completos: diseño, frontend, backend y base de datos. Profundiza en interfaz, accesibilidad y SEO.',
+    stack: 'Astro · React · Node · PostgreSQL · SEO',
+  },
+  {
+    nombre: 'Andrés',
+    foto: fotoAndres,
+    rol: 'Infraestructura & Domótica',
+    bio: 'Lleva proyectos completos: diseño, frontend, backend y base de datos. Profundiza en infraestructura, redes y Home Assistant.',
+    stack: 'Astro · React · Node · PostgreSQL · Home Assistant',
+  },
+];
+
+const pasos = [
+  { n: '01', titulo: 'Hablamos', texto: 'Una llamada o un chat de WhatsApp. Entendemos qué necesita y le decimos de una si podemos hacerlo. Sin costo.' },
+  { n: '02', titulo: 'Cotizamos por escrito', texto: 'Alcance detallado, precio cerrado y fecha de entrega. Lo que no está en la cotización, no está en el proyecto.' },
+  { n: '03', titulo: 'Arrancamos con el 50%', texto: 'El anticipo confirma el cupo en la agenda.' },
+  { n: '04', titulo: 'Construimos y mostramos', texto: 'Ve avances reales durante el proceso, no un mes de silencio y una sorpresa al final.' },
+  { n: '05', titulo: 'Entregamos y acompañamos', texto: 'Todo queda a su nombre: dominio, cuentas, código. 30 días de garantía y planes de mantenimiento si los quiere.' },
+];
+
+const noHacemos = [
+  ['No hacemos instalaciones eléctricas.', 'La programación y la integración son nuestras; el cableado lo hace un electricista certificado.'],
+  ['No vendemos lo que no necesita.', 'Si le sirve un sitio de una página, le cotizamos un sitio de una página.'],
+  ['No prometemos primer lugar en Google.', 'Nadie puede. Sí dejamos su sitio técnicamente preparado para posicionar.'],
+  ['No desaparecemos después de entregar.', 'Y si prefiere irse con otro proveedor, le entregamos todo sin trabas: es suyo.'],
+  ['No cobramos por cotizar.', 'La primera conversación siempre es gratis.'],
+];
+
+const wa = linkWhatsApp(MENSAJES.general);
+---
+
+<Base
+  titulo="Nosotros"
+  descripcion="Estudio de desarrollo full-stack en Bogotá. Trabaja directo con quien construye su proyecto: web, NFC y domótica, de principio a fin."
+>
+  <TejidoHero
+    eyebrow="Quiénes somos"
+    titulo="El equipo detrás de Telar"
+    subtitulo="Estudio de desarrollo full-stack en Bogotá. Web, NFC y domótica, de principio a fin. Trabaja directo con quien construye su proyecto, no con un intermediario."
+  >
+    <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">Hablemos por WhatsApp</a>
+  </TejidoHero>
+
+  <section class="seccion">
+    <div class="contenedor">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">El equipo</p>
+        <h2>Las personas detrás de Telar</h2>
+      </header>
+
+      <div class="equipo">
+        {
+          equipo.map((p, i) => (
+            <article class="card persona" data-revelar style={`--i:${i}`}>
+              <div class="foto-marco">
+                <Image
+                  src={p.foto}
+                  alt={`Foto de ${p.nombre}`}
+                  width={220}
+                  height={220}
+                  class="foto"
+                />
+              </div>
+              <h3>{p.nombre}</h3>
+              <p class="rol">{p.rol}</p>
+              <p class="bio">{p.bio}</p>
+              <p class="stack mono">{p.stack}</p>
+            </article>
+          ))
+        }
+      </div>
+
+      <p class="remate" data-revelar>
+        Cada proyecto lo lleva una persona de principio a fin, con el respaldo del equipo: sin
+        entregas a medias ni explicar dos veces lo mismo, y siempre con alguien que puede continuar
+        si hace falta.
+      </p>
+    </div>
+  </section>
+
+  <section class="seccion banda">
+    <div class="contenedor">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Cómo trabajamos</p>
+        <h2>El proceso, sin misterio</h2>
+      </header>
+      <Pasos pasos={pasos} />
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor bloque-estrecho">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Qué no hacemos</p>
+        <h2>Los límites, dichos de frente</h2>
+      </header>
+      <ul class="no-hacemos">
+        {
+          noHacemos.map(([titulo, texto], i) => (
+            <li data-revelar style={`--i:${i}`}>
+              <Icon name="lucide:minus" class="icono" aria-hidden="true" />
+              <span><strong>{titulo}</strong> {texto}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor bloque-estrecho">
+      <div class="donde card" data-revelar>
+        <h2>Dónde estamos</h2>
+        <p>
+          Bogotá, Colombia. Configuramos la automatización remoto o presencial: en remoto
+          trabajamos con clientes de todo el país; presencial, en Bogotá y alrededores. Para
+          tarjetas NFC y hardware coordinamos envío.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion cierre">
+    <div class="contenedor bloque-estrecho centrado" data-revelar>
+      <h2>¿Trabajamos juntos?</h2>
+      <p class="intro">La primera conversación no cuesta nada y le decimos con franqueza si podemos ayudar.</p>
+      <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">Escribir por WhatsApp</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .equipo {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+  .persona {
+    padding: 1.75rem;
+  }
+  .foto-marco {
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 1.1rem;
+    border: 2px solid var(--color-borde);
+    background: var(--color-abismo);
+  }
+  .foto-marco :global(.foto) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .persona h3 {
+    font-family: var(--fuente-display);
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  .rol {
+    color: var(--color-teal-luz);
+    font-size: 0.9rem;
+    margin: 0.25rem 0 1rem;
+  }
+  .bio {
+    color: var(--color-humo);
+    line-height: 1.7;
+    margin: 0 0 1rem;
+  }
+  .stack {
+    font-size: 0.82rem;
+    color: var(--color-humo);
+  }
+  .remate {
+    max-width: 44rem;
+    font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    line-height: 1.6;
+    color: var(--color-lino);
+    text-wrap: pretty;
+  }
+
+  .no-hacemos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .no-hacemos li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    line-height: 1.65;
+    color: var(--color-humo);
+  }
+  .no-hacemos strong {
+    color: var(--color-lino);
+  }
+  .no-hacemos .icono {
+    width: 1.15rem;
+    height: 1.15rem;
+    color: var(--color-oro);
+    flex-shrink: 0;
+    margin-top: 0.28rem;
+  }
+
+  .donde {
+    padding: 1.75rem;
+  }
+  .donde h2 {
+    font-size: 1.5rem;
+    margin: 0 0 0.75rem;
+  }
+  .donde p {
+    margin: 0;
+    color: var(--color-humo);
+    line-height: 1.75;
+  }
+
+  @media (min-width: 48rem) {
+    .equipo {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

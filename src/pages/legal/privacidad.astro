@@ -1,0 +1,61 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import { NEGOCIO } from '../../lib/constantes';
+---
+
+<LegalLayout
+  titulo="Aviso de privacidad"
+  descripcion="Aviso de privacidad de Telar: qué datos tratamos, para qué, con quién y cómo ejercer sus derechos."
+>
+  <p>
+    Este aviso resume cómo {NEGOCIO.nombre} trata su información. El detalle completo está en la
+    <a href="/legal/datos-personales">Política de tratamiento de datos</a>.
+  </p>
+
+  <h2>Qué recolectamos</h2>
+  <p>
+    Este sitio no tiene formularios ni inicio de sesión: el contacto es directo por WhatsApp. No
+    almacenamos datos personales suyos desde la web. Cuando nos escribe, tratamos solo lo que nos
+    comparte para responder y prestar el servicio.
+  </p>
+
+  <h2>Para qué los usamos</h2>
+  <ul>
+    <li>Responder su consulta y prepararle una cotización.</li>
+    <li>Ejecutar el proyecto contratado y darle seguimiento.</li>
+    <li>Facturar y cumplir obligaciones legales.</li>
+  </ul>
+
+  <h2>Analítica</h2>
+  <p>
+    Usamos una herramienta de analítica <span class="marcador">[Umami / Plausible]</span> que no
+    instala cookies ni identifica a personas: solo cuenta visitas de forma agregada y anónima. Por
+    eso no verás un banner de cookies.
+  </p>
+
+  <h2>Con quién los compartimos</h2>
+  <ul>
+    <li><strong>Hosting:</strong> <span class="marcador">[Cloudflare Pages / Vercel]</span>, que sirve el sitio.</li>
+    <li><strong>WhatsApp:</strong> el canal por el que nos escribe se rige por las políticas de Meta.</li>
+  </ul>
+  <p>No vendemos ni cedemos sus datos con fines comerciales de terceros.</p>
+
+  <h2>Cuánto los conservamos</h2>
+  <p>
+    Conservamos su información mientras dure la relación comercial y por los plazos legales
+    aplicables después. Luego la suprimimos o anonimizamos.
+  </p>
+
+  <h2>Sus derechos</h2>
+  <p>
+    Puede conocer, actualizar, rectificar o suprimir sus datos y revocar la autorización
+    escribiendo a {NEGOCIO.email}. El procedimiento y los plazos están en la
+    <a href="/legal/datos-personales">Política de tratamiento de datos</a>.
+  </p>
+
+  <h2>Contacto</h2>
+  <p>
+    {NEGOCIO.nombre} — {NEGOCIO.ciudad}, {NEGOCIO.pais}. Correo {NEGOCIO.email}, WhatsApp
+    {NEGOCIO.telefonoVisible}.
+  </p>
+</LegalLayout>

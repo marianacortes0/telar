@@ -1,0 +1,48 @@
+---
+interface Props {
+  variante?: 'nota' | 'legal' | 'dato';
+  titulo?: string;
+}
+const { variante = 'nota', titulo } = Astro.props;
+---
+
+<aside class={`aviso ${variante}`}>
+  {titulo && <p class="aviso-titulo">{titulo}</p>}
+  <div class="aviso-cuerpo"><slot /></div>
+</aside>
+
+<style>
+  .aviso {
+    border: 1px solid var(--color-borde);
+    border-left-width: 3px;
+    border-radius: 12px;
+    padding: 1.25rem 1.4rem;
+    background: color-mix(in srgb, var(--color-fondo) 60%, transparent);
+  }
+  .aviso.legal {
+    border-left-color: var(--color-oro);
+    background: color-mix(in srgb, var(--color-oro) 7%, transparent);
+  }
+  .aviso.dato {
+    border-left-color: var(--color-teal-luz);
+  }
+  .aviso-titulo {
+    font-family: var(--fuente-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-teal-luz);
+    margin: 0 0 0.6rem;
+  }
+  .aviso.legal .aviso-titulo {
+    color: var(--color-oro);
+  }
+  .aviso-cuerpo :global(p) {
+    margin: 0;
+    color: var(--color-lino);
+    line-height: 1.7;
+  }
+  .aviso-cuerpo :global(p + p) {
+    margin-top: 0.75rem;
+  }
+</style>

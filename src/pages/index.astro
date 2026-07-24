@@ -1,17 +1,254 @@
 ---
+import Base from '../layouts/Base.astro';
+import TejidoHero from '../components/trama/TejidoHero.astro';
+import CardSegmento from '../components/estaticos/CardSegmento.astro';
+import Pasos from '../components/estaticos/Pasos.astro';
+import FAQ from '../components/islas/FAQ.tsx';
+import { linkWhatsApp, MENSAJES } from '../lib/whatsapp';
 
+const segmentos = [
+  {
+    titulo: 'Para profesionales',
+    gancho: 'Deje de repartir papel',
+    descripcion: 'Tarjeta NFC con su perfil, o el portafolio web que lleva posponiendo.',
+    desde: 'desde $45.000',
+    href: '/para/profesionales',
+  },
+  {
+    titulo: 'Para empresas',
+    gancho: 'Ponga su negocio a funcionar',
+    descripcion: 'Sitio web, tienda en línea, panel de administración, automatización e IA a la medida.',
+    desde: 'desde $250.000',
+    href: '/para/empresas',
+  },
+  {
+    titulo: 'Para creadores',
+    gancho: 'Que lo encuentren de un toque',
+    descripcion: 'Llaveros y pulseras NFC que abren sus redes. Portafolio para mostrar su trabajo.',
+    desde: 'desde $30.000',
+    href: '/para/creadores',
+  },
+  {
+    titulo: 'Para su casa',
+    gancho: 'Que su casa haga cosas sola',
+    descripcion: 'Automatización con Home Assistant. Luces, sensores, cámaras y rutinas. Remoto o presencial.',
+    desde: 'desde $70.000',
+    href: '/para/tu-casa',
+  },
+];
+
+// Personas y pymes
+const lineasPersonas = [
+  { titulo: 'Telar Tag', texto: 'Productos NFC: tarjetas, menús, merchandising, packaging y tags de rutinas.', href: '/servicios/tarjetas-nfc' },
+  { titulo: 'Telar Web', texto: 'Desarrollo web completo: frontend, backend, base de datos, pagos y CRUD.', href: '/servicios/desarrollo-web' },
+  { titulo: 'Telar Casa', texto: 'Domótica con Home Assistant: luces, sensores, cámaras y rutinas. Remoto o presencial.', href: '/servicios/domotica' },
+];
+
+// Empresas · automatización e IA
+const lineasEmpresas = [
+  { titulo: 'Telar AI', texto: 'Agentes de IA que atienden en WhatsApp, web e Instagram 24/7.', href: '/servicios/telar-ai' },
+  { titulo: 'Telar Flow', texto: 'Procesos automáticos con n8n o Make: la información viaja sola.', href: '/servicios/telar-flow' },
+  { titulo: 'Telar Monitor', texto: 'Dashboards de paneles solares y consumo eléctrico, con alertas.', href: '/servicios/telar-monitor' },
+  { titulo: 'Telar Teams', texto: 'Gamificación de equipos: puntos, niveles y rankings en tiempo real.', href: '/servicios/telar-teams' },
+  { titulo: 'Telar Office', texto: 'Oficinas inteligentes: accesos NFC, energía, cámaras y salas.', href: '/servicios/telar-office' },
+];
+
+const pasos = [
+  { n: '01', titulo: 'Hablamos', texto: 'Nos cuenta qué necesita. Le decimos de una si podemos. Sin costo.' },
+  { n: '02', titulo: 'Cotizamos', texto: 'Alcance detallado, precio cerrado y fecha de entrega. Por escrito.' },
+  { n: '03', titulo: 'Construimos', texto: 'Ve avances reales, no un mes de silencio.' },
+  { n: '04', titulo: 'Entregamos', texto: 'Todo queda a su nombre. Y seguimos ahí si nos necesita.' },
+];
+
+const objeciones = [
+  { id: 'cobertura', pregunta: '¿Trabajan en toda Colombia?', respuesta: 'Sí. En remoto trabajamos con todo el país; presencial, en Bogotá y alrededores. Para tarjetas y hardware coordinamos envío.' },
+  { id: 'empresas', pregunta: '¿Solo hacen web y NFC?', respuesta: 'No. También automatizamos empresas: agentes de IA, flujos automáticos con n8n o Make, dashboards de monitoreo, gamificación de equipos y oficinas inteligentes.' },
+  { id: 'cotizar', pregunta: '¿Cotizar cuesta algo?', respuesta: 'No. La primera conversación y la cotización son gratis: le llega alcance, precio cerrado y fecha de entrega por escrito.' },
+  { id: 'pago', pregunta: '¿Cómo se paga?', respuesta: '50% para arrancar y 50% contra entrega; los proyectos grandes, por hitos. Aceptamos transferencia, Nequi o Bancolombia.' },
+  { id: 'tiempo', pregunta: '¿Cuánto se demoran?', respuesta: 'Una landing, una semana. Un sitio corporativo, tres o cuatro. Una automatización o una instalación de domótica, entre dos y cinco días desde que llega el equipo.' },
+];
+
+const waGeneral = linkWhatsApp(MENSAJES.general);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base
+  titulo="Páginas web, NFC, domótica y automatización con IA en Bogotá"
+  descripcion="Páginas web, tarjetas NFC, domótica con Home Assistant y automatización con IA para empresas. Estudio de desarrollo full-stack en Bogotá, de principio a fin."
+>
+  <TejidoHero
+    eyebrow="Bogotá · Web · NFC · Domótica · IA"
+    titulo="Un solo equipo para su web, sus NFC y su negocio"
+    subtitulo="Estudio de desarrollo full-stack en Bogotá. Diseño, código, NFC, domótica y automatización con IA para empresas, de principio a fin."
+  >
+    <a href={waGeneral} target="_blank" rel="noopener noreferrer" class="btn-oro">
+      Hablemos por WhatsApp
+    </a>
+    <a href="#puertas" class="btn-linea">Ver qué hacemos</a>
+  </TejidoHero>
+
+  <section id="puertas" class="seccion">
+    <div class="contenedor">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Segmentos</p>
+        <h2>Elija por dónde empezar</h2>
+        <p class="intro">Lo agrupamos por quién es, no por el nombre técnico del producto.</p>
+      </header>
+
+      <div class="segmentos">
+        {segmentos.map((s, i) => <CardSegmento {...s} indice={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <section id="servicios" class="seccion">
+    <div class="contenedor">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Personas y pymes</p>
+        <h2>Para personas y pymes</h2>
+        <p class="intro">Su presencia digital y su casa: NFC, desarrollo web y domótica.</p>
+      </header>
+
+      <div class="lineas">
+        {
+          lineasPersonas.map((l, i) => (
+            <a class="card linea" href={l.href} data-revelar style={`--i:${i}`}>
+              <h3>{l.titulo}</h3>
+              <p>{l.texto}</p>
+              <span class="flecha" aria-hidden="true">Ver →</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section id="empresas" class="seccion banda">
+    <div class="contenedor">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Empresas · automatización e IA</p>
+        <h2>Para empresas · automatización e IA</h2>
+        <p class="intro">Cinco líneas para que su operación trabaje sola: agentes, flujos, datos, equipos y oficina.</p>
+      </header>
+
+      <div class="lineas">
+        {
+          lineasEmpresas.map((l, i) => (
+            <a class="card linea" href={l.href} data-revelar style={`--i:${i}`}>
+              <h3>{l.titulo}</h3>
+              <p>{l.texto}</p>
+              <span class="flecha" aria-hidden="true">Ver →</span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor rejilla-proceso">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Cómo trabajamos</p>
+        <h2>Cuatro pasos, todo por escrito</h2>
+        <p class="intro">El mismo proceso para una tarjeta de $45.000 o un panel de $6.000.000.</p>
+      </header>
+      <Pasos pasos={pasos} />
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor bloque-estrecho">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Preguntas</p>
+        <h2>Dudas frecuentes</h2>
+      </header>
+      <FAQ client:visible items={objeciones} />
+    </div>
+  </section>
+
+  <section class="seccion cierre">
+    <div class="contenedor bloque-estrecho centrado" data-revelar>
+      <h2>¿Hablamos?</h2>
+      <p class="intro">Cuéntenos qué necesita. La primera conversación no cuesta nada.</p>
+      <a href={waGeneral} target="_blank" rel="noopener noreferrer" class="btn-oro">
+        Escribir por WhatsApp
+      </a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* 2×2 en móvil, 4 en escritorio */
+  .segmentos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  @media (min-width: 64rem) {
+    .segmentos {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+    }
+  }
+
+  .lineas {
+    display: grid;
+    gap: 1rem;
+  }
+  .linea {
+    padding: 1.5rem;
+    text-decoration: none;
+    color: var(--color-lino);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: border-color var(--dur-rapido) var(--ease-precision),
+      transform var(--dur-rapido) var(--ease-salida);
+  }
+  .linea:hover {
+    border-color: var(--color-teal-luz);
+    transform: translateY(-3px);
+  }
+  .linea h3 {
+    font-family: var(--fuente-display);
+    font-size: 1.3rem;
+    margin: 0;
+  }
+  .linea p {
+    color: var(--color-humo);
+    margin: 0;
+    flex-grow: 1;
+    line-height: 1.6;
+  }
+  .linea .flecha {
+    color: var(--color-oro);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+  @media (min-width: 48rem) {
+    .lineas {
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    }
+  }
+  @media (min-width: 64rem) {
+    .lineas {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .rejilla-proceso {
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 64rem) {
+    .rejilla-proceso {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .rejilla-proceso .encabezado-seccion {
+      margin-bottom: 0;
+      position: sticky;
+      top: 5rem;
+    }
+  }
+</style>

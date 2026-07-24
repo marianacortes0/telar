@@ -1,0 +1,36 @@
+---
+import ServicioSimple from '../../layouts/ServicioSimple.astro';
+import TablaPrecios from '../../components/ui/TablaPrecios.astro';
+import { MENSAJES } from '../../lib/whatsapp';
+
+const filas = [
+  { celdas: ['Etiqueta NFC (mínimo 20 unidades)', '$12.000 c/u'] },
+  { celdas: ['Lote 100+ unidades', '$8.500 c/u'] },
+  { celdas: ['Configuración de destino + página de aterrizaje simple', '$250.000'] },
+];
+---
+
+<ServicioSimple
+  titulo="Etiquetas inteligentes para packaging"
+  descripcion="Etiquetas NFC para empaques: video de instrucciones, trazabilidad y enlace de recompra. Desde $8.500 por unidad en lote."
+  eyebrow="Telar Tag · Packaging"
+  heroTitulo="Que su empaque haga algo"
+  heroSub="Para marcas que quieren que su empaque haga algo: video de instrucciones, trazabilidad del producto, enlace directo de recompra."
+  waMensaje={MENSAJES.packaging}
+  precioNota="Desde $8.500 c/u en lote"
+  cierreTitulo="¿Cuántas unidades maneja?"
+  cierreTexto="Cotizamos por lote y configuramos el destino de cada etiqueta."
+>
+  <section class="seccion">
+    <div class="contenedor">
+      <header class="encabezado-seccion" data-revelar>
+        <p class="eyebrow">Precios</p>
+        <h2>El empaque como canal, no solo como envoltura</h2>
+        <p class="intro">Precios en pesos colombianos, sin IVA.</p>
+      </header>
+      <div data-revelar>
+        <TablaPrecios filas={filas} />
+      </div>
+    </div>
+  </section>
+</ServicioSimple>

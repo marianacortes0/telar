@@ -1,0 +1,56 @@
+---
+export interface Fila {
+  celdas: string[];
+  destacado?: boolean;
+}
+
+interface Props {
+  encabezados?: string[];
+  filas: Fila[];
+  caption?: string;
+}
+
+const { encabezados = ['Concepto', 'Precio'], filas, caption } = Astro.props;
+---
+
+<div class="envoltura">
+  <table class="tabla-precios">
+    {caption && <caption>{caption}</caption>}
+    <thead>
+      <tr>{encabezados.map((h) => <th scope="col">{h}</th>)}</tr>
+    </thead>
+    <tbody>
+      {
+        filas.map((f) => (
+          <tr class={f.destacado ? 'destacado' : undefined}>
+            {f.celdas.map((c, i) => (
+              <td data-label={encabezados[i]} set:html={c} />
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .envoltura {
+    overflow-x: auto;
+    border: 1px solid var(--color-borde);
+    border-radius: 16px;
+    background: var(--color-fondo);
+  }
+  caption {
+    text-align: left;
+    padding: 1rem 1rem 0;
+    color: var(--color-humo);
+    font-size: 0.9rem;
+  }
+  @media (max-width: 40rem) {
+    .envoltura {
+      border: none;
+      background: transparent;
+      overflow: visible;
+    }
+  }
+</style>

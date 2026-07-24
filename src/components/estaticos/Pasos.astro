@@ -1,0 +1,66 @@
+---
+export interface Paso {
+  n: string;
+  titulo: string;
+  texto: string;
+}
+interface Props {
+  pasos: Paso[];
+}
+const { pasos } = Astro.props;
+---
+
+<ol class="pasos">
+  {
+    pasos.map((p, i) => (
+      <li class="paso" data-revelar style={`--i:${i}`}>
+        <span class="paso-n">{p.n}</span>
+        <div>
+          <h3 class="paso-titulo">{p.titulo}</h3>
+          <p class="paso-texto">{p.texto}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .pasos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+  }
+  .paso {
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+  }
+  .paso-n {
+    font-family: var(--fuente-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 1.35rem;
+    color: var(--color-oro);
+    line-height: 1.1;
+    flex-shrink: 0;
+    width: 2.5rem;
+  }
+  .paso-titulo {
+    font-family: var(--fuente-display);
+    font-size: 1.15rem;
+    margin: 0 0 0.3rem;
+  }
+  .paso-texto {
+    margin: 0;
+    color: var(--color-humo);
+    line-height: 1.6;
+  }
+
+  @media (min-width: 64rem) {
+    .pasos {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem 3rem;
+    }
+  }
+</style>

@@ -1,0 +1,622 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Tokens de marca — muestreados del logo (§4.1).
+   Bajo @theme, los --color-* generan utilidades bg-/text-/border-.
+   ============================================================ */
+@theme {
+  --color-abismo:    #0C1826;  /* fondo de página */
+  --color-fondo:     #152538;  /* superficies, cards */
+  --color-navy:      #1B2F47;  /* exacto del logo */
+  --color-borde:     #24405E;  /* bordes, separadores */
+  --color-oro:       #E1B366;  /* acción: CTAs, precios, nodo activo */
+  --color-oro-hondo: #CA9D5A;
+  --color-teal:      #42818F;  /* conexión: hilos, líneas, datos */
+  --color-teal-luz:  #6FB3C0;
+  --color-lino:      #E8EDF3;  /* texto principal */
+  --color-humo:      #8FA3BC;  /* texto secundario */
+
+  /* Una sola familia en todo el sitio: Space Grotesk. */
+  --fuente-display: "Space Grotesk Variable", system-ui, sans-serif;
+  --fuente-cuerpo:  "Space Grotesk Variable", system-ui, sans-serif;
+  --fuente-mono:    "Space Grotesk Variable", ui-monospace, monospace;
+}
+
+/* ============================================================
+   Sistema de movimiento (§4.3) — curvas y duraciones.
+   ============================================================ */
+:root {
+  --ease-salida:    cubic-bezier(0.16, 1, 0.30, 1);
+  --ease-precision: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-nodo:      cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --dur-instante: 120ms;
+  --dur-rapido:   240ms;
+  --dur-medio:    420ms;
+  --dur-lento:    800ms;
+  --dur-trama:   1600ms;
+
+  --stagger: 70ms;
+
+  --bp-sm: 40rem;
+  --bp-md: 48rem;
+  --bp-lg: 64rem;
+  --bp-xl: 80rem;
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+  background: var(--color-abismo);
+  color: var(--color-lino);
+  font-family: var(--fuente-cuerpo);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--fuente-display);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+a { color: inherit; }
+
+/* Números que no bailan al animarse (§4.2) */
+.mono, .precio {
+  font-family: var(--fuente-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   Layout helpers
+   ============================================================ */
+.contenedor {
+  width: 100%;
+  max-width: 72rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 5vw, 2.5rem);
+}
+
+.seccion {
+  padding-block: clamp(3.5rem, 9vw, 7rem);
+}
+
+.eyebrow {
+  font-family: var(--fuente-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-teal-luz);
+  margin: 0 0 1rem;
+}
+
+/* El cliente prefiere solo el título: ocultamos los eyebrows (etiquetas tipo
+   "CÓMO TRABAJAMOS") en todo el sitio y los subtítulos descriptivos de las
+   cabeceras de sección. Se conserva el pitch del hero y las líneas de los CTA. */
+.eyebrow {
+  display: none;
+}
+.encabezado-seccion .intro {
+  display: none;
+}
+
+/* Helpers de sección compartidos por todas las páginas */
+.encabezado-seccion {
+  max-width: 42rem;
+  margin-bottom: 2.5rem;
+}
+.encabezado-seccion h2 {
+  font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+  margin: 0;
+}
+.intro {
+  color: var(--color-humo);
+  margin: 1rem 0 0;
+  line-height: 1.7;
+}
+.bloque-estrecho { max-width: 46rem; }
+.bloque-lectura { max-width: 44rem; }
+.bloque-lectura h2 {
+  font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+  margin: 0.5rem 0 1.25rem;
+}
+.bloque-lectura p {
+  color: var(--color-humo);
+  line-height: 1.8;
+  margin: 0 0 1rem;
+}
+.bloque-lectura em { color: var(--color-lino); font-style: italic; }
+.bloque-lectura strong { color: var(--color-lino); }
+.tras-tabla,
+.tras-lista { margin-top: 1.5rem; }
+
+.centrado {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+.centrado h2 {
+  font-size: clamp(1.7rem, 5vw, 2.6rem);
+  margin: 0;
+}
+.cierre { text-align: center; }
+
+.hero-nota {
+  align-self: center;
+  color: var(--color-humo);
+  font-size: 0.85rem;
+}
+
+/* Banda de fondo alterna para secciones tipo "proceso" */
+.banda {
+  background: color-mix(in srgb, var(--color-fondo) 45%, var(--color-abismo));
+  border-block: 1px solid var(--color-borde);
+}
+
+/* ============================================================
+   Rejilla de niveles / planes (componente NivelesPrecios).
+   Compartida por domótica y las líneas de empresa (§4).
+   ============================================================ */
+.niveles {
+  display: grid;
+  gap: 1.5rem;
+}
+.nivel {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+}
+.nivel-cabecera h3 {
+  font-family: var(--fuente-display);
+  font-size: 1.5rem;
+  margin: 0 0 0.35rem;
+}
+.nivel-para {
+  color: var(--color-humo);
+  font-size: 0.9rem;
+  margin: 0;
+}
+.nivel .btn-oro {
+  margin-top: auto;
+}
+@media (min-width: 64rem) {
+  .niveles {
+    grid-template-columns: repeat(3, 1fr);
+    align-items: start;
+  }
+}
+
+/* ============================================================
+   FAQ (isla) — estilos build-time, sin inyección en runtime
+   ============================================================ */
+.faq { display: grid; gap: 0.5rem; }
+.faq-item {
+  border: 1px solid var(--color-borde);
+  border-radius: 12px;
+  background: var(--color-fondo);
+  overflow: hidden;
+}
+.faq-item.abierto { border-color: var(--color-teal-luz); }
+.faq-cabecera { margin: 0; font-family: var(--fuente-cuerpo); }
+.faq-boton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 44px;
+  padding: 1rem 1.15rem;
+  background: transparent;
+  border: none;
+  color: var(--color-lino);
+  font-size: 1.02rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.faq-signo {
+  font-family: var(--fuente-mono);
+  color: var(--color-oro);
+  font-size: 1.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.faq-respuesta { padding: 0 1.15rem 1.15rem; }
+.faq-respuesta p {
+  margin: 0;
+  color: var(--color-humo);
+  line-height: 1.7;
+}
+
+/* ============================================================
+   Menú móvil (isla)
+   ============================================================ */
+.menu-movil { display: contents; }
+.menu-boton {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 1px solid var(--color-borde);
+  border-radius: 10px;
+  color: var(--color-lino);
+}
+.hamburguesa { display: grid; gap: 5px; width: 20px; }
+.hamburguesa span {
+  height: 2px;
+  width: 100%;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform var(--dur-rapido) var(--ease-precision),
+    opacity var(--dur-instante) linear;
+}
+.hamburguesa.abierto span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburguesa.abierto span:nth-child(2) { opacity: 0; }
+.hamburguesa.abierto span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.panel {
+  position: fixed;
+  inset: 0;
+  top: 0;
+  z-index: 95;
+  background: color-mix(in srgb, var(--color-abismo) 97%, transparent);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1.25rem;
+  padding: 5.5rem 1.5rem calc(2rem + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.panel-nav { display: flex; flex-direction: column; gap: 0.25rem; }
+
+/* Enlaces sueltos (Precios, Nosotros) */
+.panel-leaf {
+  font-family: var(--fuente-display);
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--color-lino);
+  text-decoration: none;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+/* Grupos desplegables (Servicios, Empresas · IA) */
+.panel-grupo {
+  display: flex;
+  flex-direction: column;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--color-borde);
+}
+.panel-grupo-titulo {
+  font-family: var(--fuente-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-teal-luz);
+  text-decoration: none;
+  padding: 0.2rem 0 0.5rem;
+}
+.panel-sub {
+  font-family: var(--fuente-display);
+  font-size: 1.2rem;
+  color: var(--color-lino);
+  text-decoration: none;
+  padding: 0.4rem 0 0.4rem 0.9rem;
+}
+.panel .btn-oro { align-self: flex-start; margin-top: 1rem; }
+
+/* ============================================================
+   Prosa — contenido largo (páginas legales, artículos)
+   ============================================================ */
+.prosa {
+  max-width: 44rem;
+  color: var(--color-humo);
+  line-height: 1.8;
+}
+.prosa h2 {
+  font-size: 1.4rem;
+  color: var(--color-lino);
+  margin: 2.5rem 0 0.75rem;
+}
+.prosa h3 {
+  font-size: 1.1rem;
+  color: var(--color-lino);
+  margin: 1.75rem 0 0.5rem;
+}
+.prosa p {
+  margin: 0 0 1rem;
+}
+.prosa ul,
+.prosa ol {
+  margin: 0 0 1rem;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.5rem;
+}
+.prosa strong {
+  color: var(--color-lino);
+}
+.prosa a {
+  color: var(--color-oro);
+  text-underline-offset: 3px;
+}
+.prosa .marcador {
+  color: var(--color-oro);
+  font-family: var(--fuente-mono);
+  font-size: 0.9em;
+}
+
+/* ============================================================
+   Botones
+   ============================================================ */
+.btn-oro,
+.btn-linea,
+.btn-texto {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.75rem 1.4rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition:
+    background-color var(--dur-rapido) var(--ease-precision),
+    border-color var(--dur-rapido) var(--ease-precision),
+    transform var(--dur-instante) var(--ease-salida);
+}
+
+.btn-oro {
+  background: var(--color-oro);
+  color: var(--color-abismo);
+}
+.btn-oro:hover { background: var(--color-oro-hondo); }
+
+.btn-linea {
+  border-color: var(--color-borde);
+  color: var(--color-lino);
+  background: transparent;
+}
+.btn-linea:hover { border-color: var(--color-teal-luz); }
+
+.btn-texto {
+  color: var(--color-humo);
+  background: transparent;
+  min-height: auto;
+  padding: 0.5rem 0.25rem;
+}
+.btn-texto:hover { color: var(--color-lino); }
+
+.btn-oro:active,
+.btn-linea:active { transform: translateY(1px); }
+
+/* ============================================================
+   Cards + Animación 3 — escaneo (§4.4)
+   ============================================================ */
+.card {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: 16px;
+}
+
+.card::after {
+  content: '';
+  position: absolute; inset: 0;
+  pointer-events: none;
+  background: linear-gradient(105deg,
+    transparent 40%,
+    color-mix(in srgb, var(--color-teal-luz) 22%, transparent) 50%,
+    transparent 60%);
+  transform: translateX(-110%);
+  transition: transform var(--dur-lento) var(--ease-precision);
+}
+.card:hover::after,
+.card:focus-within::after { transform: translateX(110%); }
+
+/* ============================================================
+   Animación 4 — revelado al scroll (§4.4)
+   ============================================================ */
+[data-revelar] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity var(--dur-medio) var(--ease-salida),
+    transform var(--dur-medio) var(--ease-salida);
+  transition-delay: calc(var(--i, 0) * var(--stagger));
+}
+[data-revelar].visible { opacity: 1; transform: none; }
+
+/* ============================================================
+   Tabla de precios responsive (§4.8, problema 1)
+   ============================================================ */
+.tabla-precios {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.98rem;
+}
+.tabla-precios th,
+.tabla-precios td {
+  text-align: left;
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--color-borde);
+}
+.tabla-precios thead th {
+  font-family: var(--fuente-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-humo);
+  font-weight: 600;
+}
+.tabla-precios td:last-child {
+  font-family: var(--fuente-mono);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-oro);
+  white-space: nowrap;
+}
+.tabla-precios tr.destacado td {
+  background: color-mix(in srgb, var(--color-oro) 8%, transparent);
+}
+
+@media (max-width: 40rem) {
+  .tabla-precios thead { display: none; }
+  .tabla-precios tr {
+    display: block;
+    border: 1px solid var(--color-borde);
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.75rem;
+  }
+  .tabla-precios td {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed color-mix(in srgb, var(--color-borde) 60%, transparent);
+    text-align: right;
+  }
+  .tabla-precios tr td:last-child { border-bottom: none; }
+  .tabla-precios td::before {
+    content: attr(data-label);
+    color: var(--color-humo);
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.85rem;
+    text-align: left;
+    flex-shrink: 0;
+  }
+}
+
+/* ============================================================
+   Botón flotante de WhatsApp (§4.8, problema 4)
+   ============================================================ */
+.wa-flotante {
+  position: fixed;
+  right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #25D366;
+  color: #0B141A;
+  z-index: 90;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: translateY(1rem) scale(0.9);
+  pointer-events: none;
+  transition: opacity var(--dur-rapido) var(--ease-salida),
+              transform var(--dur-rapido) var(--ease-nodo);
+}
+.wa-flotante.visible {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* ============================================================
+   Salto al contenido (accesibilidad)
+   ============================================================ */
+.salto {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--color-oro);
+  color: var(--color-abismo);
+  padding: 0.75rem 1.25rem;
+  border-radius: 0 0 8px 0;
+  font-weight: 600;
+  z-index: 10000;
+}
+.salto:focus { left: 0; }
+
+/* ============================================================
+   Foco visible siempre (§11.9)
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid var(--color-oro);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   El puntero: un nodo del telar (§4.5).
+   El JS viaja como isla con client:media; el CSS vive aquí para
+   que `cursor: none` aplique desde el primer pintado.
+   ============================================================ */
+@media (hover: hover) and (pointer: fine) {
+  body, a, button, [role='button'], summary, [data-interactivo] { cursor: none; }
+  input, textarea, select, [contenteditable] { cursor: auto; }
+
+  .cursor-nucleo, .cursor-anillo {
+    position: fixed; top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    will-change: transform;
+  }
+  .cursor-nucleo {
+    width: 6px; height: 6px; margin: -3px 0 0 -3px;
+    background: var(--color-oro);
+    border-radius: 50%;
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-oro) 60%, transparent);
+  }
+  .cursor-anillo {
+    width: 34px; height: 34px; margin: -17px 0 0 -17px;
+    border: 1px solid color-mix(in srgb, var(--color-teal-luz) 65%, transparent);
+    border-radius: 50%;
+    transition:
+      width var(--dur-rapido) var(--ease-nodo),
+      height var(--dur-rapido) var(--ease-nodo),
+      margin var(--dur-rapido) var(--ease-nodo),
+      border-color var(--dur-rapido) var(--ease-precision),
+      background-color var(--dur-rapido) var(--ease-precision);
+  }
+  .cursor-anillo.activo {
+    width: 52px; height: 52px; margin: -26px 0 0 -26px;
+    border-color: var(--color-oro);
+    background: color-mix(in srgb, var(--color-oro) 8%, transparent);
+  }
+  .cursor-anillo.presionado {
+    width: 24px; height: 24px; margin: -12px 0 0 -12px;
+  }
+}
+
+/* ============================================================
+   prefers-reduced-motion (§4.7): devuelve el cursor nativo y
+   apaga todas las secuencias.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-revelar] { opacity: 1; transform: none; }
+  .card::after { display: none; }
+  body, a, button, [role='button'], summary { cursor: auto; }
+  .cursor-nucleo, .cursor-anillo { display: none; }
+}
