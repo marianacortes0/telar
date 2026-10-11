@@ -193,7 +193,8 @@ const esActivo = (href: string, hijos?: { href: string }[]) =>
     display: none;
   }
 
-  @media (min-width: 64rem) {
+  /* 4 capas + 3 enlaces: el menú de escritorio necesita ~72rem para no desbordar */
+  @media (min-width: 72rem) {
     .nav-escritorio {
       display: flex;
     }

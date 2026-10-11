@@ -39,8 +39,8 @@ const og = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" vi
   <rect x="24" y="24" width="1152" height="582" rx="20" fill="none" stroke="#24405E" stroke-width="2"/>
   <g transform="translate(110,185) scale(1.0)">${emblema('#E8EDF3')}</g>
   <text x="440" y="300" font-family="sans-serif" font-size="104" font-weight="700" fill="#E8EDF3">Telar</text>
-  <text x="446" y="366" font-family="sans-serif" font-size="36" fill="#8FA3BC">Cruzamos los hilos de tu negocio</text>
-  <text x="446" y="432" font-family="monospace" font-size="24" letter-spacing="4" fill="#6FB3C0">WEB · NFC · DOMÓTICA · BOGOTÁ</text>
+  <text x="446" y="366" font-family="sans-serif" font-size="36" fill="#8FA3BC">Tejemos la ciudad inteligente</text>
+  <text x="446" y="432" font-family="monospace" font-size="20" letter-spacing="3" fill="#6FB3C0">ACCESO · ATENCIÓN · AUTOMATIZACIÓN · DATOS</text>
 </svg>`;
 
 const icono = `<svg xmlns="http://www.w3.org/2000/svg" width="260" height="260" viewBox="0 0 260 260">

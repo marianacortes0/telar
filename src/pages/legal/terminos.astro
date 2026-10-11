@@ -1,78 +1,88 @@
 ---
 import LegalLayout from '../../layouts/LegalLayout.astro';
 import { NEGOCIO } from '../../lib/constantes';
+import { NAV_RAMAS } from '../../lib/navegacion';
+
+const ramas = NAV_RAMAS.map((r) => r.label).join(', ');
 ---
 
 <LegalLayout
   titulo="Términos y condiciones"
-  descripcion="Términos y condiciones de los servicios de Telar: alcance, pagos, garantía, propiedad del código y limitación de responsabilidad."
+  descripcion="Términos y condiciones de los servicios de Telar: alcance, precios e IVA, pagos, suscripción, garantía, propiedad del código y limitación de responsabilidad."
+  actualizado="Octubre de 2026"
 >
   <h2>1. Identificación y aceptación</h2>
   <p>
-    Estos términos regulan la prestación de servicios por parte de {NEGOCIO.nombre}, con domicilio
-    en {NEGOCIO.ciudad}, {NEGOCIO.pais} (contacto: {NEGOCIO.email}, {NEGOCIO.telefonoVisible}). Al
-    aceptar una cotización, el cliente acepta estos términos.
+    Estos términos regulan la prestación de servicios por parte de {NEGOCIO.nombre}
+    {NEGOCIO.sociedad}, con domicilio en {NEGOCIO.ciudad}, {NEGOCIO.pais}
+    (contacto: {NEGOCIO.email}, {NEGOCIO.telefonoVisible}). Al aceptar una cotización, el cliente
+    acepta estos términos.
   </p>
 
   <h2>2. Servicios</h2>
   <p>
-    {NEGOCIO.nombre} presta servicios de desarrollo web, productos NFC y automatización con Home
-    Assistant. El alcance de cada proyecto se define por escrito en la cotización antes de iniciar.
-    Todo lo que no esté en la cotización constituye alcance nuevo y se cotiza aparte, con aprobación
-    escrita previa.
+    {NEGOCIO.nombre} presta sus servicios a través de sus ramas: {ramas}. El alcance de cada
+    proyecto se define por escrito en la cotización antes de iniciar. Todo lo que no esté en la
+    cotización constituye alcance nuevo y se cotiza aparte, con aprobación escrita previa.
   </p>
 
-  <h2>3. Condiciones de pago</h2>
+  <h2>3. Precios e IVA</h2>
+  <p>
+    Los precios publicados en el sitio están en pesos colombianos e incluyen el IVA donde aplica.
+    Telar Web está excluido de IVA (Art. 476 num. 21 del Estatuto Tributario). El valor final de
+    cada proyecto se define en la cotización.
+  </p>
+
+  <h2>4. Condiciones de pago</h2>
   <ul>
     <li>50% de anticipo para iniciar; 50% restante contra entrega, antes de publicar en producción.</li>
     <li>Proyectos superiores a $5.000.000: 40% / 30% / 30% por hitos.</li>
-    <li>Productos NFC: 100% por anticipado en pedidos menores a $200.000.</li>
-    <li>Telar Casa: el hardware se paga 100% por anticipado; el servicio de configuración se rige por el 50/50. Se facturan en líneas separadas.</li>
-    <li>Mantenimiento: se cobra por anticipado, mensual o anual. La suspensión por mora aplica tras 15 días.</li>
+    <li>Telar Tag: 100% por anticipado en pedidos menores a $200.000.</li>
+    <li>Telar Casa y Telar Office: el hardware incluido en el precio (como la Raspberry Pi) se paga 100% por anticipado; el servicio de configuración se rige por el 50/50. Se facturan en líneas separadas.</li>
+    <li>Suscripción Telar: es opcional y hay una sola por cliente. Se cobra por anticipado, mensual o anual, y la suspensión por mora aplica tras 15 días. Sin suscripción, el soporte y los ajustes se cotizan y se cobran por horas.</li>
     <li>Medios de pago: transferencia bancaria, Nequi o Bancolombia.</li>
   </ul>
 
-  <h2>4. Alcance y revisiones</h2>
+  <h2>5. Alcance y revisiones</h2>
   <ul>
     <li>Se incluyen 2 rondas de revisión por entregable; cada ronda adicional se cotiza aparte.</li>
     <li>Toda función, página o integración no listada en la cotización es alcance nuevo.</li>
-    <li>Ajustes fuera de alcance: $60.000/hora, con mínimo facturable de 1 hora.</li>
+    <li>Los ajustes fuera de alcance se cobran por hora, según la tarifa vigente de cada especialidad, con mínimo facturable de 1 hora.</li>
     <li>Las demoras del cliente en entregar contenido o aprobaciones pausan el cronograma.</li>
   </ul>
 
-  <h2>5. Garantía</h2>
+  <h2>6. Garantía</h2>
   <p>
     Garantía de 30 días desde la entrega para corregir errores atribuibles al desarrollo, sin costo.
     No cubre cambios de contenido, funcionalidad nueva, fallas del hosting o de servicios de
     terceros, ni modificaciones hechas por el cliente o por terceros. Los productos físicos
-    (tarjetas NFC, Raspberry Pi) tienen la garantía legal que la ley colombiana establece para los
-    bienes nuevos: <span class="marcador">[plazo por confirmar con abogado]</span>. En ventas a
-    distancia puede aplicar el derecho de retracto en los términos de ley.
+    (tarjetas y tags NFC, Raspberry Pi) tienen la garantía legal que la ley colombiana establece
+    para los bienes nuevos (Ley 1480 de 2011). En ventas a distancia puede aplicar el derecho de retracto en los términos de ley.
   </p>
 
-  <h2>6. Propiedad y entrega</h2>
+  <h2>7. Propiedad y entrega</h2>
   <p>
     La propiedad del código se transfiere al cliente con el pago final; antes de eso, el trabajo
-    permanece bajo licencia del desarrollador. El dominio y el hosting se registran a nombre del
+    permanece bajo licencia de {NEGOCIO.nombre}. El dominio y el hosting se registran a nombre del
     cliente. La entrega incluye repositorio, credenciales, una sesión de capacitación de 1 hora y
     documentación básica.
   </p>
 
-  <h2>7. Propiedad intelectual</h2>
+  <h2>8. Propiedad intelectual</h2>
   <p>
     El cliente garantiza contar con los derechos sobre los contenidos que entrega (textos, imágenes,
     marcas). {NEGOCIO.nombre} usa fuentes, íconos y librerías con licencia compatible. No se
     publican logotipos, nombres ni capturas de proyectos de clientes sin autorización escrita.
   </p>
 
-  <h2>8. Servicios de terceros</h2>
+  <h2>9. Servicios de terceros</h2>
   <p>
-    Algunos servicios dependen de terceros (hosting, pasarelas de pago, Home Assistant, Nabu Casa,
-    UniFi, Alexa). Sus cambios de precio, API o funciones no son responsabilidad de
-    {NEGOCIO.nombre}; la adaptación del sistema se cotiza como alcance nuevo.
+    Algunos servicios dependen de terceros (hosting, modelos de IA, herramientas de automatización,
+    Home Assistant, Nabu Casa, UniFi, Alexa). Sus cambios de precio, API o funciones no son
+    responsabilidad de {NEGOCIO.nombre}; la adaptación del sistema se cotiza como alcance nuevo.
   </p>
 
-  <h2>9. Limitación de responsabilidad — Telar Casa</h2>
+  <h2>10. Limitación de responsabilidad en Telar Casa y Telar Office</h2>
   <p>
     Los sistemas de automatización que {NEGOCIO.nombre} configura <strong>no sustituyen un sistema de
     alarma monitoreada, un servicio de vigilancia privada ni una póliza de seguros</strong>. Su
@@ -81,14 +91,20 @@ import { NEGOCIO } from '../../lib/constantes';
     cualquiera de estos elementos, ni realiza instalaciones u obra eléctrica de ningún tipo.
   </p>
 
-  <h2>10. Cancelación</h2>
+  <h2>11. Plan Social</h2>
+  <p>
+    El Plan Social (Telar para todos) se rige por sus propios
+    <a href="/legal/plan-social">términos</a> y, en lo no previsto en ellos, por estos.
+  </p>
+
+  <h2>12. Cancelación</h2>
   <p>
     El anticipo no es reembolsable; el trabajo ejecutado se factura proporcionalmente. La mora
     superior a 15 días faculta la suspensión del servicio previo aviso. La reactivación tras una
     suspensión puede tener costo de reconexión.
   </p>
 
-  <h2>11. Ley aplicable</h2>
+  <h2>13. Ley aplicable</h2>
   <p>
     Estos términos se rigen por las leyes de la República de Colombia. Cualquier controversia se
     someterá a la jurisdicción de los jueces de {NEGOCIO.ciudad}.

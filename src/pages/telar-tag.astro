@@ -1,0 +1,131 @@
+---
+import RamaLayout from '../layouts/RamaLayout.astro';
+import NivelesRama from '../components/ui/NivelesRama.astro';
+import { TAG, desdeMinimo, formatoCOP } from '../lib/precios';
+import { MENSAJES } from '../lib/whatsapp';
+import TarjetaNfc from '../components/escenas/TarjetaNfc.astro';
+import imgFeria from '../assets/ramas/tag-feria.jpg';
+import imgRestaurante from '../assets/ramas/tag-restaurante.jpg';
+import imgEmpaque from '../assets/ramas/tag-empaque.jpg';
+
+const desde = desdeMinimo(...Object.values(TAG));
+
+const casos = [
+  {
+    titulo: 'En una reunión o una feria',
+    imagen: { src: imgFeria, alt: 'En una feria, una persona acerca su tarjeta NFC de Telar al celular de un visitante' },
+    texto:
+      'Usted acerca su tarjeta al celular de la otra persona y sus datos, redes y portafolio quedan guardados. Sin papel que se pierda.',
+  },
+  {
+    titulo: 'En la mesa de un restaurante',
+    imagen: { src: imgRestaurante, alt: 'En un restaurante, la placa NFC de la mesa abre la carta en el celular, el WiFi y Google Maps' },
+    texto:
+      'El cliente toca la placa, ve la carta, se conecta al WiFi sin pedir la contraseña y, al salir, deja su reseña en Google Maps.',
+  },
+  {
+    titulo: 'En el empaque de un producto',
+    imagen: { src: imgEmpaque, alt: 'Una persona acerca el celular a la etiqueta NFC de una caja y se abre la página del producto' },
+    texto:
+      'Un toque abre la página del producto: cómo se usa, de dónde viene y dónde volver a comprarlo.',
+  },
+];
+
+const faq = [
+  {
+    id: 'celular',
+    pregunta: '¿Mi celular sirve?',
+    respuesta:
+      'Casi todos los celulares desde 2015 tienen NFC. En iPhone, del 7 en adelante; en Android se activa en Ajustes › Conexiones. Si el suyo no lo tiene, cada tag lleva un QR de respaldo.',
+  },
+  {
+    id: 'enlace',
+    pregunta: '¿Puedo cambiar el enlace después?',
+    respuesta:
+      'Sí. El chip guarda una dirección, no el contenido, así que usted cambia a dónde apunta cuando quiera, sin imprimir nada de nuevo.',
+  },
+  {
+    id: 'bateria',
+    pregunta: '¿Se daña o se descarga?',
+    respuesta:
+      'No tiene batería: se alimenta del celular al acercarlo, así que no se descarga. El PVC aguanta agua, sol y bolsillo.',
+  },
+  {
+    id: 'seguro',
+    pregunta: '¿Es seguro acercar el celular a un tag?',
+    respuesta:
+      'Sí. Un tag solo guarda una dirección web y el celular le muestra a dónde va antes de abrirla. No instala nada ni accede a sus datos.',
+  },
+  {
+    id: 'envio',
+    pregunta: '¿Hacen envíos?',
+    respuesta:
+      'Entregamos en Bogotá y coordinamos el envío al resto del país. Todo sale grabado y probado en Android e iOS.',
+  },
+];
+---
+
+<RamaLayout
+  titulo="Telar Tag: productos NFC"
+  descripcion={`Tarjetas de presentación, placas para restaurante, llaveros, stickers de rutinas y etiquetas para productos con NFC. Desde ${formatoCOP(desde)}, IVA incluido.`}
+  rama="Telar Tag"
+  capa="acceso"
+  heroTitulo="Un toque que conecta"
+  heroSub="Un chip NFC sin batería guarda un enlace. Al acercar el celular se abre su perfil, su carta, sus reseñas o la página de su producto. Sin aplicaciones y con QR de respaldo."
+  desde={desde}
+  waMensaje={MENSAJES.tag}
+  problema={{
+    titulo: 'El papel se bota; el enlace se queda',
+    parrafos: [
+      'Las tarjetas de papel terminan en la basura, la carta plastificada se desactualiza y el cliente que quería dejarle una reseña nunca encuentra dónde.',
+      'Un tag NFC lleva a cada persona al lugar exacto con un solo toque: su perfil, su menú, su Google Maps o la página de su producto. <em>Si el enlace cambia, se reprograma y no hay que imprimir de nuevo.</em>',
+    ],
+  }}
+  casos={casos}
+  faq={faq}
+  suscripcion={false}
+  cierreTitulo="¿Qué quiere que pase con un toque?"
+>
+  <TarjetaNfc slot="escena" />
+
+  <NivelesRama
+    id="tarjetas"
+    rama="Telar Tag"
+    titulo="Tarjetas de presentación"
+    linea={TAG.tarjetas}
+  />
+
+  <NivelesRama
+    id="restaurante"
+    rama="Telar Tag"
+    titulo="Restaurante: menú y Google Maps"
+    linea={TAG.restaurante}
+  />
+
+  <NivelesRama
+    id="merchandising"
+    rama="Telar Tag"
+    titulo="Llaveros, pulseras y pines"
+    bajada="Para creadores, marcas y eventos."
+    linea={TAG.merchandising}
+  />
+
+  <NivelesRama
+    id="rutinas"
+    rama="Telar Tag"
+    titulo="Stickers de rutinas del celular"
+    linea={TAG.rutinas}
+  >
+    <p class="nota-rama">
+      <strong>Controlan el celular, no la casa.</strong> Para luces, sensores o cámaras de verdad
+      está <a href="/telar-casa">Telar Casa</a>.
+    </p>
+  </NivelesRama>
+
+  <NivelesRama
+    id="empaques"
+    rama="Telar Tag"
+    titulo="Etiquetas para productos"
+    linea={TAG.empaques}
+  />
+</RamaLayout>

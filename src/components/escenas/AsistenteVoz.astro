@@ -1,0 +1,114 @@
+---
+/**
+ * Telar Office: dispositivos de voz que flotan; el anillo azul del parlante
+ * "escucha" (brilla y se apaga) y del círculo de la pantalla salen ondas de voz.
+ */
+import { Image } from 'astro:assets';
+import Escena from './Escena.astro';
+import foto from '../../assets/ramas/asistente-voz.png';
+---
+
+<Escena>
+  <Image
+    src={foto}
+    alt="Asistentes de voz, pantalla inteligente y enchufe inteligente conectados"
+    widths={[480, 800, 1200]}
+    sizes="(min-width: 64rem) 36rem, 92vw"
+    class="equipos"
+  />
+  <!-- Lienzo de 2000 × 1116, misma proporción que la imagen -->
+  <svg class="voz" viewBox="0 0 2000 1116" aria-hidden="true" focusable="false">
+    <defs>
+      <radialGradient id="brillo-anillo">
+        <stop offset="0%" stop-color="#4fc3f7" stop-opacity="0.9"></stop>
+        <stop offset="100%" stop-color="#4fc3f7" stop-opacity="0"></stop>
+      </radialGradient>
+    </defs>
+    <!-- Anillo de luz del parlante esférico -->
+    <ellipse class="anillo" cx="365" cy="910" rx="190" ry="34" fill="url(#brillo-anillo)"></ellipse>
+    <!-- Luz superior del parlante blanco -->
+    <ellipse class="anillo anillo-2" cx="1480" cy="512" rx="95" ry="22" fill="url(#brillo-anillo)"
+    ></ellipse>
+    <!-- Ondas de voz desde el círculo de la pantalla -->
+    <circle class="onda" cx="945" cy="450" r="70"></circle>
+    <circle class="onda" cx="945" cy="450" r="70"></circle>
+    <circle class="onda" cx="945" cy="450" r="70"></circle>
+  </svg>
+</Escena>
+
+<style>
+  .equipos {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 28px 32px rgba(0, 0, 0, 0.45));
+  }
+  .voz {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  /* El anillo "escucha": brilla y se apaga */
+  .anillo {
+    mix-blend-mode: screen;
+    opacity: 0.25;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: escuchar 3.2s ease-in-out infinite;
+  }
+  .anillo-2 {
+    animation-delay: 1.6s;
+  }
+
+  /* Ondas de voz que se expanden y desvanecen */
+  .onda {
+    fill: none;
+    stroke: #4fc3f7;
+    stroke-width: 6;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: hablar 3s var(--ease-salida) infinite;
+  }
+  .onda:nth-of-type(2) {
+    animation-delay: 1s;
+  }
+  .onda:nth-of-type(3) {
+    animation-delay: 2s;
+  }
+
+  @keyframes escuchar {
+    0%,
+    100% {
+      opacity: 0.2;
+      transform: scaleX(0.92);
+    }
+    50% {
+      opacity: 0.95;
+      transform: scaleX(1.05);
+    }
+  }
+  @keyframes hablar {
+    0% {
+      opacity: 0.85;
+      transform: scale(0.8);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(3.2);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .anillo,
+    .onda {
+      animation: none;
+    }
+    .anillo {
+      opacity: 0.6;
+    }
+  }
+</style>

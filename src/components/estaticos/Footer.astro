@@ -2,7 +2,7 @@
 import LogoTelar from '../marca/LogoTelar.astro';
 import { NEGOCIO } from '../../lib/constantes';
 import { linkWhatsApp, MENSAJES } from '../../lib/whatsapp';
-import { NAV_SERVICIOS, NAV_EMPRESAS, NAV_EMPRESA, NAV_LEGAL } from '../../lib/navegacion';
+import { NAV_RAMAS, NAV_TELAR, NAV_LEGAL } from '../../lib/navegacion';
 
 const anio = new Date().getFullYear();
 const wa = linkWhatsApp(MENSAJES.general);
@@ -19,24 +19,17 @@ const wa = linkWhatsApp(MENSAJES.general);
         </a>
       </div>
 
-      <nav class="columna" aria-label="Servicios">
-        <h2>Servicios</h2>
+      <nav class="columna" aria-label="Ramas">
+        <h2>Ramas</h2>
         <ul>
-          {NAV_SERVICIOS.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
+          {NAV_RAMAS.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
         </ul>
       </nav>
 
-      <nav class="columna" aria-label="Empresas">
-        <h2>Empresas · IA</h2>
+      <nav class="columna" aria-label="Telar">
+        <h2>Telar</h2>
         <ul>
-          {NAV_EMPRESAS.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
-        </ul>
-      </nav>
-
-      <nav class="columna" aria-label="Compañía">
-        <h2>Compañía</h2>
-        <ul>
-          {NAV_EMPRESA.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
+          {NAV_TELAR.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
         </ul>
       </nav>
 
@@ -50,10 +43,9 @@ const wa = linkWhatsApp(MENSAJES.general);
 
     <div class="identificacion">
       <p>
-        <strong>{NEGOCIO.nombre}</strong> — {NEGOCIO.ciudad}, {NEGOCIO.pais}<br />
+        <strong>{NEGOCIO.nombre} {NEGOCIO.sociedad}</strong> · {NEGOCIO.ciudad}, {NEGOCIO.pais}<br />
         WhatsApp: {NEGOCIO.telefonoVisible} · {NEGOCIO.email}
       </p>
-      <p class="iva">Precios en pesos colombianos. No somos responsables de IVA.</p>
       <p class="copy">© {anio} {NEGOCIO.nombre}. Todos los derechos reservados.</p>
     </div>
   </div>
@@ -119,14 +111,11 @@ const wa = linkWhatsApp(MENSAJES.general);
     color: var(--color-humo);
     line-height: 1.8;
   }
-  .identificacion .iva {
-    color: var(--color-lino);
-    font-weight: 600;
-    margin: 0.75rem 0;
+  .identificacion p {
+    margin: 0 0 0.75rem;
   }
   .copy {
     font-size: 0.85rem;
-    margin: 0;
   }
 
   @media (min-width: 48rem) {
@@ -140,7 +129,7 @@ const wa = linkWhatsApp(MENSAJES.general);
   }
   @media (min-width: 64rem) {
     .rejilla {
-      grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1.6fr 1fr 1fr 1fr;
     }
     .marca {
       grid-column: auto;

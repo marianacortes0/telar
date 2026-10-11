@@ -15,7 +15,7 @@ import { NEGOCIO } from '../../lib/constantes';
 
   <h2>1. Responsable del tratamiento</h2>
   <ul>
-    <li><strong>Responsable:</strong> {NEGOCIO.nombre}</li>
+    <li><strong>Responsable:</strong> {NEGOCIO.nombre} {NEGOCIO.sociedad}</li>
     <li><strong>Domicilio:</strong> {NEGOCIO.ciudad}, {NEGOCIO.pais}</li>
     <li><strong>Correo:</strong> {NEGOCIO.email}</li>
     <li><strong>WhatsApp:</strong> {NEGOCIO.telefonoVisible}</li>
@@ -35,7 +35,8 @@ import { NEGOCIO } from '../../lib/constantes';
     <li>Datos de contacto que nos comparte (nombre, teléfono, correo).</li>
     <li>Información del proyecto necesaria para cotizar y ejecutar el trabajo.</li>
     <li>Datos de facturación cuando corresponde emitir un comprobante.</li>
-    <li>En proyectos de domótica con cámaras o control de acceso: imágenes y registros de eventos, tratados en calidad de encargado (ver punto 11).</li>
+    <li>En proyectos de Telar Casa y Telar Office con cámaras o control de acceso: imágenes y registros de eventos, tratados en calidad de encargado (ver punto 11).</li>
+    <li>En solicitudes al Plan Social: los documentos que acreditan los requisitos (RUT o registro mercantil, recibo de servicio público con estrato, certificados de junta de acción comunal, alcaldía, existencia o personería jurídica).</li>
   </ul>
   <p>
     Este sitio no tiene formularios ni inicio de sesión: el contacto es directo por WhatsApp, así
@@ -48,6 +49,7 @@ import { NEGOCIO } from '../../lib/constantes';
     <li>Ejecutar y hacer seguimiento al servicio contratado.</li>
     <li>Facturar y cumplir obligaciones contables y tributarias.</li>
     <li>Enviar información relacionada con su proyecto y su mantenimiento.</li>
+    <li>Verificar los requisitos de quienes solicitan el Plan Social.</li>
     <li>Cumplir obligaciones legales y responder requerimientos de autoridades.</li>
   </ul>
 
@@ -73,9 +75,8 @@ import { NEGOCIO } from '../../lib/constantes';
   <p>
     Escriba a {NEGOCIO.email} o al WhatsApp {NEGOCIO.telefonoVisible} indicando su solicitud y los
     datos que la sustentan. Atenderemos <strong>consultas</strong> y <strong>reclamos</strong> en
-    los plazos que fija la ley
-    <span class="marcador">[10 días hábiles para consultas y 15 días hábiles para reclamos, con las
-    prórrogas de ley; confirmar con abogado]</span>. Si el reclamo está incompleto, le pediremos
+    los plazos que fija la Ley 1581 de 2012: diez días hábiles para consultas y quince días hábiles
+    para reclamos, prorrogables en los casos que la misma ley prevé. Si el reclamo está incompleto, le pediremos
     completarlo antes de continuar.
   </p>
 
@@ -89,8 +90,7 @@ import { NEGOCIO } from '../../lib/constantes';
   <h2>9. Encargados y terceros</h2>
   <p>
     Para prestar el servicio podemos apoyarnos en proveedores que actúan como encargados, entre
-    ellos el <span class="marcador">[proveedor de hosting]</span> y la herramienta de analítica
-    <span class="marcador">[Umami / Plausible]</span>. Estos terceros solo tratan los datos para las
+    ellos el proveedor de hosting y la herramienta de analítica del sitio. Estos terceros solo tratan los datos para las
     finalidades aquí descritas. No vendemos ni cedemos sus datos con fines comerciales de terceros.
   </p>
 
@@ -101,7 +101,7 @@ import { NEGOCIO } from '../../lib/constantes';
     anonimizan.
   </p>
 
-  <h2>11. Tratamiento de imágenes y video (Telar Casa)</h2>
+  <h2>11. Tratamiento de imágenes y video (Telar Casa y Telar Office)</h2>
   <p>
     En proyectos de domótica que incluyen cámaras o control de acceso, {NEGOCIO.nombre} actúa como
     <strong>encargado del tratamiento</strong> de datos de los que el cliente es responsable. En

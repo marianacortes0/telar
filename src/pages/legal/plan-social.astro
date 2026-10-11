@@ -1,0 +1,108 @@
+---
+import LegalLayout from '../../layouts/LegalLayout.astro';
+import { NEGOCIO } from '../../lib/constantes';
+import { PLAN_SOCIAL, formatoCOP } from '../../lib/precios';
+
+const porcentaje = `${Math.round(PLAN_SOCIAL.porcentajeVentas * 100)} %`;
+---
+
+<LegalLayout
+  titulo="Términos del Plan Social"
+  descripcion="Términos y condiciones del Plan Social de Telar (Telar para todos): beneficiarios, requisitos, beneficio, cupos, vigencia y tratamiento de datos."
+  actualizado="Octubre de 2026"
+>
+  <p>
+    Estos términos regulan el Plan Social de {NEGOCIO.nombre} {NEGOCIO.sociedad} (en adelante,
+    «Telar»), publicado en
+    <a href="/telar-para-todos">Telar para todos</a>. En lo no previsto aquí aplican los
+    <a href="/legal/terminos">Términos y condiciones</a> generales.
+  </p>
+
+  <h2>1. Naturaleza del Plan Social</h2>
+  <p>
+    Telar es una sociedad por acciones simplificada (Ley 1258 de 2008) con la condición de sociedad
+    de beneficio e interés colectivo, BIC (Ley 1901 de 2018). El Plan Social hace parte de sus
+    estatutos y su ejecución se reporta cada año en el informe de gestión BIC.
+  </p>
+
+  <h2>2. Financiación y cupos</h2>
+  <p>
+    El Plan Social se financia con el {porcentaje} de cada venta de Telar. El número de cupos
+    depende de las ventas del año y se publica en <a href="/telar-para-todos">Telar para todos</a>
+    y en el informe de gestión BIC.
+  </p>
+  <p>
+    Cada convocatoria anuncia en esa misma página su número de cupos y su vigencia, con fecha de
+    inicio y de cierre.
+  </p>
+
+  <h2>3. Beneficiarios, beneficio y requisitos</h2>
+  <ul>
+    <li>
+      <strong>Micronegocios de estrato 1</strong> (microempresas según el Decreto 957 de 2019):
+      reciben el nivel Esencial de una rama, con {formatoCOP(PLAN_SOCIAL.implementacion)} de
+      implementación y una suscripción de {formatoCOP(PLAN_SOCIAL.mensualidad)} al mes, IVA
+      incluido. Acreditan con el RUT o el registro mercantil y un recibo de un servicio público con
+      estrato 1 (Ley 142 de 1994).
+    </li>
+    <li>
+      <strong>Negocios campesinos</strong>: el mismo beneficio. Acreditan con un certificado de la
+      junta de acción comunal de la vereda o de la alcaldía.
+    </li>
+    <li>
+      <strong>Organizaciones comunitarias</strong> (incluidas las de acción comunal, Ley 2166 de
+      2021): sin costo, con cupos limitados. Acreditan con su certificado de existencia o
+      personería jurídica vigente.
+    </li>
+    <li>
+      <strong>Alcaldías y empresas de servicios públicos</strong>: proyectos para barrios y
+      veredas mediante convenio o contrato, conforme a la Ley 80 de 1993 y la Ley 1150 de 2007. La
+      comunidad beneficiaria nunca paga.
+    </li>
+  </ul>
+  <p>
+    Cada beneficiario accede al nivel Esencial de <strong>una sola rama</strong>. Lo que supere
+    ese nivel se cotiza a precio publicado.
+  </p>
+
+  <h2>4. Cómo se solicita</h2>
+  <p>
+    La solicitud se hace por WhatsApp ({NEGOCIO.telefonoVisible}) o al correo {NEGOCIO.email},
+    adjuntando los documentos del punto 3. Telar verifica los documentos y le responde por el mismo medio. Si hay cupo, la implementación sigue el
+    proceso normal de cotización, sin anticipo de implementación.
+  </p>
+
+  <h2>5. Obligaciones del beneficiario</h2>
+  <ul>
+    <li>Entregar información y documentos veraces y vigentes.</li>
+    <li>Pagar la suscripción mensual del Plan Social cuando aplique.</li>
+    <li>Avisar si deja de cumplir los requisitos.</li>
+  </ul>
+
+  <h2>6. Pérdida del beneficio</h2>
+  <p>
+    El beneficio se pierde si los documentos no son veraces o si el beneficiario deja de cumplir
+    los requisitos. En ese caso, el servicio puede continuar con la suscripción ordinaria, previo
+    aviso por escrito.
+  </p>
+
+  <h2>7. Datos personales</h2>
+  <p>
+    Los documentos se usan solo para verificar los requisitos del Plan Social, con la autorización
+    del titular (Ley 1581 de 2012 y Decreto 1377 de 2013). El detalle está en la
+    <a href="/legal/datos-personales">Política de tratamiento de datos</a>.
+  </p>
+
+  <h2>8. Publicidad de las condiciones</h2>
+  <p>
+    Las condiciones del Plan Social obligan a Telar en los términos en que se publican (Ley 1480
+    de 2011, arts. 26 y 33). Por eso se publican los requisitos, los cupos y la vigencia, y
+    cualquier cambio se anuncia en esta página con su fecha de actualización.
+  </p>
+
+  <h2>9. Ley aplicable</h2>
+  <p>
+    Estos términos se rigen por las leyes de la República de Colombia. Cualquier controversia se
+    someterá a la jurisdicción de los jueces de {NEGOCIO.ciudad}.
+  </p>
+</LegalLayout>

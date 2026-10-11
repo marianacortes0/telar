@@ -5,8 +5,7 @@ interface Props {
   eyebrow?: string;
   class?: string;
 }
-const { titulo, subtitulo, eyebrow = 'Bogotá · Desarrollo, NFC y domótica', class: clase = '' } =
-  Astro.props;
+const { titulo, subtitulo, eyebrow, class: clase = '' } = Astro.props;
 
 const N = {
   L: { x: 246, y: 148 },

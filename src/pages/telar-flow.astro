@@ -1,0 +1,70 @@
+---
+import RamaLayout from '../layouts/RamaLayout.astro';
+import NivelesRama from '../components/ui/NivelesRama.astro';
+import { FLOW, desdeMinimo, formatoCOP } from '../lib/precios';
+import { MENSAJES } from '../lib/whatsapp';
+
+const desde = desdeMinimo(FLOW);
+
+const casos = [
+  {
+    titulo: 'Del formulario a la hoja',
+    texto:
+      'Cada respuesta llega ordenada a la hoja de cálculo y al equipo le llega el aviso, sin que nadie copie nada.',
+  },
+  {
+    titulo: 'Del chat al CRM',
+    texto:
+      'El cliente que escribe por WhatsApp queda registrado en el CRM con sus datos y su historial.',
+  },
+  {
+    titulo: 'Pedidos con condiciones',
+    texto:
+      'Si el pedido pasa de cierto monto, va a aprobación; si no, sigue solo y el cliente recibe el aviso por WhatsApp.',
+  },
+];
+
+const faq = [
+  {
+    id: 'herramientas',
+    pregunta: '¿Sirve con las herramientas que ya uso?',
+    respuesta:
+      'Sí. Trabajamos con n8n o Make, que se conectan con WhatsApp, Gmail, Google Sheets, formularios, CRM y cientos de aplicaciones más. Si su sistema tiene API, casi siempre se puede integrar.',
+  },
+  {
+    id: 'tecnico',
+    pregunta: '¿Necesito saber de tecnología?',
+    respuesta:
+      'No. Nosotros armamos y probamos los procesos; usted solo los usa. Le explicamos qué hace cada uno y le avisamos si algo falla.',
+  },
+  {
+    id: 'costos',
+    pregunta: '¿Hay costos aparte?',
+    respuesta:
+      'La herramienta de automatización se paga aparte, según el volumen de ejecuciones. En julio de 2026, n8n Cloud Starter costaba entre 20 y 24 euros al mes, y Make Core o Pro, entre 9 y 19 dólares al mes. Le recomendamos la que salga más económica para su caso.',
+  },
+];
+---
+
+<RamaLayout
+  titulo="Telar Flow: automatización de procesos"
+  descripcion={`Automatización de procesos: formularios, WhatsApp, Gmail, Sheets, CRM y ERP conectados para que la información viaje sola. Desde ${formatoCOP(desde)}, IVA incluido.`}
+  rama="Telar Flow"
+  capa="automatizacion"
+  heroTitulo="Que la información viaje sola"
+  heroSub="Conectamos WhatsApp, Sheets, Gmail, formularios y su CRM o ERP para que su negocio deje de copiar y pegar. Los procesos corren solos y usted vuelve a decidir."
+  desde={desde}
+  waMensaje={MENSAJES.flow}
+  problema={{
+    titulo: 'Copiar y pegar entre WhatsApp, Excel y Gmail no escala',
+    parrafos: [
+      'El cliente llega por WhatsApp, alguien lo copia a un Excel, arma la cotización en Gmail y luego la factura a mano. Cada paso es tiempo, y en cada paso algo se pierde.',
+      'Conectamos las herramientas que usted ya usa para que la información viaje sola: del formulario a la hoja, del chat al CRM, del pedido a la factura. <em>Usted deja de operar y vuelve a decidir.</em>',
+    ],
+  }}
+  casos={casos}
+  faq={faq}
+  cierreTitulo="¿Qué proceso quiere dejar de hacer a mano?"
+>
+  <NivelesRama rama="Telar Flow" linea={FLOW} />
+</RamaLayout>

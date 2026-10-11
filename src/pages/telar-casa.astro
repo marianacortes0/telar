@@ -1,0 +1,140 @@
+---
+import RamaLayout from '../layouts/RamaLayout.astro';
+import NivelesRama from '../components/ui/NivelesRama.astro';
+import ListaSiNo from '../components/ui/ListaSiNo.astro';
+import Aviso from '../components/ui/Aviso.astro';
+import CasaConectada from '../components/escenas/CasaConectada.astro';
+import imgSalir from '../assets/ramas/casa-salir.jpg';
+import imgNoche from '../assets/ramas/casa-noche.jpg';
+import imgTrabajo from '../assets/ramas/casa-trabajo.jpg';
+import { CASA, desdeMinimo, formatoCOP } from '../lib/precios';
+import { MENSAJES } from '../lib/whatsapp';
+
+const desde = desdeMinimo(CASA);
+
+// §11.6: Telar Casa automatiza; nunca se promete "seguridad".
+const incluye = [
+  'Raspberry Pi configurada y lista para enchufar',
+  'Instalación y configuración de Home Assistant',
+  'Integración de sus dispositivos y automatizaciones a la medida',
+  'Tablero personalizado',
+  'Lista de compras de dispositivos compatibles',
+];
+const noIncluye = [
+  'Enchufes inteligentes, sensores y bombillas',
+  'Cerraduras inteligentes',
+  'Cámaras',
+  'Equipos UniFi (routers, access points, cámaras Protect)',
+  'Instalación física: cables, atornillar, montar',
+  'Obra eléctrica de cualquier tipo',
+];
+
+const casos = [
+  {
+    titulo: 'Al salir de casa',
+    imagen: { src: imgSalir, alt: 'Una persona sale de su casa y el celular le avisa que quedó una ventana abierta' },
+    texto:
+      'Cuando el último celular sale, las luces se apagan solas y le llega un aviso si quedó una ventana abierta.',
+  },
+  {
+    titulo: 'En la noche',
+    imagen: { src: imgNoche, alt: 'A las 10 p.m. alguien abre la puerta y se enciende sola la luz del pasillo' },
+    texto:
+      'A las 10 p.m. las luces bajan solas y, si alguien abre la puerta, se enciende la luz del pasillo.',
+  },
+  {
+    titulo: 'Desde el trabajo',
+    imagen: { src: imgTrabajo, alt: 'Desde su escritorio, una persona revisa y apaga los dispositivos de su casa con el celular o por voz' },
+    texto:
+      'Usted revisa en el tablero qué quedó encendido y lo apaga desde el celular, o se lo pide a su asistente de voz.',
+  },
+];
+
+const faq = [
+  {
+    id: 'modalidad',
+    pregunta: '¿Lo hacen remoto o presencial?',
+    respuesta:
+      'Como usted prefiera. En remoto le llega la Raspberry Pi ya configurada y lista para enchufar; presencial, vamos y lo dejamos funcionando. El montaje físico de dispositivos y el cableado los hace su electricista.',
+  },
+  {
+    id: 'compra',
+    pregunta: '¿Quién compra los dispositivos?',
+    respuesta:
+      'Usted, con la lista que le damos. Así paga el precio de tienda sin sobrecosto nuestro y las garantías quedan a su nombre.',
+  },
+  {
+    id: 'luz',
+    pregunta: '¿Y si se va la luz o el internet?',
+    respuesta:
+      'Los dispositivos locales siguen respondiendo, pero las automatizaciones que dependen de internet se pausan hasta que vuelva. Recomendamos una UPS pequeña para la Raspberry.',
+  },
+  {
+    id: 'voz',
+    pregunta: '¿Puedo controlar todo por voz y desde fuera de casa?',
+    respuesta:
+      'Sí, desde el nivel Conectado: voz y acceso remoto con Nabu Casa, el acceso remoto oficial de Home Assistant. Nunca abrimos puertos en su router, porque es la práctica que deja los sistemas expuestos.',
+  },
+  {
+    id: 'alarma',
+    pregunta: '¿Esto reemplaza una alarma?',
+    respuesta:
+      'No. Telar Casa automatiza su casa, pero no sustituye una alarma monitoreada, un servicio de vigilancia ni una póliza de seguros.',
+  },
+  {
+    id: 'suscripcion',
+    pregunta: '¿Qué pasa si dejo de pagar la suscripción?',
+    respuesta:
+      'El sistema sigue funcionando. Usted pierde las actualizaciones, los respaldos y el soporte. Le avisamos por escrito y retiramos nuestro acceso.',
+  },
+  {
+    id: 'camaras',
+    pregunta: '¿Ustedes pueden ver mis cámaras?',
+    respuesta:
+      'No entramos a sus grabaciones salvo que usted lo pida o haya una necesidad técnica que le documentamos. Todas las cuentas quedan a su nombre y firmamos un acuerdo de confidencialidad.',
+  },
+];
+---
+
+<RamaLayout
+  titulo="Telar Casa: domótica con Home Assistant"
+  descripcion={`Automatización de casas con Home Assistant: luces, sensores, tablero, voz y acceso remoto. Remoto o presencial. Desde ${formatoCOP(desde)}, IVA incluido.`}
+  rama="Telar Casa"
+  capa="acceso"
+  heroTitulo="Su casa, el primer nodo de la ciudad inteligente"
+  heroSub="Automatización con Home Assistant: luces que se apagan cuando usted sale, rutinas que corren solas y toda su casa en un solo tablero. Lo configuramos remoto o presencial."
+  desde={desde}
+  waMensaje={MENSAJES.casa}
+  problema={{
+    titulo: 'Muchos aparatos inteligentes que no se hablan entre sí',
+    parrafos: [
+      'Compró un bombillo inteligente, un enchufe de otra marca y un sensor de otra. Cada uno con su aplicación, y ninguno se habla con el otro.',
+      'Home Assistant los junta a todos y le permite crear reglas entre ellos: <em>si el sensor de la puerta se abre después de las 10 p.m., se enciende la luz del pasillo.</em>',
+      'Corre en un equipo suyo, en su casa. No depende de que una empresa mantenga su servicio en línea.',
+    ],
+  }}
+  casos={casos}
+  faq={faq}
+  cierreTitulo="¿Qué le gustaría que hiciera su casa?"
+>
+  <CasaConectada slot="escena" />
+
+  <NivelesRama rama="Telar Casa" linea={CASA} />
+
+  <Fragment slot="extra">
+    <div class="tras-lista" data-revelar>
+      <ListaSiNo incluye={incluye} noIncluye={noIncluye} />
+    </div>
+    <div class="tras-lista" data-revelar>
+      <Aviso variante="legal" titulo="Importante">
+        <p>
+          Este sistema de automatización no sustituye un sistema de alarma monitoreada, un servicio
+          de vigilancia privada ni una póliza de seguros. Su funcionamiento depende de energía
+          eléctrica, conexión a internet y de servicios de terceros (Home Assistant, Nabu Casa,
+          UniFi, Alexa). Telar no se hace responsable por pérdidas, daños o incidentes derivados de
+          fallas en cualquiera de estos elementos.
+        </p>
+      </Aviso>
+    </div>
+  </Fragment>
+</RamaLayout>

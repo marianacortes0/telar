@@ -1,0 +1,87 @@
+---
+import RamaLayout from '../layouts/RamaLayout.astro';
+import NivelesRama from '../components/ui/NivelesRama.astro';
+import { WEB, COMBOS, desdeMinimo, formatoCOP } from '../lib/precios';
+import { MENSAJES } from '../lib/whatsapp';
+import WebDispositivos from '../components/escenas/WebDispositivos.astro';
+import imgProfesional from '../assets/ramas/web-profesional.jpg';
+import imgPyme from '../assets/ramas/web-pyme.jpg';
+import imgAutogestion from '../assets/ramas/web-autogestion.jpg';
+
+const desde = desdeMinimo(WEB);
+
+const casos = [
+  {
+    titulo: 'Un profesional independiente',
+    imagen: { src: imgProfesional, alt: 'Estudio de un profesional independiente: su landing con botón a WhatsApp en pantalla y tarjetas NFC sobre el escritorio' },
+    texto:
+      'Una landing con sus servicios y un botón a WhatsApp, y tarjetas NFC que llevan a ella. Es el combo Profesional independiente.',
+  },
+  {
+    titulo: 'Una pyme que quiere aparecer en Google',
+    imagen: { src: imgPyme, alt: 'Oficina de una pyme trabajando su estrategia de SEO, blog y palabras clave' },
+    texto:
+      'Un sitio de varias páginas con blog, escrito con las palabras que sus clientes de verdad buscan.',
+  },
+  {
+    titulo: 'Un negocio que se administra solo',
+    imagen: { src: imgAutogestion, alt: 'Equipo de un negocio administrando productos, usuarios y roles desde su panel' },
+    texto:
+      'Un sitio con panel: el equipo actualiza productos, usuarios y roles sin depender de un programador.',
+  },
+];
+
+const faq = [
+  {
+    id: 'dueno',
+    pregunta: '¿De quién es el sitio?',
+    respuesta:
+      'Suyo. El dominio, las cuentas y el código quedan a su nombre. Si un día prefiere otro proveedor, le entregamos todo sin trabas.',
+  },
+  {
+    id: 'tiempo',
+    pregunta: '¿Cuánto se demoran?',
+    respuesta:
+      'Una landing, alrededor de una semana; un sitio de 4 a 10 páginas, de tres a cuatro semanas. La fecha exacta va por escrito en la cotización.',
+  },
+  {
+    id: 'google',
+    pregunta: '¿Me ponen de primeros en Google?',
+    respuesta:
+      'Nadie puede prometer eso. Lo que sí hacemos es dejar su sitio técnicamente listo para posicionar: rápido, bien estructurado y con SEO desde el inicio.',
+  },
+  {
+    id: 'garantia',
+    pregunta: '¿Tiene garantía?',
+    respuesta:
+      'Sí. Durante 30 días desde la entrega corregimos sin costo cualquier error del desarrollo.',
+  },
+];
+---
+
+<RamaLayout
+  titulo="Telar Web: desarrollo web"
+  descripcion={`Landing, sitio con diseño propio y blog, o sitio con panel de administración. Pensado para el celular y con botón a WhatsApp. Desde ${formatoCOP(desde)}, excluido de IVA.`}
+  rama="Telar Web"
+  capa="atencion"
+  heroTitulo="Su puerta a la ciudad digital"
+  heroSub="Landing, sitio con diseño propio o sitio con panel de administración. Pensado primero para el celular, con botón a WhatsApp y SEO desde el inicio. Todo queda a su nombre."
+  desde={desde}
+  conIva={false}
+  waMensaje={MENSAJES.web}
+  problema={{
+    titulo: 'Si no lo encuentran, lo buscan en otro lado',
+    parrafos: [
+      'Hoy la gente busca en Google antes de escribir. Si su negocio solo vive en redes o en el voz a voz, pierde a quien lo buscó y no lo encontró.',
+      'Telar Web hace sitios rápidos, pensados para el celular y conectados a WhatsApp, para que quien lo encuentre le escriba. <em>El dominio, las cuentas y el código quedan a su nombre.</em>',
+    ],
+  }}
+  combo={COMBOS.profesional}
+  casos={casos}
+  faq={faq}
+  cierreTitulo="¿Tiene un proyecto en mente?"
+>
+  <WebDispositivos slot="escena" />
+
+  <NivelesRama rama="Telar Web" linea={WEB} />
+</RamaLayout>

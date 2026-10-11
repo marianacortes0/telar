@@ -1,0 +1,604 @@
+---
+import Base from '../layouts/Base.astro';
+import TejidoHero from '../components/trama/TejidoHero.astro';
+import Pasos from '../components/estaticos/Pasos.astro';
+import FAQ from '../components/islas/FAQ.tsx';
+import { Icon } from 'astro-icon/components';
+import { SUSCRIPCION, formatoCOP } from '../lib/precios';
+import { linkWhatsApp, MENSAJES } from '../lib/whatsapp';
+
+const pasos = [
+  { n: '01', titulo: 'Usted solicita', texto: 'Nos escribe por WhatsApp y nos cuenta qué necesita. Cotizar no cuesta.' },
+  { n: '02', titulo: 'Cotizamos en 48 horas', texto: 'Le enviamos alcance, precio y fecha de entrega por escrito.' },
+  { n: '03', titulo: 'Usted aprueba', texto: 'Revisa la cotización y nos da el sí. Lo que no está en la cotización no está en el proyecto.' },
+  { n: '04', titulo: 'Anticipo del 50 %', texto: 'El anticipo confirma su cupo en la agenda.' },
+  { n: '05', titulo: 'Implementamos', texto: 'Construimos e instalamos, y usted ve avances reales durante el proceso.' },
+  { n: '06', titulo: 'Activo', texto: 'Le entregamos todo funcionando y a su nombre. Desde ahí, si usted lo desea, lo acompaña su suscripción Telar.' },
+];
+
+const planes = [
+  {
+    para: 'Negocios',
+    icono: 'lucide:store',
+    precio: SUSCRIPCION.negocios,
+    detalle: `Si solo tiene Telar Web: ${formatoCOP(SUSCRIPCION.negociosSoloWeb)} al mes, excluido de IVA.`,
+  },
+  {
+    para: 'Hogares',
+    icono: 'lucide:house',
+    precio: SUSCRIPCION.hogares,
+    detalle: 'Para Telar Casa y lo que tenga en su hogar.',
+  },
+  {
+    para: 'Plan Social',
+    icono: 'lucide:hand-coins',
+    precio: SUSCRIPCION.planSocial,
+    enlace: { href: '/telar-para-todos', texto: 'Quién puede acceder' },
+  },
+];
+
+// La suscripción es opcional: qué cambia, tema por tema, con ella y sin ella.
+const temas = [
+  {
+    tema: 'Actualizaciones',
+    icono: 'lucide:refresh-cw',
+    con: 'Su sistema se mantiene al día.',
+    sin: 'Deja de actualizarse y con el tiempo queda expuesto a fallas y problemas de seguridad.',
+  },
+  {
+    tema: 'Respaldos',
+    icono: 'lucide:database',
+    con: 'Su configuración y sus datos quedan respaldados.',
+    sin: 'Si algo se daña, la configuración se pierde y hay que rehacerla.',
+  },
+  {
+    tema: 'Soporte',
+    icono: 'lucide:life-buoy',
+    con: 'Cuando lo necesite, sin pagar por cada consulta.',
+    sin: 'Cada ajuste o falla se cotiza aparte y se cobra por horas.',
+  },
+  {
+    tema: 'Acceso',
+    icono: 'lucide:key-round',
+    con: 'Mantenemos el acceso para ayudarle de forma remota.',
+    sin: 'Retiramos nuestro acceso; volver a conectarlo puede tener un costo.',
+  },
+];
+
+// Condiciones tomadas de los pasos de esta página y de /legal/terminos.
+const faq = [
+  {
+    id: 'costo',
+    pregunta: '¿Cotizar tiene algún costo?',
+    respuesta:
+      'No. La conversación y la cotización son gratis y no lo comprometen a nada.',
+  },
+  {
+    id: 'tiempo',
+    pregunta: '¿Cuánto tardan en enviarme la cotización?',
+    respuesta:
+      'Le enviamos la cotización por escrito en un máximo de 48 horas después de que nos cuente qué necesita.',
+  },
+  {
+    id: 'contenido',
+    pregunta: '¿Qué incluye la cotización?',
+    respuesta:
+      'El alcance detallado, el precio y la fecha de entrega, todo por escrito. Lo que no está en la cotización no está en el proyecto, así que no hay sorpresas al final.',
+  },
+  {
+    id: 'desde',
+    pregunta: '¿Qué significa «Desde»?',
+    respuesta:
+      'Cada rama publica sus tres niveles (Esencial, Conectado e Integral) con un precio «Desde». Es lo que cuesta el nivel tal como está descrito, con el IVA incluido donde aplica. Si su caso necesita más equipos, más horas o más integraciones, el valor final se define en la cotización, siempre por escrito y antes de empezar.',
+  },
+  {
+    id: 'iva',
+    pregunta: '¿Los precios incluyen IVA?',
+    respuesta:
+      'Sí, todos los precios publicados incluyen el IVA donde aplica. Telar Web está excluido de IVA por ley (Art. 476 num. 21 del Estatuto Tributario), así que su precio es el mismo con o sin él.',
+  },
+  {
+    id: 'varias',
+    pregunta: '¿Puedo cotizar varias ramas a la vez?',
+    respuesta:
+      'Sí. Las cotizamos juntas en un solo documento y, si su caso coincide con uno de nuestros combos, paga un 5 % menos. Además, la suscripción sigue siendo una sola para todo.',
+  },
+  {
+    id: 'pago',
+    pregunta: '¿Cómo se paga?',
+    respuesta:
+      'Con un anticipo del 50 % para empezar y el 50 % restante contra entrega. Los proyectos de más de $5.000.000 se pagan por hitos (40 %, 30 % y 30 %), y los pedidos de Telar Tag por menos de $200.000 se pagan completos por anticipado. Recibimos transferencia bancaria, Nequi o Bancolombia.',
+  },
+  {
+    id: 'equipos',
+    pregunta: '¿Cómo se pagan los equipos en Telar Casa y Telar Office?',
+    respuesta:
+      'Los equipos incluidos en el precio, como la Raspberry Pi, se pagan completos por anticipado; la configuración sigue el esquema de 50 % y 50 %, y ambos van en líneas separadas de la factura. Los dispositivos de la lista de compras los compra usted directamente, a su nombre y con su garantía.',
+  },
+  {
+    id: 'cambios',
+    pregunta: '¿Qué pasa si después quiero agregar algo?',
+    respuesta:
+      'Cada entrega incluye dos rondas de revisión. Lo que no estaba en la cotización se considera alcance nuevo: se lo cotizamos aparte y solo se hace con su aprobación por escrito.',
+  },
+  {
+    id: 'cobertura',
+    pregunta: '¿Trabajan fuera de Bogotá?',
+    respuesta:
+      'Sí. En remoto trabajamos con todo el país y de forma presencial en Bogotá y alrededores. Los productos de Telar Tag se envían a cualquier ciudad.',
+  },
+];
+
+const wa = linkWhatsApp(MENSAJES.cotizar);
+---
+
+<Base
+  titulo="Cotizar"
+  descripcion="Cómo cotiza Telar: qué significa «Desde», los pasos de la cotización a la entrega y la suscripción Telar, opcional y una sola por cliente. Escríbanos por WhatsApp."
+  waMensaje={MENSAJES.cotizar}
+>
+  <TejidoHero
+    titulo="Cómo cotizamos"
+    subtitulo="Precios publicados, pasos claros y una sola suscripción. Escríbanos por WhatsApp y le respondemos con la cotización por escrito."
+  >
+    <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">Cotizar por WhatsApp</a>
+  </TejidoHero>
+
+  <section class="seccion banda">
+    <div class="contenedor">
+      <header class="encabezado-seccion" data-revelar>
+        <h2>De su mensaje a su servicio activo</h2>
+      </header>
+      <Pasos pasos={pasos} />
+    </div>
+  </section>
+
+  <section id="suscripcion" class="seccion">
+    <div class="contenedor">
+      <header class="susc-cabeza" data-revelar>
+        <span class="pildora">Opcional</span>
+        <h2>Una sola suscripción Telar</h2>
+        <p>
+          Una por cliente, no una por rama. Cubre el soporte, las actualizaciones y los respaldos
+          de todo lo que tenga con Telar.
+        </p>
+      </header>
+
+      <div class="planes">
+        {
+          planes.map((p, i) => (
+            <article class="card plan" data-revelar style={`--i:${i}`}>
+              <div class="plan-cabeza">
+                <span class="plan-icono">
+                  <Icon name={p.icono} aria-hidden="true" />
+                </span>
+                <h3>{p.para}</h3>
+              </div>
+              <p class="plan-precio">
+                <span class="desde">Desde</span>
+                <span class="cifra">
+                  <span class="precio">{formatoCOP(p.precio)}</span>
+                  <span class="mes">/mes</span>
+                </span>
+                <span class="iva">IVA incluido</span>
+              </p>
+              {p.detalle && <p class="plan-detalle">{p.detalle}</p>}
+              {p.enlace && (
+                <a href={p.enlace.href} class="plan-enlace">
+                  {p.enlace.texto} <span aria-hidden="true">→</span>
+                </a>
+              )}
+            </article>
+          ))
+        }
+      </div>
+
+      <ul class="notas" data-revelar>
+        <li>
+          <Icon name="lucide:calculator" class="nota-icono" aria-hidden="true" />
+          <span>
+            Es la mensualidad mínima de cada tipo de cliente. Si los servicios que tiene activos
+            suman más, se calcula sobre ellos y se la mostramos en la cotización.
+          </span>
+        </li>
+        <li>
+          <Icon name="lucide:nfc" class="nota-icono" aria-hidden="true" />
+          <span><strong>Telar Tag no necesita suscripción.</strong></span>
+        </li>
+      </ul>
+
+      <div class="comparacion card" data-revelar>
+        <header class="comp-cabeza">
+          <h3>¿Y si no la tomo?</h3>
+          <p>
+            No es obligatoria. Lo que le entregamos es suyo y sigue funcionando sin ella. Esto es
+            lo que cambia:
+          </p>
+        </header>
+
+        <table class="comp-tabla">
+          <thead>
+            <tr>
+              <th scope="col" class="col-tema">Tema</th>
+              <th scope="col" class="col-con">
+                <span class="th-con">
+                  <Icon name="lucide:shield-check" class="th-icono" aria-hidden="true" />
+                  Con suscripción
+                </span>
+              </th>
+              <th scope="col" class="col-sin">Sin suscripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              temas.map((t) => (
+                <tr>
+                  <th scope="row" class="tema">
+                    <span class="tema-in">
+                      <Icon name={t.icono} class="tema-icono" aria-hidden="true" />
+                      {t.tema}
+                    </span>
+                  </th>
+                  <td class="con">
+                    <Icon name="lucide:circle-check" class="celda-icono" aria-hidden="true" />
+                    <span>
+                      <span class="etiqueta-movil">Con suscripción: </span>
+                      {t.con}
+                    </span>
+                  </td>
+                  <td class="sin">
+                    <Icon name="lucide:circle-x" class="celda-icono" aria-hidden="true" />
+                    <span>
+                      <span class="etiqueta-movil">Sin suscripción: </span>
+                      {t.sin}
+                    </span>
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor bloque-estrecho">
+      <header class="encabezado-seccion" data-revelar>
+        <h2>Preguntas frecuentes</h2>
+      </header>
+      <FAQ client:visible items={faq} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ── Cabecera de la suscripción ───────────────────────────── */
+  .susc-cabeza {
+    max-width: 44rem;
+    margin-bottom: 2.5rem;
+  }
+  .pildora {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid color-mix(in srgb, var(--color-teal-luz) 55%, transparent);
+    border-radius: 999px;
+    color: var(--color-teal-luz);
+    font-family: var(--fuente-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .susc-cabeza h2 {
+    font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+    margin: 0.9rem 0 0;
+  }
+  .susc-cabeza p {
+    margin: 0.85rem 0 0;
+    color: var(--color-humo);
+    line-height: 1.7;
+  }
+
+  /* ── Planes ───────────────────────────────────────────────── */
+  .planes {
+    display: grid;
+    gap: 1rem;
+  }
+  .plan {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.6rem;
+    border-top: 3px solid var(--color-teal);
+  }
+  .plan-cabeza {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .plan-icono {
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--color-teal) 18%, transparent);
+    color: var(--color-teal-luz);
+    flex-shrink: 0;
+  }
+  .plan-icono :global(svg) {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+  .plan h3 {
+    font-family: var(--fuente-display);
+    font-size: 1.35rem;
+    margin: 0;
+  }
+  .plan-precio {
+    display: grid;
+    gap: 0.1rem;
+    margin: 0;
+  }
+  .plan-precio .desde {
+    color: var(--color-humo);
+    font-size: 0.82rem;
+  }
+  .cifra {
+    display: flex;
+    align-items: baseline;
+    gap: 0.35rem;
+  }
+  .cifra .precio {
+    color: var(--color-oro);
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    line-height: 1.15;
+  }
+  .cifra .mes {
+    color: var(--color-humo);
+    font-size: 0.95rem;
+  }
+  .iva {
+    justify-self: start;
+    margin-top: 0.35rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--color-fondo) 40%, var(--color-abismo));
+    color: var(--color-humo);
+    font-size: 0.75rem;
+  }
+  .plan-detalle {
+    margin: auto 0 0;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-borde);
+    color: var(--color-humo);
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+  .plan-enlace {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-borde);
+    color: var(--color-oro);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .plan-enlace:hover {
+    color: var(--color-lino);
+  }
+  @media (min-width: 48rem) {
+    .planes {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  /* ── Notas ────────────────────────────────────────────────── */
+  .notas {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .notas li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    color: var(--color-humo);
+    line-height: 1.6;
+  }
+  .notas strong {
+    color: var(--color-lino);
+  }
+  .nota-icono {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0.2rem;
+    color: var(--color-teal-luz);
+    flex-shrink: 0;
+  }
+  @media (min-width: 64rem) {
+    .notas {
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+    }
+  }
+
+  /* ── Comparación con / sin suscripción ────────────────────── */
+  .comparacion {
+    margin-top: clamp(2.5rem, 6vw, 3.5rem);
+    padding: clamp(1.5rem, 4vw, 2.25rem);
+  }
+  .comp-cabeza {
+    max-width: 40rem;
+    margin-bottom: 1.75rem;
+  }
+  .comp-cabeza h3 {
+    font-family: var(--fuente-display);
+    font-size: clamp(1.5rem, 3.5vw, 1.9rem);
+    margin: 0;
+  }
+  .comp-cabeza p {
+    margin: 0.5rem 0 0;
+    color: var(--color-humo);
+    line-height: 1.65;
+  }
+
+  .comp-tabla {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+  .comp-tabla th,
+  .comp-tabla td {
+    text-align: left;
+    vertical-align: top;
+    padding: 1rem 1.1rem;
+    border-bottom: 1px solid var(--color-borde);
+  }
+  .comp-tabla tbody tr:last-child > * {
+    border-bottom: none;
+  }
+  .comp-tabla thead th {
+    font-family: var(--fuente-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--color-humo);
+  }
+  .comp-tabla .col-tema {
+    width: 22%;
+  }
+  .comp-tabla .col-con,
+  .comp-tabla td.con {
+    background: color-mix(in srgb, var(--color-oro) 7%, transparent);
+  }
+  .comp-tabla .col-con {
+    color: var(--color-oro);
+    border-radius: 12px 12px 0 0;
+  }
+  .comp-tabla tbody tr:last-child td.con {
+    border-radius: 0 0 12px 12px;
+  }
+  .th-con {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .th-icono {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .tema {
+    font-family: var(--fuente-display);
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--color-lino);
+    white-space: nowrap;
+  }
+  .tema-in {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .tema-icono {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+    color: var(--color-teal-luz);
+  }
+  .comp-tabla td {
+    line-height: 1.55;
+  }
+  .comp-tabla td > span {
+    display: block;
+    padding-left: 1.7rem;
+  }
+  .comp-tabla td {
+    position: relative;
+  }
+  .celda-icono {
+    position: absolute;
+    left: 1.1rem;
+    top: 1.15rem;
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+  .con {
+    color: var(--color-lino);
+  }
+  .con .celda-icono {
+    color: var(--color-oro);
+  }
+  .sin {
+    color: var(--color-humo);
+  }
+  .sin .celda-icono {
+    color: var(--color-oro-hondo);
+    opacity: 0.8;
+  }
+  .etiqueta-movil {
+    display: none;
+  }
+
+  /* Móvil: cada tema es un bloque con sus dos resultados */
+  @media (max-width: 47.99rem) {
+    .comp-tabla thead {
+      display: none;
+    }
+    .comp-tabla,
+    .comp-tabla tbody,
+    .comp-tabla tr,
+    .comp-tabla th,
+    .comp-tabla td {
+      display: block;
+      width: auto;
+    }
+    .comp-tabla tr {
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--color-borde);
+    }
+    .comp-tabla tbody tr:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+    .comp-tabla th,
+    .comp-tabla td {
+      border: none;
+      padding: 0;
+    }
+    .tema {
+      margin-bottom: 0.75rem;
+    }
+    .comp-tabla td {
+      padding: 0.75rem 0.9rem;
+      border-radius: 10px;
+    }
+    .comp-tabla td + td {
+      margin-top: 0.5rem;
+    }
+    .comp-tabla td.con,
+    .comp-tabla tbody tr:last-child td.con {
+      border-radius: 10px;
+    }
+    .comp-tabla td.sin {
+      background: color-mix(in srgb, var(--color-abismo) 60%, transparent);
+    }
+    .celda-icono {
+      left: 0.9rem;
+      top: 0.9rem;
+    }
+    .etiqueta-movil {
+      display: inline;
+      font-weight: 600;
+    }
+    .con .etiqueta-movil {
+      color: var(--color-oro);
+    }
+    .sin .etiqueta-movil {
+      color: var(--color-lino);
+    }
+  }
+</style>

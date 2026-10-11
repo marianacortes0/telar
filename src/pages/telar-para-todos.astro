@@ -1,0 +1,249 @@
+---
+import Base from '../layouts/Base.astro';
+import TejidoHero from '../components/trama/TejidoHero.astro';
+import TablaPrecios from '../components/ui/TablaPrecios.astro';
+import { Icon } from 'astro-icon/components';
+import { PLAN_SOCIAL, formatoCOP } from '../lib/precios';
+import { linkWhatsApp, MENSAJES } from '../lib/whatsapp';
+
+const porcentaje = `${Math.round(PLAN_SOCIAL.porcentajeVentas * 100)} %`;
+
+const quienes = [
+  {
+    quien: 'Micronegocios de estrato 1',
+    icono: 'lucide:store',
+    recibe: `Nivel Esencial de una rama: ${formatoCOP(PLAN_SOCIAL.implementacion)} de implementación y ${formatoCOP(PLAN_SOCIAL.mensualidad)} al mes, IVA incluido.`,
+    demuestra: 'RUT o registro mercantil y recibo de un servicio público con estrato 1.',
+  },
+  {
+    quien: 'Negocios campesinos',
+    icono: 'lucide:sprout',
+    recibe: 'Lo mismo que un micronegocio de estrato 1.',
+    demuestra: 'Certificado de la junta de acción comunal de la vereda o de la alcaldía.',
+  },
+  {
+    quien: 'Organizaciones comunitarias',
+    icono: 'lucide:users',
+    recibe: 'Sin costo, con cupos limitados.',
+    demuestra: 'Certificado de existencia o personería jurídica vigente.',
+  },
+  {
+    quien: 'Alcaldías y empresas de servicios públicos',
+    icono: 'lucide:landmark',
+    recibe: 'Proyectos para barrios y veredas. La comunidad nunca paga.',
+    demuestra: 'Convenio o contrato.',
+  },
+];
+
+const marco = [
+  { celdas: ['<strong>Ley 1258 de 2008</strong>', 'Telar es una SAS.'] },
+  {
+    celdas: [
+      '<strong>Ley 1901 de 2018</strong>',
+      'Telar es sociedad BIC: el Plan Social está en sus estatutos y se reporta cada año.',
+    ],
+  },
+  {
+    celdas: [
+      '<strong>Ley 1480 de 2011</strong>, arts. 26 y 33',
+      'El precio se publica con IVA incluido. Las condiciones del Plan Social obligan a Telar, por eso se publican los requisitos, los cupos y la vigencia.',
+    ],
+  },
+  { celdas: ['<strong>Estatuto Tributario</strong>, art. 476 num. 21', 'Qué paga IVA y qué no.'] },
+  { celdas: ['<strong>Decreto 957 de 2019</strong>', 'Qué es una microempresa.'] },
+  {
+    celdas: [
+      '<strong>Ley 142 de 1994</strong>',
+      'El estrato sale del recibo de servicios públicos. También regula a las empresas de servicios públicos.',
+    ],
+  },
+  {
+    celdas: [
+      '<strong>Acto Legislativo 01 de 2023</strong>',
+      'El campesinado es sujeto de especial protección.',
+    ],
+  },
+  { celdas: ['<strong>Ley 2166 de 2021</strong>', 'Organizaciones de acción comunal.'] },
+  {
+    celdas: [
+      '<strong>Ley 1581 de 2012</strong> y <strong>Decreto 1377 de 2013</strong>',
+      'Autorización para tratar los datos personales.',
+    ],
+  },
+  {
+    celdas: [
+      '<strong>Ley 80 de 1993</strong> y <strong>Ley 1150 de 2007</strong>',
+      'Contratos con entidades públicas.',
+    ],
+  },
+  {
+    celdas: ['<strong>CONPES D.C. 29 de 2023</strong>', 'Política Bogotá Territorio Inteligente.'],
+  },
+];
+
+const wa = linkWhatsApp(MENSAJES.planSocial);
+---
+
+<Base
+  titulo="Telar para todos: Plan Social"
+  descripcion="Cada quien paga según puede: micronegocios de estrato 1, negocios campesinos y organizaciones comunitarias acceden a Telar con el Plan Social. Requisitos y marco legal."
+  waMensaje={MENSAJES.planSocial}
+>
+  <TejidoHero
+    titulo="Telar es para todos"
+    subtitulo="Cada quien paga según puede."
+  >
+    <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">Quiero aplicar</a>
+    <a href="#quien" class="btn-linea">Quién puede acceder</a>
+  </TejidoHero>
+
+  <section class="seccion">
+    <div class="contenedor origen">
+      <p class="cifra mono" data-revelar>{porcentaje}</p>
+      <div class="bloque-lectura">
+        <h2 data-revelar style="--i:1">De dónde sale</h2>
+        <p data-revelar style="--i:2">
+          El <strong>{porcentaje} de cada venta</strong> de Telar financia los cupos del Plan Social.
+          Los cupos dependen de las ventas del año y se publican en esta página y en el informe de
+          gestión BIC.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="quien" class="seccion banda">
+    <div class="contenedor">
+      <header class="encabezado-seccion" data-revelar>
+        <h2>Quién puede acceder</h2>
+      </header>
+      <div class="quienes">
+        {
+          quienes.map((q, i) => (
+            <article class="card quien" data-revelar style={`--i:${i}`}>
+              <Icon name={q.icono} class="quien-icono" aria-hidden="true" />
+              <h3>{q.quien}</h3>
+              <dl>
+                <dt>Qué recibe</dt>
+                <dd class="recibe">{q.recibe}</dd>
+                <dt>Cómo lo demuestra</dt>
+                <dd>{q.demuestra}</dd>
+              </dl>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="contenedor bloque-lectura">
+      <h2 data-revelar>La ciudad inteligente también llega al barrio y a la vereda</h2>
+      <p data-revelar style="--i:1">
+        Una tienda de barrio, un negocio campesino o una junta de acción comunal pueden tener lo
+        mismo que una empresa grande: atender por WhatsApp, medir su consumo o tener su página. Una
+        ciudad inteligente de verdad no deja a nadie por fuera.
+      </p>
+    </div>
+  </section>
+
+  <section class="seccion banda">
+    <div class="contenedor">
+      <header class="encabezado-seccion" data-revelar>
+        <h2>Marco legal</h2>
+      </header>
+      <div data-revelar>
+        <TablaPrecios texto encabezados={['Norma', 'Qué regula aquí']} filas={marco} />
+      </div>
+      <p class="terminos" data-revelar>
+        Las condiciones completas están en los
+        <a href="/legal/plan-social" class="enlace-oro">términos del Plan Social</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="seccion cierre">
+    <div class="contenedor bloque-estrecho centrado" data-revelar>
+      <h2>¿Su negocio o su comunidad puede aplicar?</h2>
+      <p class="intro">Escríbanos y le decimos qué documentos necesita.</p>
+      <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">Quiero aplicar</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .origen {
+    display: grid;
+    gap: 1rem;
+    align-items: center;
+  }
+  .cifra {
+    margin: 0;
+    font-size: clamp(4.5rem, 16vw, 8.5rem);
+    line-height: 1;
+    color: var(--color-oro);
+  }
+  @media (min-width: 48rem) {
+    .origen {
+      grid-template-columns: auto 1fr;
+      gap: 3.5rem;
+    }
+  }
+
+  .quienes {
+    display: grid;
+    gap: 1rem;
+  }
+  .quien {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 1.5rem;
+  }
+  .quien-icono {
+    width: 1.6rem;
+    height: 1.6rem;
+    color: var(--color-teal-luz);
+  }
+  .quien h3 {
+    font-family: var(--fuente-display);
+    font-size: 1.3rem;
+    margin: 0.25rem 0 0.25rem;
+  }
+  .quien dl {
+    margin: 0;
+    display: grid;
+    gap: 0.2rem;
+  }
+  .quien dt {
+    margin-top: 0.75rem;
+    font-family: var(--fuente-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-humo);
+  }
+  .quien dd {
+    margin: 0;
+    color: var(--color-humo);
+    line-height: 1.55;
+  }
+  .quien dd.recibe {
+    color: var(--color-lino);
+    font-weight: 600;
+  }
+  @media (min-width: 48rem) {
+    .quienes {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 72rem) {
+    .quienes {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .terminos {
+    margin: 1.25rem 0 0;
+    color: var(--color-humo);
+  }
+</style>

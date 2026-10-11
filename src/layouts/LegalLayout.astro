@@ -1,31 +1,20 @@
 ---
 import Base from './Base.astro';
-import Aviso from '../components/ui/Aviso.astro';
 
 interface Props {
   titulo: string;
   descripcion: string;
   actualizado?: string;
 }
-const { titulo, descripcion, actualizado = 'Julio de 2026' } = Astro.props;
+const { titulo, descripcion, actualizado = 'Octubre de 2026' } = Astro.props;
 ---
 
+<!-- noindex mientras el abogado no apruebe los textos (TODO en CLAUDE.md) -->
 <Base titulo={titulo} descripcion={descripcion} noindex={true}>
   <section class="seccion">
     <div class="contenedor bloque-lectura">
-      <p class="eyebrow">Legal</p>
       <h1 class="titulo-legal">{titulo}</h1>
       <p class="meta">Última actualización: {actualizado}</p>
-
-      <div class="tras-tabla borrador">
-        <Aviso variante="legal" titulo="Borrador — pendiente de revisión legal">
-          <p>
-            Este documento es un borrador de referencia. Antes de publicarse en producción debe ser
-            revisado y completado por un abogado. Los campos entre corchetes
-            (<span class="marcador">[así]</span>) están por definir.
-          </p>
-        </Aviso>
-      </div>
 
       <div class="prosa">
         <slot />
@@ -37,15 +26,12 @@ const { titulo, descripcion, actualizado = 'Julio de 2026' } = Astro.props;
 <style>
   .titulo-legal {
     font-size: clamp(2rem, 5vw, 2.8rem);
-    margin: 0.5rem 0 0.5rem;
+    margin: 0 0 0.5rem;
   }
   .meta {
     color: var(--color-humo);
     font-family: var(--fuente-mono);
     font-size: 0.85rem;
-    margin: 0 0 1.5rem;
-  }
-  .borrador {
-    margin-bottom: 2.5rem;
+    margin: 0 0 2.5rem;
   }
 </style>

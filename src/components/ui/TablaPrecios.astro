@@ -8,13 +8,15 @@ interface Props {
   encabezados?: string[];
   filas: Fila[];
   caption?: string;
+  /** Tabla de texto (sin columna de precio): la última columna no va en oro/mono. */
+  texto?: boolean;
 }
 
-const { encabezados = ['Concepto', 'Precio'], filas, caption } = Astro.props;
+const { encabezados = ['Concepto', 'Precio'], filas, caption, texto = false } = Astro.props;
 ---
 
 <div class="envoltura">
-  <table class="tabla-precios">
+  <table class:list={['tabla-precios', { 'tabla-texto': texto }]}>
     {caption && <caption>{caption}</caption>}
     <thead>
       <tr>{encabezados.map((h) => <th scope="col">{h}</th>)}</tr>

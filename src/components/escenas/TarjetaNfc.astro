@@ -1,0 +1,75 @@
+---
+/** Telar Tag: la tarjeta NFC flota y emite ondas desde su ícono impreso. */
+import { Image } from 'astro:assets';
+import Escena from './Escena.astro';
+import tarjeta from '../../assets/ramas/tarjeta-nfc.png';
+---
+
+<Escena>
+  <Image
+    src={tarjeta}
+    alt="Tarjeta de presentación NFC de Telar"
+    widths={[480, 800, 1200]}
+    sizes="(min-width: 64rem) 34rem, 92vw"
+    class="tarjeta"
+  />
+  <svg class="ondas" viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+    <path class="onda" d="M43.1 32.4 A36 36 0 0 1 43.1 87.6"></path>
+    <path class="onda" d="M50.9 23.2 A48 48 0 0 1 50.9 96.8"></path>
+    <path class="onda" d="M58.6 14 A60 60 0 0 1 58.6 106"></path>
+  </svg>
+</Escena>
+
+<style>
+  .tarjeta {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 28px 32px rgba(0, 0, 0, 0.45));
+  }
+  /* Centro de las ondas = ícono NFC impreso (≈70 % / 25 % de la imagen) */
+  .ondas {
+    position: absolute;
+    left: 66.3%;
+    top: 5.3%;
+    width: 22%;
+    overflow: visible;
+    fill: none;
+    stroke: var(--color-oro);
+    stroke-width: 3;
+    stroke-linecap: round;
+    transform: rotate(-16deg);
+    transform-origin: 16.7% 50%;
+  }
+  .onda {
+    opacity: 0;
+    transform-box: view-box;
+    transform-origin: 16.7% 50%;
+    animation: emitir 2.4s var(--ease-salida) infinite;
+  }
+  .onda:nth-child(2) {
+    animation-delay: 0.3s;
+  }
+  .onda:nth-child(3) {
+    animation-delay: 0.6s;
+  }
+  @keyframes emitir {
+    0% {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+    30% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.15);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .onda {
+      animation: none;
+      opacity: 0.8;
+    }
+  }
+</style>

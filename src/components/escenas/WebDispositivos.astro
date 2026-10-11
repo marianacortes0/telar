@@ -1,0 +1,118 @@
+---
+/**
+ * Telar Web: el mismo sitio en computador, tablet y celular. Los íconos de
+ * WhatsApp laten y una franja de luz recorre la pantalla del computador.
+ */
+import { Image } from 'astro:assets';
+import Escena from './Escena.astro';
+import foto from '../../assets/ramas/web-dispositivos.jpg';
+---
+
+<Escena ancho="31rem">
+  <div class="lienzo">
+    <Image
+      src={foto}
+      alt="Un sitio de Telar Web en computador, tablet y celular, con botón a WhatsApp, dominio propio y código"
+      widths={[480, 800, 1200]}
+      sizes="(min-width: 64rem) 31rem, 92vw"
+      class="foto"
+    />
+    <!-- Lienzo de 1400 × 1500, misma proporción que la imagen -->
+    <svg class="capa" viewBox="0 0 1400 1500" aria-hidden="true" focusable="false">
+      <defs>
+        <clipPath id="pantalla-web">
+          <rect x="258" y="430" width="886" height="512" rx="6"></rect>
+        </clipPath>
+        <linearGradient id="franja-web" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#ffffff" stop-opacity="0"></stop>
+          <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.22"></stop>
+          <stop offset="1" stop-color="#ffffff" stop-opacity="0"></stop>
+        </linearGradient>
+      </defs>
+
+      <!-- Franja de luz sobre la pantalla del computador -->
+      <g clip-path="url(#pantalla-web)">
+        <rect class="franja" x="0" y="380" width="260" height="620" fill="url(#franja-web)"></rect>
+      </g>
+
+      <!-- Latidos en los íconos de WhatsApp -->
+      <circle class="latido" cx="155" cy="712" r="70"></circle>
+      <circle class="latido segundo" cx="155" cy="712" r="70"></circle>
+      <circle class="latido" cx="918" cy="180" r="52" style="--retraso:1.2s"></circle>
+    </svg>
+  </div>
+</Escena>
+
+<style>
+  .lienzo {
+    position: relative;
+    /* La imagen se funde con el fondo por los cuatro bordes (el recorte no se nota) */
+    -webkit-mask-image:
+      linear-gradient(180deg, transparent 0, #000 6%, #000 86%, transparent 100%),
+      linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(180deg, transparent 0, #000 6%, #000 86%, transparent 100%),
+      linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+    mask-composite: intersect;
+  }
+  .foto {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .capa {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .franja {
+    transform-box: view-box;
+    animation: barrer 4.5s ease-in-out infinite;
+  }
+  @keyframes barrer {
+    0% {
+      transform: translateX(-300px) skewX(-18deg);
+    }
+    55%,
+    100% {
+      transform: translateX(1250px) skewX(-18deg);
+    }
+  }
+
+  .latido {
+    fill: none;
+    stroke: #25d366;
+    stroke-width: 6;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: latir-wa 2.6s var(--ease-salida) infinite;
+    animation-delay: var(--retraso, 0s);
+  }
+  .latido.segundo {
+    animation-delay: 1.3s;
+  }
+  @keyframes latir-wa {
+    0% {
+      opacity: 0.85;
+      transform: scale(0.75);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.7);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .franja,
+    .latido {
+      animation: none;
+    }
+    .franja {
+      opacity: 0;
+    }
+  }
+</style>
