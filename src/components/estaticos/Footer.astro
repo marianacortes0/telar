@@ -1,14 +1,45 @@
 ---
+import { Image } from 'astro:assets';
 import LogoTelar from '../marca/LogoTelar.astro';
+import fondoPie from '../../assets/ramas/footer.jpg';
 import { NEGOCIO } from '../../lib/constantes';
 import { linkWhatsApp, MENSAJES } from '../../lib/whatsapp';
-import { NAV_SERVICIOS, NAV_EMPRESAS, NAV_EMPRESA, NAV_LEGAL } from '../../lib/navegacion';
+import { NAV_RAMAS, NAV_TELAR, NAV_LEGAL } from '../../lib/navegacion';
 
 const anio = new Date().getFullYear();
+
+// Nodos que brillan sobre la ilustración del fondo (lienzo de 2000 × 1116).
+const destellos = [
+  { x: 520, y: 622 },
+  { x: 1203, y: 710 },
+  { x: 648, y: 763 },
+  { x: 385, y: 623 },
+  { x: 1805, y: 783 },
+  { x: 1630, y: 752 },
+  { x: 93, y: 688 },
+];
 const wa = linkWhatsApp(MENSAJES.general);
 ---
 
 <footer class="pie">
+  <!-- Ilustración de fondo: hilos que unen la vereda con la ciudad, atenuada para no competir con el texto -->
+  <div class="pie-fondo" data-fondo aria-hidden="true">
+    <Image src={fondoPie} alt="" widths={[800, 1200, 1600, 2000, 2400]} sizes="100vw" class="pie-img" />
+    <svg viewBox="0 0 2000 1116" preserveAspectRatio="xMidYMax slice" focusable="false">
+      <defs>
+        <radialGradient id="destello-pie">
+          <stop offset="0%" stop-color="#fff3cf" stop-opacity="0.9"></stop>
+          <stop offset="100%" stop-color="#fff3cf" stop-opacity="0"></stop>
+        </radialGradient>
+      </defs>
+      {
+        destellos.map((d, i) => (
+          <circle class="pie-destello" cx={d.x} cy={d.y} r="34" fill="url(#destello-pie)" style={`--i:${i}`} />
+        ))
+      }
+    </svg>
+  </div>
+
   <div class="contenedor">
     <div class="rejilla">
       <div class="marca">
@@ -19,24 +50,17 @@ const wa = linkWhatsApp(MENSAJES.general);
         </a>
       </div>
 
-      <nav class="columna" aria-label="Servicios">
-        <h2>Servicios</h2>
+      <nav class="columna" aria-label="Ramas">
+        <h2>Ramas</h2>
         <ul>
-          {NAV_SERVICIOS.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
+          {NAV_RAMAS.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
         </ul>
       </nav>
 
-      <nav class="columna" aria-label="Empresas">
-        <h2>Empresas · IA</h2>
+      <nav class="columna" aria-label="Telar">
+        <h2>Telar</h2>
         <ul>
-          {NAV_EMPRESAS.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
-        </ul>
-      </nav>
-
-      <nav class="columna" aria-label="Compañía">
-        <h2>Compañía</h2>
-        <ul>
-          {NAV_EMPRESA.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
+          {NAV_TELAR.map((e) => <li><a href={e.href}>{e.label}</a></li>)}
         </ul>
       </nav>
 
@@ -50,10 +74,9 @@ const wa = linkWhatsApp(MENSAJES.general);
 
     <div class="identificacion">
       <p>
-        <strong>{NEGOCIO.nombre}</strong> — {NEGOCIO.ciudad}, {NEGOCIO.pais}<br />
+        <strong>{NEGOCIO.nombre} {NEGOCIO.sociedad}</strong> · {NEGOCIO.ciudad}, {NEGOCIO.pais}<br />
         WhatsApp: {NEGOCIO.telefonoVisible} · {NEGOCIO.email}
       </p>
-      <p class="iva">Precios en pesos colombianos. No somos responsables de IVA.</p>
       <p class="copy">© {anio} {NEGOCIO.nombre}. Todos los derechos reservados.</p>
     </div>
   </div>
@@ -61,11 +84,70 @@ const wa = linkWhatsApp(MENSAJES.general);
 
 <style>
   .pie {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     margin-top: 4rem;
     border-top: 1px solid var(--color-borde);
     background: color-mix(in srgb, var(--color-fondo) 40%, var(--color-abismo));
     padding-block: clamp(2.5rem, 6vw, 4rem);
     font-size: 0.95rem;
+  }
+
+  /* ── Fondo ilustrado ─────────────────────────────────────── */
+  .pie-fondo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .pie-img,
+  .pie-fondo svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .pie-img {
+    object-fit: cover;
+    object-position: 50% 100%;
+    opacity: 0.5;
+  }
+  /* Velo: más oscuro donde están los enlaces, para que el texto mande */
+  .pie-fondo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-abismo) 78%, transparent) 0,
+        color-mix(in srgb, var(--color-abismo) 62%, transparent) 60%,
+        color-mix(in srgb, var(--color-abismo) 50%, transparent) 100%
+      );
+  }
+  .pie-destello {
+    mix-blend-mode: screen;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: destellar-pie 3.6s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.6s);
+  }
+  @keyframes destellar-pie {
+    0%,
+    100% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    50% {
+      opacity: 0.55;
+      transform: scale(1.2);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pie-destello {
+      animation: none;
+    }
   }
 
   .rejilla {
@@ -119,14 +201,11 @@ const wa = linkWhatsApp(MENSAJES.general);
     color: var(--color-humo);
     line-height: 1.8;
   }
-  .identificacion .iva {
-    color: var(--color-lino);
-    font-weight: 600;
-    margin: 0.75rem 0;
+  .identificacion p {
+    margin: 0 0 0.75rem;
   }
   .copy {
     font-size: 0.85rem;
-    margin: 0;
   }
 
   @media (min-width: 48rem) {
@@ -140,7 +219,7 @@ const wa = linkWhatsApp(MENSAJES.general);
   }
   @media (min-width: 64rem) {
     .rejilla {
-      grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+      grid-template-columns: 1.6fr 1fr 1fr 1fr;
     }
     .marca {
       grid-column: auto;

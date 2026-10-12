@@ -1,0 +1,102 @@
+---
+import RamaLayout from '../layouts/RamaLayout.astro';
+import NivelesRama from '../components/ui/NivelesRama.astro';
+import Aviso from '../components/ui/Aviso.astro';
+import AsistenteVoz from '../components/escenas/AsistenteVoz.astro';
+import imgConsultorio from '../assets/ramas/office-consultorio.jpg';
+import imgCoworking from '../assets/ramas/office-coworking.jpg';
+import imgLlegada from '../assets/ramas/office-llegada.jpg';
+import { OFFICE, COMBOS, desdeMinimo, formatoCOP } from '../lib/precios';
+import { MENSAJES } from '../lib/whatsapp';
+
+const desde = desdeMinimo(OFFICE);
+
+const casos = [
+  {
+    titulo: 'En un consultorio',
+    imagen: { src: imgConsultorio, alt: 'Consultorio: una persona abre la puerta acercando su tarjeta al lector y la recepción ve la ocupación en pantalla' },
+    texto:
+      'Cada profesional entra con su tarjeta en su horario y la recepción ve en el tablero quién está y qué consultorio está libre.',
+  },
+  {
+    titulo: 'En un coworking',
+    imagen: { src: imgCoworking, alt: 'Coworking: una persona reserva una sala desde el celular y la puerta de la sala ocupada lo indica' },
+    texto:
+      'Los miembros reservan sala desde el celular y nadie llega a una sala que ya estaba ocupada.',
+  },
+  {
+    titulo: 'Al llegar el primero',
+    imagen: { src: imgLlegada, alt: 'Oficina: al entrar la primera persona se encienden las luces y el aire acondicionado' },
+    texto:
+      'Las luces y el clima se encienden con el primer acceso del día y se apagan cuando sale el último.',
+  },
+];
+
+const faq = [
+  {
+    id: 'seguridad',
+    pregunta: '¿Esto es un sistema de seguridad?',
+    respuesta:
+      'No. Telar Office automatiza accesos y espacios, pero no sustituye una alarma monitoreada, vigilancia privada ni una póliza de seguros.',
+  },
+  {
+    id: 'tarjeta',
+    pregunta: '¿Y si alguien pierde su tarjeta?',
+    respuesta:
+      'Usted la desactiva desde el panel y deja de abrir. La tarjeta nueva se programa en minutos.',
+  },
+  {
+    id: 'hardware',
+    pregunta: '¿Quién compra el hardware?',
+    respuesta:
+      'La Raspberry Pi va incluida y configurada. Los lectores y las cerraduras los compra usted con la lista que le entregamos, así quedan a su nombre y con su garantía.',
+  },
+  {
+    id: 'sedes',
+    pregunta: '¿Sirve para varias puertas o sedes?',
+    respuesta:
+      'Sí. El nivel Integral suma acceso en más puertas o sedes, además de luces y clima automatizados.',
+  },
+];
+---
+
+<RamaLayout
+  titulo="Telar Office: oficinas inteligentes"
+  descripcion={`Control de acceso con tarjeta NFC, reserva de salas y tablero de ocupación sobre Home Assistant. Desde ${formatoCOP(desde)}, IVA incluido.`}
+  rama="Telar Office"
+  capa="acceso"
+  heroTitulo="La oficina que se enciende antes que usted"
+  heroSub="Control de acceso con tarjeta NFC, reserva de salas y un tablero de ocupación y accesos, todo sobre Home Assistant. Para pymes, consultorios y coworkings."
+  desde={desde}
+  waMensaje={MENSAJES.office}
+  problema={{
+    titulo: 'Cada sistema de la oficina va por su lado',
+    parrafos: [
+      'La llave que se presta, las luces encendidas toda la noche y las salas que siempre aparecen ocupadas. Ningún sistema se habla con el otro.',
+      'Telar Office los integra sobre Home Assistant: cada persona entra con su tarjeta NFC, las salas se reservan solas y usted ve la ocupación en un tablero. <em>La oficina se gestiona sola.</em>',
+    ],
+  }}
+  combo={COMBOS.oficina}
+  casos={casos}
+  faq={faq}
+  cierreTitulo="¿Automatizamos su oficina?"
+>
+  <AsistenteVoz slot="escena" />
+
+  <NivelesRama rama="Telar Office" linea={OFFICE} />
+
+  <Fragment slot="extra">
+    <div class="tras-lista" data-revelar>
+      <Aviso variante="legal" titulo="Importante">
+        <p>
+          Telar Office automatiza accesos y espacios, pero no sustituye un sistema de alarma
+          monitoreada, un servicio de vigilancia privada ni una póliza de seguros. Su funcionamiento
+          depende de energía eléctrica, conexión a internet y servicios de terceros como Home
+          Assistant. El montaje físico y el cableado los hace un técnico de su confianza. Telar no
+          se hace responsable por pérdidas, daños o incidentes derivados de fallas en cualquiera de
+          estos elementos.
+        </p>
+      </Aviso>
+    </div>
+  </Fragment>
+</RamaLayout>

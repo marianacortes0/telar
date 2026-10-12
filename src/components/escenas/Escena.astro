@@ -1,0 +1,73 @@
+---
+/**
+ * Marco común de las imágenes animadas de las ramas: halo que respira debajo y
+ * contenido que flota suavemente. Cada escena (TarjetaNfc, CasaConectada…) pone
+ * su imagen y su animación propia en el slot.
+ * Solo transform/opacity; todo se detiene con prefers-reduced-motion.
+ */
+interface Props {
+  /** Ancho máximo (imágenes verticales necesitan menos para no crecer de más). */
+  ancho?: string;
+}
+const { ancho = '36rem' } = Astro.props;
+---
+
+<figure class="escena" data-revelar style={`--i:2; --ancho:${ancho}`}>
+  <span class="resplandor" aria-hidden="true"></span>
+  <div class="flotante" data-fondo>
+    <slot />
+  </div>
+</figure>
+
+<style>
+  .escena {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    max-width: var(--ancho, 36rem);
+  }
+  .resplandor {
+    position: absolute;
+    inset: 15% 10% 5%;
+    border-radius: 50%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--color-teal) 45%, transparent),
+      color-mix(in srgb, var(--color-oro) 12%, transparent) 60%,
+      transparent
+    );
+    filter: blur(28px);
+    opacity: 0.55;
+    animation: respirar 6s var(--ease-precision) infinite;
+  }
+  .flotante {
+    position: relative;
+    animation: flotar 7s ease-in-out infinite;
+  }
+  @keyframes flotar {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-14px) rotate(-1.2deg);
+    }
+  }
+  @keyframes respirar {
+    0%,
+    100% {
+      opacity: 0.4;
+      transform: scale(0.96);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.04);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .resplandor,
+    .flotante {
+      animation: none;
+    }
+  }
+</style>

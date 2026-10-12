@@ -1,14 +1,21 @@
 ---
-// Hilo de progreso: se teje de arriba hacia el footer a medida que bajas,
-// con un nodo guía (la lanzadera del telar) en la punta. Refuerza la marca y
-// da retroalimentación de avance. El <script> lo empaqueta Astro como módulo
-// externo (compatible con la CSP); solo muta un custom property por scroll.
+// Hilo de progreso: se teje de arriba hacia el footer a medida que baja, con el
+// emblema de Telar en la punta, que rueda por el hilo como una lanzadera.
+// Refuerza la marca y da retroalimentación de avance. El <script> lo empaqueta
+// Astro como módulo externo (compatible con la CSP); solo muta un custom
+// property por scroll (posición y giro van por transform).
+import LogoTelar from '../marca/LogoTelar.astro';
 ---
 
 <div class="hilo-scroll" aria-hidden="true">
   <span class="hilo-track"></span>
   <span class="hilo-fill"></span>
   <span class="hilo-nodo"></span>
+  <span class="hilo-logo">
+    <span class="hilo-logo-giro">
+      <LogoTelar tamano={30} wordmark={false} decorativo enlace={false} />
+    </span>
+  </span>
 </div>
 
 <style>
@@ -58,6 +65,103 @@
 
   .hilo-scroll.activo .hilo-nodo {
     opacity: 1;
+  }
+
+  /* ── El emblema que rueda por el hilo (pantallas medianas y grandes) ── */
+  .hilo-logo {
+    display: none;
+  }
+
+  @media (min-width: 48rem) {
+    .hilo-scroll {
+      left: max(1rem, 1.8vw);
+      /* Recorrido: desde debajo de la cabecera hasta casi el borde inferior */
+      --arriba: 6rem;
+      --abajo: 2rem;
+    }
+    .hilo-nodo {
+      display: none;
+    }
+    /* El hilo dorado llega justo hasta el emblema */
+    .hilo-fill {
+      height: calc(var(--arriba) + var(--p) * (100% - var(--arriba) - var(--abajo)));
+    }
+    .hilo-logo {
+      display: grid;
+      place-items: center;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid color-mix(in srgb, var(--color-oro) 45%, var(--color-borde));
+      background: radial-gradient(
+        circle at 35% 30%,
+        color-mix(in srgb, var(--color-navy) 70%, var(--color-abismo)),
+        var(--color-abismo) 75%
+      );
+      box-shadow:
+        0 0 0 4px color-mix(in srgb, var(--color-abismo) 60%, transparent),
+        0 8px 22px rgba(0, 0, 0, 0.45);
+      /* Baja con el avance de la página */
+      transform: translate(
+        -50%,
+        calc(var(--arriba) + var(--p) * (100dvh - var(--arriba) - var(--abajo)) - 50%)
+      );
+    }
+    /* Halo dorado que respira detrás del emblema */
+    .hilo-logo::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      z-index: -1;
+      border-radius: 50%;
+      background: radial-gradient(
+        closest-side,
+        color-mix(in srgb, var(--color-oro) 45%, transparent),
+        transparent
+      );
+      animation: halo-logo 3.2s ease-in-out infinite;
+    }
+    /* Rueda: tres vueltas completas de arriba hacia abajo */
+    .hilo-logo-giro {
+      display: grid;
+      place-items: center;
+      transform: rotate(calc(var(--p) * 1080deg));
+    }
+    .hilo-logo :global(.logo) {
+      gap: 0;
+    }
+  }
+
+  @media (min-width: 80rem) {
+    .hilo-logo {
+      width: 46px;
+      height: 46px;
+    }
+  }
+
+  @keyframes halo-logo {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(0.9);
+    }
+    50% {
+      opacity: 0.9;
+      transform: scale(1.15);
+    }
+  }
+
+  /* Sin movimiento: el emblema acompaña el avance, pero sin girar ni latir */
+  @media (prefers-reduced-motion: reduce) {
+    .hilo-logo-giro {
+      transform: none;
+    }
+    .hilo-logo::before {
+      animation: none;
+    }
   }
 
   /* En pantallas muy angostas se acerca al borde y adelgaza para no estorbar. */

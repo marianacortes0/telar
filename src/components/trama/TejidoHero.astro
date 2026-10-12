@@ -1,12 +1,37 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Props {
   titulo: string;
   subtitulo?: string;
   eyebrow?: string;
   class?: string;
+  /**
+   * Ilustración de fondo (2000 × 1116 o proporción parecida, con la parte de arriba
+   * despejada para el título). Reemplaza la trama: título arriba, botones abajo.
+   */
+  fondo?: { src: ImageMetadata; alt: string };
+  /**
+   * Video de fondo (ruta en public/). Se repite mientras el hero está en pantalla
+   * y se pausa cuando no se ve o la pestaña está oculta. En escritorio ocupa la
+   * derecha y se funde hacia el texto; en celular va debajo del texto.
+   */
+  video?: { src: string; poster: string };
 }
-const { titulo, subtitulo, eyebrow = 'Bogotá · Desarrollo, NFC y domótica', class: clase = '' } =
-  Astro.props;
+const { titulo, subtitulo, eyebrow, class: clase = '', fondo, video } = Astro.props;
+
+// Brillos sobre la ilustración de Telar para todos, en un lienzo de 2000 × 1116.
+const brillos = [
+  { x: 1185, y: 318, r: 14 },
+  { x: 1300, y: 600, r: 16 },
+  { x: 820, y: 640, r: 14 },
+  { x: 1190, y: 850, r: 18 },
+  { x: 1040, y: 760, r: 12 },
+];
+const estrella = ({ x, y, r }: { x: number; y: number; r: number }) => {
+  const c = r * 0.28;
+  return `M${x} ${y - r}L${x + c} ${y - c}L${x + r} ${y}L${x + c} ${y + c}L${x} ${y + r}L${x - c} ${y + c}L${x - r} ${y}L${x - c} ${y - c}Z`;
+};
 
 const N = {
   L: { x: 246, y: 148 },
@@ -48,7 +73,33 @@ const nodos = [
 const barras = [430, 600, 770];
 ---
 
-<section class={`hero ${clase}`}>
+<section class:list={['hero', clase, { 'con-fondo': fondo, 'con-video': video }]}>
+  {
+    fondo && (
+      <div class="fondo" data-fondo>
+        <Image
+          src={fondo.src}
+          alt={fondo.alt}
+          widths={[800, 1200, 1600, 2000, 2400]}
+          sizes="100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="fondo-img"
+        />
+        <svg class="fondo-luz" viewBox="0 0 2000 1116" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+          <defs>
+            <radialGradient id="luz-telar">
+              <stop offset="0%" stop-color="#ffe7a8" stop-opacity="0.75" />
+              <stop offset="100%" stop-color="#ffe7a8" stop-opacity="0" />
+            </radialGradient>
+          </defs>
+          <ellipse class="resplandor-telar" cx="1010" cy="470" rx="230" ry="150" fill="url(#luz-telar)" />
+          <ellipse class="resplandor-telar puerta" cx="1730" cy="520" rx="110" ry="190" fill="url(#luz-telar)" />
+          {brillos.map((b, i) => <path class="brillo" d={estrella(b)} style={`--i:${i}`} />)}
+        </svg>
+      </div>
+    )
+  }
   <svg
     class="trama"
     viewBox="0 0 1200 520"
@@ -100,7 +151,54 @@ const barras = [430, 600, 770];
     {subtitulo && <p class="sub">{subtitulo}</p>}
     <div class="acciones"><slot /></div>
   </div>
+
+  {
+    video && (
+      <div class="video-fondo">
+        <video
+          muted
+          loop
+          playsinline
+          preload="auto"
+          poster={video.poster}
+          aria-hidden="true"
+          tabindex="-1"
+          data-video-hero
+        >
+          <source src={video.src} type="video/mp4" />
+        </video>
+      </div>
+    )
+  }
 </section>
+
+<script>
+  // Reproduce el video del hero solo cuando se ve: fuera de pantalla, con la
+  // pestaña oculta, con "reducir movimiento" o con ahorro de datos, se pausa
+  // (se queda el póster). Así no consume CPU ni batería mientras no se mira.
+  const v = document.querySelector<HTMLVideoElement>('[data-video-hero]');
+  if (v) {
+    const quieto = matchMedia('(prefers-reduced-motion: reduce)');
+    const red = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    let enPantalla = false;
+    const decidir = () => {
+      if (enPantalla && !document.hidden && !quieto.matches && !red?.saveData) {
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
+    };
+    new IntersectionObserver(
+      ([e]) => {
+        enPantalla = e.isIntersecting;
+        decidir();
+      },
+      { threshold: 0.2 }
+    ).observe(v);
+    document.addEventListener('visibilitychange', decidir);
+    quieto.addEventListener('change', decidir);
+  }
+</script>
 
 <style>
   .hero {
@@ -192,7 +290,200 @@ const barras = [430, 600, 770];
     }
   }
 
+  /* ── Con video de fondo ──────────────────────────────── */
+  .con-video .trama {
+    display: none;
+  }
+  .con-video .contenido {
+    position: relative;
+    z-index: 1;
+  }
+  .video-fondo {
+    position: relative;
+    margin: 2rem calc(-1 * clamp(1.25rem, 5vw, 4rem)) calc(-1 * clamp(3rem, 8vw, 6rem));
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 16%, #000 84%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0, #000 16%, #000 84%, transparent 100%);
+  }
+  .video-fondo video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* En pantallas anchas el video llena la derecha y el texto queda a la izquierda */
+  @media (min-width: 64rem) {
+    .con-video {
+      min-height: min(88dvh, 52rem);
+    }
+    .con-video .contenido {
+      max-width: none;
+    }
+    .con-video h1 {
+      max-width: 15ch;
+      font-size: clamp(2.4rem, 4.4vw, 3.8rem);
+    }
+    .con-video .sub {
+      max-width: 30rem;
+    }
+    .video-fondo {
+      position: absolute;
+      inset: 0 0 0 38%;
+      z-index: -1;
+      margin: 0;
+      aspect-ratio: auto;
+      -webkit-mask-image:
+        linear-gradient(90deg, transparent 0, #000 32%),
+        linear-gradient(180deg, transparent 0, #000 10%, #000 88%, transparent 100%);
+      -webkit-mask-composite: source-in;
+      mask-image:
+        linear-gradient(90deg, transparent 0, #000 32%),
+        linear-gradient(180deg, transparent 0, #000 10%, #000 88%, transparent 100%);
+      mask-composite: intersect;
+    }
+  }
+  /* Pantallas medianas: el video se corre más a la derecha para no rozar el texto */
+  @media (min-width: 64rem) and (max-width: 79.99rem) {
+    .video-fondo {
+      left: 44%;
+    }
+  }
+
+  /* ── Con ilustración de fondo ─────────────────────────── */
+  .con-fondo {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  .con-fondo .trama {
+    display: none;
+  }
+  .con-fondo .contenido {
+    position: relative;
+    z-index: 1;
+  }
+  .con-fondo .sub {
+    margin-inline: auto;
+  }
+  .con-fondo .acciones {
+    justify-content: center;
+  }
+  .fondo {
+    position: relative;
+    align-self: stretch;
+    margin: 2rem calc(-1 * clamp(1.25rem, 5vw, 4rem)) calc(-1 * clamp(3rem, 8vw, 6rem));
+    aspect-ratio: 2000 / 1116;
+    overflow: hidden;
+    order: 2;
+    /* Se funde con la página por arriba y por abajo */
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 18%, #000 85%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0, #000 18%, #000 85%, transparent 100%);
+  }
+  .fondo-img,
+  .fondo-luz {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .fondo-img {
+    object-fit: cover;
+    object-position: 50% 100%;
+    animation: acercar-fondo 24s ease-in-out infinite alternate;
+  }
+  .resplandor-telar {
+    mix-blend-mode: screen;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: respirar-telar 4.5s ease-in-out infinite;
+  }
+  .resplandor-telar.puerta {
+    animation-delay: 2.2s;
+  }
+  .brillo {
+    fill: #fff3cf;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: centellear-telar 2.6s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.43s);
+  }
+  @keyframes acercar-fondo {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.06);
+    }
+  }
+  @keyframes respirar-telar {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(0.92);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(1.06);
+    }
+  }
+  @keyframes centellear-telar {
+    0%,
+    100% {
+      opacity: 0;
+      transform: scale(0.2) rotate(0deg);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1) rotate(45deg);
+    }
+  }
+
+  /* En pantallas anchas la ilustración llena el hero: título arriba, botones abajo */
+  @media (min-width: 48rem) {
+    /* La ilustración va completa abajo; encima queda espacio para el título */
+    .con-fondo {
+      min-height: calc(100vw * 1116 / 2000 + 5rem);
+      padding-bottom: clamp(2rem, 4vw, 3.5rem);
+    }
+    .fondo {
+      position: absolute;
+      inset: auto 0 0;
+      margin: 0;
+      z-index: -1;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 12%, #000 80%, transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0, #000 12%, #000 80%, transparent 100%);
+    }
+    /* Velo arriba para que el título se lea sobre la ilustración */
+    .fondo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-abismo) 55%, transparent),
+        transparent 35%
+      );
+    }
+    .con-fondo .contenido {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 52rem;
+    }
+    .con-fondo .acciones {
+      margin-top: auto;
+      padding-top: 2rem;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
+    .fondo-img,
+    .resplandor-telar,
+    .brillo {
+      animation: none;
+    }
     .hebra {
       animation: none;
       stroke-dashoffset: 0;

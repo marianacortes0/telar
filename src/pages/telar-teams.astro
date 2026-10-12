@@ -1,0 +1,77 @@
+---
+import RamaLayout from '../layouts/RamaLayout.astro';
+import NivelesRama from '../components/ui/NivelesRama.astro';
+import { TEAMS, desdeMinimo, formatoCOP } from '../lib/precios';
+import { MENSAJES } from '../lib/whatsapp';
+import EquipoCelebra from '../components/escenas/EquipoCelebra.astro';
+import imgVentas from '../assets/ramas/teams-ventas.jpg';
+import imgCallCenter from '../assets/ramas/teams-callcenter.jpg';
+import imgSedes from '../assets/ramas/teams-sedes.jpg';
+
+const desde = desdeMinimo(TEAMS);
+
+const casos = [
+  {
+    titulo: 'En un equipo de ventas',
+    texto:
+      'Cada venta suma puntos y el ranking se mueve en el día. Todos saben cuánto les falta para la meta.',
+    imagen: { src: imgVentas, alt: 'Equipo de ventas que celebra frente al ranking y la meta del día' },
+  },
+  {
+    titulo: 'En un call center',
+    texto:
+      'Los logros reconocen lo que antes nadie veía: llamadas resueltas, clientes satisfechos, metas de la semana.',
+    imagen: { src: imgCallCenter, alt: 'Call center con logros por llamadas resueltas, clientes satisfechos y metas semanales' },
+  },
+  {
+    titulo: 'Con varias sedes',
+    texto: 'Cada sede ve su avance y la gerencia recibe reportes por equipo o por sede.',
+    imagen: { src: imgSedes, alt: 'Tres sedes envían su avance a la gerencia, que recibe los reportes' },
+  },
+];
+
+const faq = [
+  {
+    id: 'datos',
+    pregunta: '¿De dónde salen los datos?',
+    respuesta:
+      'En el nivel Esencial los resultados se cargan desde el panel. Desde el nivel Conectado se miden solos desde su CRM, sin que nadie digite nada.',
+  },
+  {
+    id: 'noventas',
+    pregunta: '¿Funciona para equipos que no son de ventas?',
+    respuesta:
+      'Sí. Sirve para soporte, operaciones o cualquier equipo con metas medibles. Adaptamos los puntos y los logros a lo que usted quiera incentivar.',
+  },
+  {
+    id: 'app',
+    pregunta: '¿Los empleados necesitan instalar algo?',
+    respuesta:
+      'En el nivel Esencial todo se ve desde el navegador. Desde el nivel Conectado hay aplicación móvil para que cada persona siga su progreso.',
+  },
+];
+---
+
+<RamaLayout
+  titulo="Telar Teams: gamificación de equipos"
+  descripcion={`Metas, puntos, rankings y panel de logros para su equipo, con aplicación móvil y medición automática desde el CRM. Desde ${formatoCOP(desde)}, IVA incluido.`}
+  rama="Telar Teams"
+  capa="datos"
+  heroTitulo="Equipos que juegan para ganar"
+  heroSub="Metas, puntos, rankings y un panel de logros para que su equipo vea su avance en tiempo real. Para ventas, call centers y cualquier equipo con metas medibles."
+  desde={desde}
+  waMensaje={MENSAJES.teams}
+  problema={{
+    titulo: 'Las metas se pierden en una hoja que nadie abre',
+    parrafos: [
+      'El equipo tiene metas, pero el avance vive en un Excel que solo revisa el jefe. Sin visibilidad ni reconocimiento en el momento, la motivación se enfría.',
+      'Telar Teams convierte esas metas en puntos, rankings y logros que todos ven. <em>Lo que se ve y se reconoce, se cumple.</em>',
+    ],
+  }}
+  casos={casos}
+  faq={faq}
+  cierreTitulo="¿Ponemos a jugar a su equipo?"
+>
+  <EquipoCelebra slot="escena" />
+  <NivelesRama rama="Telar Teams" linea={TEAMS} />
+</RamaLayout>

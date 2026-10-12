@@ -1,0 +1,122 @@
+---
+/**
+ * Telar Flow: del montón de WhatsApp, Excel y correos a un tablero ordenado.
+ * Pulsos de luz viajan por los hilos de datos hacia el tablero; el chulo final
+ * y el medidor laten.
+ */
+import { Image } from 'astro:assets';
+import Escena from './Escena.astro';
+import foto from '../../assets/ramas/flow-escena.jpg';
+---
+
+<Escena>
+  <div class="marco">
+    <Image
+      src={foto}
+      alt="Un montón de chats de WhatsApp, hojas de Excel y correos se convierte en hilos de datos que llegan ordenados a un tablero con gráficos y procesos automáticos"
+      widths={[480, 800, 1200, 1600]}
+      sizes="(min-width: 64rem) 36rem, 92vw"
+      class="foto"
+    />
+    <!-- Lienzo de 2000 × 1091, misma proporción que la imagen -->
+    <svg class="red" viewBox="0 0 2000 1091" aria-hidden="true" focusable="false">
+      <defs>
+        <!-- Zona de los hilos, del montón al tablero -->
+        <clipPath id="hilos-flow">
+          <path d="M690 430L1185 225L1185 805L690 595Z"></path>
+        </clipPath>
+        <linearGradient id="pulso-flow" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#7fe7ff" stop-opacity="0"></stop>
+          <stop offset="0.6" stop-color="#ffffff" stop-opacity="0.55"></stop>
+          <stop offset="1" stop-color="#7fe7ff" stop-opacity="0"></stop>
+        </linearGradient>
+      </defs>
+
+      <g clip-path="url(#hilos-flow)">
+        <rect class="pulso" x="0" y="200" width="150" height="620" fill="url(#pulso-flow)"></rect>
+        <rect class="pulso" x="0" y="200" width="150" height="620" fill="url(#pulso-flow)" style="--retraso:1.4s"></rect>
+      </g>
+
+      <circle class="latido listo" cx="1722" cy="612" r="40"></circle>
+      <circle class="latido medidor" cx="1730" cy="388" r="62" style="--retraso:1.2s"></circle>
+    </svg>
+  </div>
+</Escena>
+
+<style>
+  .marco {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--color-borde);
+    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.45);
+  }
+  .foto {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .red {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .pulso {
+    mix-blend-mode: screen;
+    transform-box: view-box;
+    transform: translateX(560px);
+    animation: viajar 2.8s ease-in infinite;
+    animation-delay: var(--retraso, 0s);
+  }
+  @keyframes viajar {
+    0% {
+      opacity: 0;
+      transform: translateX(560px);
+    }
+    15% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.6;
+      transform: translateX(1200px);
+    }
+  }
+
+  .latido {
+    fill: none;
+    stroke-width: 6;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: latir-flow 2.8s var(--ease-salida) infinite;
+    animation-delay: var(--retraso, 0s);
+  }
+  .listo {
+    stroke: #22c55e;
+  }
+  .medidor {
+    stroke: var(--color-oro);
+  }
+  @keyframes latir-flow {
+    0% {
+      opacity: 0.9;
+      transform: scale(0.7);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.8);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulso,
+    .latido {
+      animation: none;
+    }
+    .pulso {
+      opacity: 0;
+    }
+  }
+</style>

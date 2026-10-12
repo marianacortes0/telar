@@ -4,11 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-`telar` is the commercial marketing site for **Telar** (Bogotá): three business lines — **Telar Tag** (NFC products), **Telar Web** (web development), **Telar Casa** (Home Assistant home automation). It is a static Astro site whose single job is to get a visitor into a **WhatsApp** conversation. There is no backend, database, or form — contact is always a `wa.me` deep link. The full spec lives in `planeacion/telar-proyecto-web.md` (the source of truth for content, prices, and legal copy); build against it.
+Copy conventions (client request): every page addresses the visitor as **usted**, and visible copy never uses dashes (— or –) as punctuation.
+
+`telar` is the commercial marketing site for **Telar** (Bogotá, SAS BIC): eight branches ("ramas") grouped in four layers — **Acceso** (Telar Tag, Casa, Office), **Atención** (Web, AI), **Automatización** (Flow), **Datos** (Monitor, Teams) — plus the Plan Social (`/telar-para-todos`). It is a static Astro site whose single job is to get a visitor into a **WhatsApp** conversation. There is no backend, database, or form — contact is always a `wa.me` deep link. The base spec is `planeacion/telar-proyecto-web.md`; the v8 update `planeacion/modulos/v8.md` overrides it for routes, prices and content. Site rules (v8): everything is organised by branch, each piece of information appears on exactly one page, and every price comes from the Excel (`src/lib/precios.ts`).
 
 Production domain is `https://telar.co`, set in `astro.config.mjs` (`site:`) and `public/robots.txt` — confirm ownership before publishing.
 
-**Known TODOs before launch** (also flagged in-page): fill `[razón social]` / `[NIT]` placeholders in the footer and legal pages; have a lawyer review the four `/legal/*` drafts (they render with a visible "borrador" banner and are `noindex`); verify the Umami/Plausible analytics choice; the domótica page copy must never promise "security" (§11.6 of the spec).
+**Known TODOs before launch** (also flagged in-page): fill `[razón social]` / `[NIT]` placeholders in the footer and legal pages; no draft banners or bracketed placeholders are shown to visitors (client request), so the pending items live only here: add the razón social and NIT to `NEGOCIO`, the footer and the legal pages; have a lawyer review the five `/legal/*` pages (still `noindex` and excluded from the sitemap until approved) and the legal framework on `/telar-para-todos`; publish the Plan Social cupos and vigencia on `/telar-para-todos`; the "Así se usa" cases on each branch page are illustrative until there are real client cases with written authorisation; verify the Umami/Plausible analytics choice; the domótica page copy must never promise "security" (§11.6 of the spec).
 
 ## Commands
 
@@ -41,14 +43,14 @@ Manage it with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 ### Layouts
 
 - `src/layouts/Base.astro` is the single HTML shell: imports the variable fonts + `global.css`, renders SEO/canonical/OG/Twitter + JSON-LD `LocalBusiness` from `titulo`/`descripcion`/`imagen`/`noindex` props, and mounts `Header`, `Footer`, the `Cursor` island, and the floating WhatsApp button. Every page renders inside it. Props are in **Spanish** (the whole codebase is Spanish — identifiers, CSS classes, content).
-- `src/layouts/ServicioSimple.astro` wraps `Base` + `TejidoHero` + a standard closing CTA for the simple Telar Tag service pages (`titulo`, `heroTitulo`, `heroSub`, `waMensaje`, `precioNota`, …). `src/layouts/LegalLayout.astro` wraps `Base` (with `noindex`) + the "borrador" banner + a `.prosa` container for the `/legal/*` pages.
+- `src/layouts/RamaLayout.astro` is the fixed 8-part structure of every branch page (hero → problema → niveles (default slot, `ui/NivelesRama.astro`: one card per level with a per-level WhatsApp link) → combo → casos → FAQ → suscripción link → Cotizar); the `extra` slot holds disclaimers (Casa, Office). `src/layouts/LegalLayout.astro` wraps `Base` (with `noindex`) + the "borrador" banner + a `.prosa` container for the `/legal/*` pages.
 
 ### Directory layout (layered — Pages → Hooks → lib services)
 
-- `src/pages/` — routes only: composition + hydration directives. `para/[segmento].astro` is a dynamic route generating the four audience pages from a data object.
+- `src/pages/` — routes only: composition + hydration directives. One file per branch (`telar-*.astro`); Telar Tag has one section per type (`#tarjetas`, `#restaurante`, `#merchandising`, `#rutinas`, `#empaques`). v7 routes are 301-redirected via `REDIRECCIONES` in `astro.config.mjs` (also written to `dist/_redirects` at build).
 - `src/hooks/` — Preact state/effects (`useMediaQuery`, `usePrefiereMenosMovimiento`, `useCursorTelar`, `useRevelar`, `useAcordeon`, `useMenuMovil`). Animation hooks must consult `usePrefiereMenosMovimiento` before moving anything; high-frequency values (cursor position) live in `useRef`, never `useState`.
-- `src/lib/` — pure data/logic, no Preact: `constantes.ts` (`NEGOCIO`, `LINEAS`), `whatsapp.ts` (`linkWhatsApp()` + the `MENSAJES` map of per-context prefilled messages — every CTA uses one), `navegacion.ts` (nav arrays).
-- `src/components/` by role: `estaticos/` (zero-JS `.astro`: Header, Footer, CardSegmento, Pasos, BotonWhatsApp), `islas/` (`.tsx` Preact islands: Cursor, MenuMovil, FAQ), `marca/LogoTelar.astro`, `trama/TejidoHero.astro`, `ui/` (TablaPrecios, ListaSiNo, Aviso).
+- `src/lib/` — pure data/logic, no Preact: `constantes.ts` (`NEGOCIO`), `precios.ts` (the price catalog: Excel value without IVA per level; `precioPublicado()` adds 19 % IVA except Telar Web and rounds up to the thousand; combos, suscripción and Plan Social figures — never hardcode a price in a page), `whatsapp.ts` (`linkWhatsApp()` + the `MENSAJES` map of per-context prefilled messages — every CTA uses one), `navegacion.ts` (`CAPAS` → header, footer and home; nav arrays).
+- `src/components/` by role: `estaticos/` (zero-JS `.astro`: Header, Footer, Pasos, BotonWhatsApp, HiloScroll, PantallaCarga), `islas/` (`.tsx` Preact islands: Cursor, MenuMovil, FAQ), `marca/LogoTelar.astro`, `trama/TejidoHero.astro`, `ui/` (TablaPrecios with a `texto` prop for non-price tables, NivelesRama, ListaSiNo, Aviso).
 - WhatsApp links always carry `target="_blank" rel="noopener noreferrer"` (tabnabbing).
 
 ### Design system (`src/styles/global.css`)

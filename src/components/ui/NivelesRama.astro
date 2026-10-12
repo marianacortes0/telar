@@ -1,0 +1,212 @@
+---
+/**
+ * Niveles de una rama como escalera de tarjetas: Esencial → Conectado → Integral.
+ * Los precios salen de lib/precios (Excel + IVA, redondeado a los mil).
+ */
+import { formatoCOP, precioPublicado, LEYENDA, type LineaCatalogo } from '../../lib/precios';
+import { linkWhatsApp } from '../../lib/whatsapp';
+
+interface Props {
+  linea: LineaCatalogo;
+  /** Rama a la que pertenece (para el mensaje de WhatsApp de cada nivel). */
+  rama: string;
+  /** Ancla de la sección (p. ej. #tarjetas en /telar-tag). */
+  id?: string;
+  /** Subtítulo cuando una rama tiene varios catálogos (Telar Tag). */
+  titulo?: string;
+  bajada?: string;
+}
+
+const { linea, rama, id, titulo, bajada } = Astro.props;
+const total = 3;
+
+const niveles = linea.niveles.map((n, i) => {
+  // "+ cámaras…" significa "todo lo del nivel anterior, más cámaras…"
+  const hereda = n.incluye.startsWith('+ ');
+  const texto = hereda ? n.incluye.slice(2) : n.incluye;
+  const producto = rama === linea.nombre ? rama : `${linea.nombre} (${rama})`;
+  return {
+    ...n,
+    paso: i + 1,
+    anterior: hereda ? linea.niveles[i - 1]?.nivel : undefined,
+    texto: texto.charAt(0).toUpperCase() + texto.slice(1),
+    precio: formatoCOP(precioPublicado(n.excel, linea.conIva)),
+    wa: linkWhatsApp(`Hola Telar, me interesa el nivel ${n.nivel} de ${producto}.`),
+  };
+});
+---
+
+<div class="bloque-niveles" id={id}>
+  {
+    titulo && (
+      <header class="bloque-cabeza" data-revelar>
+        <h3>{titulo}</h3>
+        {bajada && <p class="bajada">{bajada}</p>}
+      </header>
+    )
+  }
+
+  <ol class="escalera" style={`--n:${niveles.length}`}>
+    {
+      niveles.map((n, i) => (
+        <li
+          class:list={['card', 'nivel', { tope: n.paso === niveles.length && n.paso > 1 }]}
+          data-revelar
+          style={`--i:${i}`}
+        >
+          <div class="nivel-cabeza">
+            <h4>{n.nivel}</h4>
+            <span class="puntos" aria-label={`Nivel ${n.paso} de ${total}`}>
+              {Array.from({ length: total }, (_, k) => (
+                <span class:list={['p', { lleno: k < n.paso }]} />
+              ))}
+            </span>
+          </div>
+          {n.anterior && <p class="hereda">Todo lo de {n.anterior}, más:</p>}
+          <p class="incluye">{n.texto}</p>
+          <div class="nivel-pie">
+            <span class="desde">Desde</span>
+            <span class="precio">{n.precio}</span>
+            <a href={n.wa} target="_blank" rel="noopener noreferrer" class="cotizar-nivel">
+              Cotizar este nivel <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+
+  <p class="leyenda">{linea.conIva ? LEYENDA.conIva : LEYENDA.sinIva}</p>
+  <slot />
+</div>
+
+<style>
+  .bloque-niveles + .bloque-niveles {
+    margin-top: clamp(3rem, 7vw, 4.5rem);
+    padding-top: clamp(2.5rem, 6vw, 3.5rem);
+    border-top: 1px solid var(--color-borde);
+  }
+  .bloque-cabeza {
+    margin-bottom: 1.5rem;
+  }
+  .bloque-cabeza h3 {
+    font-family: var(--fuente-display);
+    font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+    margin: 0;
+  }
+  .bajada {
+    color: var(--color-humo);
+    margin: 0.4rem 0 0;
+  }
+
+  .escalera {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  @media (min-width: 48rem) {
+    .escalera {
+      grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+      align-items: stretch;
+    }
+  }
+
+  .nivel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    border-top: 3px solid var(--color-teal);
+  }
+  .nivel.tope {
+    border-top-color: var(--color-oro);
+  }
+
+  .nivel-cabeza {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .nivel-cabeza h4 {
+    font-family: var(--fuente-display);
+    font-size: 1.45rem;
+    margin: 0;
+  }
+  .puntos {
+    display: inline-flex;
+    gap: 0.3rem;
+  }
+  .p {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-teal-luz);
+  }
+  .p.lleno {
+    background: var(--color-teal-luz);
+  }
+  .tope .p {
+    border-color: var(--color-oro);
+  }
+  .tope .p.lleno {
+    background: var(--color-oro);
+  }
+
+  .hereda {
+    margin: 0;
+    font-family: var(--fuente-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    color: var(--color-teal-luz);
+  }
+  .incluye {
+    margin: 0;
+    color: var(--color-lino);
+    line-height: 1.6;
+    flex-grow: 1;
+  }
+
+  .nivel-pie {
+    display: grid;
+    gap: 0.15rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-borde);
+  }
+  .desde {
+    font-size: 0.8rem;
+    color: var(--color-humo);
+  }
+  .precio {
+    font-size: clamp(1.45rem, 3vw, 1.75rem);
+    color: var(--color-oro);
+    line-height: 1.2;
+  }
+  .cotizar-nivel {
+    margin-top: 0.6rem;
+    justify-self: start;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-lino);
+    text-decoration: none;
+  }
+  .cotizar-nivel:hover {
+    color: var(--color-oro);
+  }
+  .cotizar-nivel span {
+    display: inline-block;
+    color: var(--color-oro);
+    transition: transform var(--dur-rapido) var(--ease-nodo);
+  }
+  .cotizar-nivel:hover span {
+    transform: translateX(4px);
+  }
+
+  .leyenda {
+    color: var(--color-humo);
+    font-size: 0.85rem;
+    margin: 1rem 0 0;
+  }
+</style>

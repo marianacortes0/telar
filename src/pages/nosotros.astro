@@ -1,241 +1,707 @@
 ---
 import Base from '../layouts/Base.astro';
 import TejidoHero from '../components/trama/TejidoHero.astro';
-import Pasos from '../components/estaticos/Pasos.astro';
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
 import fotoMariana from '../assets/equipo/mariana.png';
 import fotoAndres from '../assets/equipo/andres.png';
+import fondoHilos from '../assets/ramas/nosotros-hilos.jpg';
+import { NEGOCIO } from '../lib/constantes';
+import { CAPAS, NAV_RAMAS } from '../lib/navegacion';
 import { linkWhatsApp, MENSAJES } from '../lib/whatsapp';
 
-const equipo = [
-  {
-    nombre: 'Mariana',
-    foto: fotoMariana,
-    rol: 'Desarrollo & Diseño',
-    bio: 'Lleva proyectos completos: diseño, frontend, backend y base de datos. Profundiza en interfaz, accesibilidad y SEO.',
-    stack: 'Astro · React · Node · PostgreSQL · SEO',
-  },
-  {
-    nombre: 'Andrés',
-    foto: fotoAndres,
-    rol: 'Infraestructura & Domótica',
-    bio: 'Lleva proyectos completos: diseño, frontend, backend y base de datos. Profundiza en infraestructura, redes y Home Assistant.',
-    stack: 'Astro · React · Node · PostgreSQL · Home Assistant',
-  },
+const cifras = [
+  { valor: String(CAPAS.length), texto: 'capas de servicio', icono: 'lucide:layers' },
+  { valor: String(NAV_RAMAS.length), texto: 'ramas especializadas', icono: 'lucide:network' },
+  { valor: '1', texto: 'suscripción por cliente', icono: 'lucide:file-lock-2' },
+  { valor: 'BIC', texto: 'sociedad de beneficio e interés colectivo', icono: 'lucide:heart-handshake' },
 ];
 
-const pasos = [
-  { n: '01', titulo: 'Hablamos', texto: 'Una llamada o un chat de WhatsApp. Entendemos qué necesita y le decimos de una si podemos hacerlo. Sin costo.' },
-  { n: '02', titulo: 'Cotizamos por escrito', texto: 'Alcance detallado, precio cerrado y fecha de entrega. Lo que no está en la cotización, no está en el proyecto.' },
-  { n: '03', titulo: 'Arrancamos con el 50%', texto: 'El anticipo confirma el cupo en la agenda.' },
-  { n: '04', titulo: 'Construimos y mostramos', texto: 'Ve avances reales durante el proceso, no un mes de silencio y una sorpresa al final.' },
-  { n: '05', titulo: 'Entregamos y acompañamos', texto: 'Todo queda a su nombre: dominio, cuentas, código. 30 días de garantía y planes de mantenimiento si los quiere.' },
+const fundadores = [
+  { nombre: 'Andrés', foto: fotoAndres, cargo: 'Cofundador' },
+  { nombre: 'Mariana', foto: fotoMariana, cargo: 'Cofundadora' },
 ];
 
-const noHacemos = [
+const limites = [
   ['No hacemos instalaciones eléctricas.', 'La programación y la integración son nuestras; el cableado lo hace un electricista certificado.'],
-  ['No vendemos lo que no necesita.', 'Si le sirve un sitio de una página, le cotizamos un sitio de una página.'],
-  ['No prometemos primer lugar en Google.', 'Nadie puede. Sí dejamos su sitio técnicamente preparado para posicionar.'],
+  ['No vendemos lo que no necesita.', 'Si a usted le sirve el nivel Esencial, le cotizamos el nivel Esencial.'],
+  ['No prometemos el primer lugar en Google.', 'Nadie puede. Lo que sí hacemos es dejar su sitio técnicamente listo para posicionar.'],
   ['No desaparecemos después de entregar.', 'Y si prefiere irse con otro proveedor, le entregamos todo sin trabas: es suyo.'],
-  ['No cobramos por cotizar.', 'La primera conversación siempre es gratis.'],
 ];
 
-const wa = linkWhatsApp(MENSAJES.general);
+const beneficios = [
+  'Pago por proyecto',
+  'Sabe desde el inicio cuánto va a ganar',
+  'Trabaja en Telar Workspace, nuestra plataforma propia',
+];
+
+const waTrabajar = linkWhatsApp(MENSAJES.trabajar);
 ---
 
 <Base
   titulo="Nosotros"
-  descripcion="Estudio de desarrollo full-stack en Bogotá. Trabaja directo con quien construye su proyecto: web, NFC y domótica, de principio a fin."
+  descripcion="Telar es una SAS BIC de Bogotá que diseña, construye y mantiene la tecnología de negocios, hogares y comunidades. Quiénes somos, misión, visión y cómo trabajar con nosotros."
 >
   <TejidoHero
-    eyebrow="Quiénes somos"
-    titulo="El equipo detrás de Telar"
-    subtitulo="Estudio de desarrollo full-stack en Bogotá. Web, NFC y domótica, de principio a fin. Trabaja directo con quien construye su proyecto, no con un intermediario."
+    titulo="Una empresa que teje la ciudad inteligente"
+    subtitulo="Somos una SAS BIC de Bogotá. Diseñamos, construimos y mantenemos la tecnología que hace funcionar mejor a negocios, hogares y comunidades."
   >
-    <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">Hablemos por WhatsApp</a>
+    <a href="#trabaja" class="btn-linea">Trabaje con nosotros</a>
   </TejidoHero>
 
-  <section class="seccion">
+  <!-- Quiénes somos -->
+  <section class="seccion somos-seccion">
     <div class="contenedor">
-      <header class="encabezado-seccion" data-revelar>
-        <p class="eyebrow">El equipo</p>
-        <h2>Las personas detrás de Telar</h2>
-      </header>
-
-      <div class="equipo">
-        {
-          equipo.map((p, i) => (
-            <article class="card persona" data-revelar style={`--i:${i}`}>
-              <div class="foto-marco">
-                <Image
-                  src={p.foto}
-                  alt={`Foto de ${p.nombre}`}
-                  width={220}
-                  height={220}
-                  class="foto"
-                />
-              </div>
-              <h3>{p.nombre}</h3>
-              <p class="rol">{p.rol}</p>
-              <p class="bio">{p.bio}</p>
-              <p class="stack mono">{p.stack}</p>
-            </article>
-          ))
-        }
+      <div class="somos">
+        <div class="somos-titulo" data-revelar>
+          <p class="kicker">Quiénes somos</p>
+          <h2 class="declaracion">
+            La tecnología de una ciudad inteligente no debería ser solo para las grandes empresas.
+          </h2>
+        </div>
+        <div class="somos-texto">
+          <p data-revelar style="--i:1">
+            Telar nació en Bogotá para cambiar eso. Trabajamos en cuatro frentes (acceso, atención,
+            automatización y datos) y los unimos en una sola plataforma, con una sola suscripción.
+          </p>
+          <p data-revelar style="--i:2">
+            Cada proyecto pasa por revisión antes de entregarse y queda a nombre del cliente.
+            Atendemos de forma presencial en Bogotá y alrededores, y en remoto a todo el país.
+          </p>
+        </div>
       </div>
 
-      <p class="remate" data-revelar>
-        Cada proyecto lo lleva una persona de principio a fin, con el respaldo del equipo: sin
-        entregas a medias ni explicar dos veces lo mismo, y siempre con alguien que puede continuar
-        si hace falta.
-      </p>
+      <!-- Los cuatro frentes, de la puerta al tablero, tejidos por los mismos hilos -->
+      <div class="hilos" data-fondo aria-hidden="true">
+        <Image
+          src={fondoHilos}
+          alt=""
+          widths={[800, 1200, 1600, 2000, 2400]}
+          sizes="100vw"
+          class="hilos-img"
+        />
+        <svg viewBox="0 0 2000 820" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <defs>
+            <radialGradient id="luz-hilos">
+              <stop offset="0%" stop-color="#ffe7a8" stop-opacity="0.8"></stop>
+              <stop offset="100%" stop-color="#ffe7a8" stop-opacity="0"></stop>
+            </radialGradient>
+          </defs>
+          <ellipse class="hilos-luz" cx="382" cy="245" rx="110" ry="130" fill="url(#luz-hilos)"></ellipse>
+          <ellipse class="hilos-luz" cx="1358" cy="205" rx="80" ry="80" fill="url(#luz-hilos)" style="--retraso:1.5s"></ellipse>
+          <circle class="hilos-latido" cx="1693" cy="345" r="70"></circle>
+          <circle class="hilos-latido oro" cx="1875" cy="77" r="16" style="--retraso:1s"></circle>
+          <circle class="hilos-latido verde" cx="715" cy="238" r="46" style="--retraso:2s"></circle>
+        </svg>
+      </div>
+
+      <dl class="cifras">
+        {
+          cifras.map((c, i) => (
+            <div class="cifra" data-revelar style={`--i:${i}`}>
+              <dt>
+                <span>{c.valor}</span>
+                <Icon name={c.icono} class="cifra-icono" />
+              </dt>
+              <dd>{c.texto}</dd>
+            </div>
+          ))
+        }
+      </dl>
     </div>
   </section>
 
+  <!-- Misión y visión -->
+  <section class="seccion banda">
+    <div class="contenedor proposito">
+      <article data-revelar>
+        <p class="kicker"><span class="mono">01</span> Misión</p>
+        <p class="proposito-texto">
+          Conectamos la atención, el acceso, los procesos y los datos de su negocio, su casa o su
+          comunidad en una sola plataforma. La hace talento colombiano, se adapta a lo que usted
+          necesita y llega también a quienes casi nunca tienen acceso a la tecnología.
+        </p>
+      </article>
+      <article data-revelar style="--i:1">
+        <p class="kicker"><span class="mono">02</span> Visión</p>
+        <p class="proposito-texto">
+          Queremos llevar la ciudad inteligente a cada barrio y cada vereda de Bogotá, y después de
+          Colombia y Latinoamérica. Que la tecnología llegue también a donde hoy no llega, con una
+          empresa que se sostiene sola y comparte lo que gana.
+        </p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Liderazgo -->
+  <section class="seccion">
+    <div class="contenedor liderazgo">
+      <header data-revelar>
+        <p class="kicker">Liderazgo</p>
+        <h2>Fundadores</h2>
+      </header>
+      <div class="fundadores">
+        {
+          fundadores.map((p, i) => (
+            <figure class="fundador" data-revelar style={`--i:${i}`}>
+              <div class="retrato">
+                <Image src={p.foto} alt={`Foto de ${p.nombre}`} width={448} height={448} />
+              </div>
+              <figcaption>
+                <span class="nombre">{p.nombre}</span>
+                <span class="cargo">{p.cargo}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Límites -->
   <section class="seccion banda">
     <div class="contenedor">
       <header class="encabezado-seccion" data-revelar>
-        <p class="eyebrow">Cómo trabajamos</p>
-        <h2>El proceso, sin misterio</h2>
+        <h2>Límites</h2>
       </header>
-      <Pasos pasos={pasos} />
-    </div>
-  </section>
-
-  <section class="seccion">
-    <div class="contenedor bloque-estrecho">
-      <header class="encabezado-seccion" data-revelar>
-        <p class="eyebrow">Qué no hacemos</p>
-        <h2>Los límites, dichos de frente</h2>
-      </header>
-      <ul class="no-hacemos">
+      <ol class="limites">
         {
-          noHacemos.map(([titulo, texto], i) => (
+          limites.map(([titulo, texto], i) => (
             <li data-revelar style={`--i:${i}`}>
-              <Icon name="lucide:minus" class="icono" aria-hidden="true" />
-              <span><strong>{titulo}</strong> {texto}</span>
+              <span class="limite-n mono">0{i + 1}</span>
+              <h3>{titulo}</h3>
+              <p>{texto}</p>
             </li>
           ))
         }
-      </ul>
+      </ol>
     </div>
   </section>
 
-  <section class="seccion">
-    <div class="contenedor bloque-estrecho">
-      <div class="donde card" data-revelar>
-        <h2>Dónde estamos</h2>
-        <p>
-          Bogotá, Colombia. Configuramos la automatización remoto o presencial: en remoto
-          trabajamos con clientes de todo el país; presencial, en Bogotá y alrededores. Para
-          tarjetas NFC y hardware coordinamos envío.
-        </p>
+  <!-- Sociedad BIC -->
+  <section class="seccion bic-seccion">
+    <div class="contenedor">
+      <div class="bic card" data-revelar>
+        <span class="bic-sello" aria-hidden="true">
+          <Icon name="lucide:badge-check" />
+        </span>
+        <div class="bic-texto">
+          <h2>Telar es {NEGOCIO.sociedad}</h2>
+          <p>
+            Somos una sociedad de beneficio e interés colectivo (Ley 1901 de 2018). El beneficio
+            social está en nuestros estatutos y lo reportamos cada año.
+          </p>
+        </div>
+        <a href="/telar-para-todos" class="bic-enlace">
+          Conozca Telar para todos <span aria-hidden="true">→</span>
+        </a>
       </div>
     </div>
   </section>
 
-  <section class="seccion cierre">
-    <div class="contenedor bloque-estrecho centrado" data-revelar>
-      <h2>¿Trabajamos juntos?</h2>
-      <p class="intro">La primera conversación no cuesta nada y le decimos con franqueza si podemos ayudar.</p>
-      <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">Escribir por WhatsApp</a>
+  <!-- Trabaje con nosotros -->
+  <section id="trabaja" class="seccion">
+    <div class="contenedor">
+      <div class="trabaja card">
+        <div class="trabaja-texto" data-revelar>
+          <p class="kicker">Trabaje con nosotros</p>
+          <h2>¿Quiere tejer con nosotros?</h2>
+          <p>
+            En Telar trabajan desarrolladores, diseñadores y personas de marketing que quieren
+            aprender en proyectos reales.
+          </p>
+          <ul class="beneficios">
+            {
+              beneficios.map((b) => (
+                <li>
+                  <Icon name="lucide:check" class="beneficio-icono" aria-hidden="true" />
+                  {b}
+                </li>
+              ))
+            }
+          </ul>
+          <a href={waTrabajar} target="_blank" rel="noopener noreferrer" class="btn-oro">
+            Trabaje con nosotros
+          </a>
+        </div>
+
+        <ol class="ruta" data-revelar style="--i:1" aria-label="Cómo se crece en Telar">
+          <li class="ruta-paso">
+            <span class="nodo" aria-hidden="true"></span>
+            <span class="ruta-nombre">Hilo</span>
+            <span class="ruta-texto">
+              Usted empieza aquí, siempre con revisión de alguien con más experiencia.
+            </span>
+          </li>
+          <li class="ruta-paso">
+            <span class="nodo" aria-hidden="true"></span>
+            <span class="ruta-nombre">Proyecto a proyecto</span>
+            <span class="ruta-texto">Cada entrega suma experiencia y responsabilidad.</span>
+          </li>
+          <li class="ruta-paso meta">
+            <span class="nodo" aria-hidden="true"></span>
+            <span class="ruta-nombre">Maestro Tejedor</span>
+            <span class="ruta-texto">El nivel más alto del oficio en Telar.</span>
+          </li>
+        </ol>
+      </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .equipo {
+  .kicker {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 0 0 1rem;
+    font-family: var(--fuente-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-teal-luz);
+  }
+  .kicker .mono {
+    color: var(--color-oro);
+  }
+
+  /* ── Quiénes somos ───────────────────────────────────────── */
+  .somos {
     display: grid;
-    gap: 1.25rem;
-    margin-bottom: 2rem;
+    gap: 1.5rem 4rem;
   }
-  .persona {
-    padding: 1.75rem;
+  .declaracion {
+    margin: 0;
+    font-size: clamp(1.8rem, 4.2vw, 2.9rem);
+    line-height: 1.12;
+    max-width: 22ch;
   }
-  .foto-marco {
-    width: 5.5rem;
-    height: 5.5rem;
-    border-radius: 50%;
+  .somos-texto p {
+    margin: 0 0 1rem;
+    color: var(--color-humo);
+    font-size: 1.05rem;
+    line-height: 1.8;
+  }
+  @media (min-width: 64rem) {
+    .somos {
+      grid-template-columns: 1.15fr 1fr;
+      align-items: end;
+    }
+    .somos-texto p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  /* Ilustración de los hilos: de borde a borde, con las cifras encima */
+  .somos-seccion {
+    overflow-x: clip;
+  }
+  .hilos {
+    position: relative;
+    width: 100vw;
+    margin: clamp(1.5rem, 4vw, 3rem) 0 0 calc(50% - 50vw);
+    aspect-ratio: 2000 / 820;
     overflow: hidden;
-    margin-bottom: 1.1rem;
-    border: 2px solid var(--color-borde);
-    background: var(--color-abismo);
+    -webkit-mask-image:
+      linear-gradient(180deg, transparent 0, #000 14%, #000 90%, transparent 100%),
+      linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(180deg, transparent 0, #000 14%, #000 90%, transparent 100%),
+      linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+    mask-composite: intersect;
   }
-  .foto-marco :global(.foto) {
+  .hilos-img,
+  .hilos svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    animation: acercar-hilos 28s ease-in-out infinite alternate;
+  }
+  .hilos-img {
+    object-fit: cover;
+  }
+  .hilos-luz {
+    mix-blend-mode: screen;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: respirar-hilos 4.5s ease-in-out infinite;
+    animation-delay: var(--retraso, 0s);
+  }
+  .hilos-latido {
+    fill: none;
+    stroke: var(--color-teal-luz);
+    stroke-width: 5;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: latir-hilos 2.8s var(--ease-salida) infinite;
+    animation-delay: var(--retraso, 0s);
+  }
+  .hilos-latido.oro {
+    stroke: var(--color-oro);
+  }
+  .hilos-latido.verde {
+    stroke: #22c55e;
+  }
+  @keyframes acercar-hilos {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.04);
+    }
+  }
+  @keyframes respirar-hilos {
+    0%,
+    100% {
+      opacity: 0.25;
+      transform: scale(0.9);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(1.08);
+    }
+  }
+  @keyframes latir-hilos {
+    0% {
+      opacity: 0.9;
+      transform: scale(0.6);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.8);
+    }
+  }
+
+  .cifras {
+    position: relative;
+    /* Las tarjetas se montan sobre los hilos de la ilustración */
+    margin: -12vw 0 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  .cifra {
+    padding: 1.25rem 1.25rem 1.4rem;
+    border: 1px solid var(--color-borde);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--color-abismo) 78%, transparent);
+    backdrop-filter: blur(8px);
+  }
+  .cifra dt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--fuente-display);
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    line-height: 1;
+    color: var(--color-lino);
+  }
+  .cifra-icono {
+    width: clamp(1.8rem, 3.5vw, 2.6rem);
+    height: clamp(1.8rem, 3.5vw, 2.6rem);
+    flex: none;
+    color: var(--color-teal-luz);
+  }
+  .cifra:nth-child(even) .cifra-icono {
+    color: var(--color-oro);
+  }
+  .cifra dd {
+    margin: 0.6rem 0 0;
+    color: var(--color-humo);
+    font-size: 0.92rem;
+    line-height: 1.5;
+    max-width: 14rem;
+  }
+  @media (min-width: 64rem) {
+    .cifras {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hilos-img,
+    .hilos svg,
+    .hilos-luz,
+    .hilos-latido {
+      animation: none;
+    }
+  }
+
+  /* ── Misión y visión ─────────────────────────────────────── */
+  .proposito {
+    display: grid;
+    gap: 3rem;
+  }
+  .proposito article {
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--color-oro);
+  }
+  .proposito-texto {
+    margin: 0;
+    color: var(--color-lino);
+    font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+    line-height: 1.65;
+  }
+  @media (min-width: 48rem) {
+    .proposito {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4rem;
+    }
+  }
+
+  /* ── Liderazgo ───────────────────────────────────────────── */
+  .liderazgo {
+    display: grid;
+    gap: 2rem;
+  }
+  .liderazgo h2 {
+    font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+    margin: 0;
+  }
+  .fundadores {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 14rem));
+    gap: 1.25rem;
+  }
+  .fundador {
+    margin: 0;
+  }
+  .retrato {
+    aspect-ratio: 1;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--color-borde);
+    background: var(--color-fondo);
+  }
+  .retrato :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
-  .persona h3 {
+  .fundador figcaption {
+    display: grid;
+    gap: 0.25rem;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid var(--color-borde);
+  }
+  .nombre {
     font-family: var(--fuente-display);
-    font-size: 1.5rem;
-    margin: 0;
-  }
-  .rol {
-    color: var(--color-teal-luz);
-    font-size: 0.9rem;
-    margin: 0.25rem 0 1rem;
-  }
-  .bio {
-    color: var(--color-humo);
-    line-height: 1.7;
-    margin: 0 0 1rem;
-  }
-  .stack {
-    font-size: 0.82rem;
-    color: var(--color-humo);
-  }
-  .remate {
-    max-width: 44rem;
-    font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-    line-height: 1.6;
+    font-size: 1.35rem;
     color: var(--color-lino);
-    text-wrap: pretty;
+  }
+  .cargo {
+    font-family: var(--fuente-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-oro);
+  }
+  @media (min-width: 64rem) {
+    .liderazgo {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 4rem;
+    }
+    .fundadores {
+      grid-template-columns: repeat(2, 15rem);
+      gap: 1.5rem;
+    }
   }
 
-  .no-hacemos {
+  /* ── Límites ─────────────────────────────────────────────── */
+  .limites {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 1rem;
+    gap: 2rem 3rem;
   }
-  .no-hacemos li {
-    display: flex;
-    gap: 0.75rem;
-    align-items: flex-start;
-    line-height: 1.65;
-    color: var(--color-humo);
+  .limites li {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-borde);
   }
-  .no-hacemos strong {
-    color: var(--color-lino);
-  }
-  .no-hacemos .icono {
-    width: 1.15rem;
-    height: 1.15rem;
+  .limite-n {
+    display: block;
     color: var(--color-oro);
-    flex-shrink: 0;
-    margin-top: 0.28rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+  .limites h3 {
+    font-family: var(--fuente-display);
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem;
+  }
+  .limites p {
+    margin: 0;
+    color: var(--color-humo);
+    line-height: 1.7;
+  }
+  @media (min-width: 48rem) {
+    .limites {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
-  .donde {
-    padding: 1.75rem;
+  /* ── Sociedad BIC ────────────────────────────────────────── */
+  .bic-seccion {
+    padding-bottom: 0;
   }
-  .donde h2 {
-    font-size: 1.5rem;
-    margin: 0 0 0.75rem;
+  .bic {
+    display: grid;
+    gap: 1.25rem;
+    padding: clamp(1.5rem, 4vw, 2.25rem);
+    border-color: color-mix(in srgb, var(--color-oro) 40%, var(--color-borde));
   }
-  .donde p {
+  .bic-sello {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 14px;
+    background: color-mix(in srgb, var(--color-oro) 14%, transparent);
+    color: var(--color-oro);
+  }
+  .bic-sello :global(svg) {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+  .bic-texto h2 {
+    font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+    margin: 0 0 0.4rem;
+  }
+  .bic-texto p {
+    margin: 0;
+    color: var(--color-humo);
+    line-height: 1.65;
+    max-width: 40rem;
+  }
+  .bic-enlace {
+    color: var(--color-oro);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .bic-enlace:hover {
+    color: var(--color-lino);
+  }
+  @media (min-width: 64rem) {
+    .bic {
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 2rem;
+    }
+  }
+
+  /* ── Trabaje con nosotros ────────────────────────────────── */
+  .trabaja {
+    display: grid;
+    gap: 2.5rem;
+    padding: clamp(1.75rem, 5vw, 3.25rem);
+  }
+  .trabaja-texto h2 {
+    font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+    margin: 0 0 1rem;
+  }
+  .trabaja-texto > p:not(.kicker) {
     margin: 0;
     color: var(--color-humo);
     line-height: 1.75;
+    max-width: 34rem;
+  }
+  .beneficios {
+    list-style: none;
+    margin: 1.5rem 0 2rem;
+    padding: 0;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .beneficios li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    color: var(--color-lino);
+    line-height: 1.5;
+  }
+  .beneficio-icono {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0.15rem;
+    color: var(--color-oro);
+    flex-shrink: 0;
   }
 
-  @media (min-width: 48rem) {
-    .equipo {
-      grid-template-columns: repeat(2, 1fr);
+  .ruta {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    align-content: center;
+  }
+  .ruta-paso {
+    position: relative;
+    display: grid;
+    gap: 0.25rem;
+    padding: 0 0 2rem 2.25rem;
+  }
+  .ruta-paso:last-child {
+    padding-bottom: 0;
+  }
+  /* Hilo vertical que une los pasos */
+  .ruta-paso::before {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top: 1.1rem;
+    bottom: -0.1rem;
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(var(--color-teal), var(--color-oro));
+  }
+  .ruta-paso:last-child::before {
+    display: none;
+  }
+  .nodo {
+    position: absolute;
+    left: 0;
+    top: 0.3rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    border: 2px solid var(--color-teal-luz);
+    background: var(--color-fondo);
+  }
+  .meta .nodo {
+    border-color: var(--color-oro);
+    background: var(--color-oro);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--color-oro) 55%, transparent);
+  }
+  .ruta-nombre {
+    font-family: var(--fuente-display);
+    font-size: 1.3rem;
+    color: var(--color-lino);
+  }
+  .meta .ruta-nombre {
+    color: var(--color-oro);
+  }
+  .ruta-texto {
+    color: var(--color-humo);
+    line-height: 1.6;
+  }
+  @media (min-width: 64rem) {
+    .trabaja {
+      grid-template-columns: 1.2fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .ruta {
+      padding-left: 3rem;
+      border-left: 1px solid var(--color-borde);
     }
   }
 </style>

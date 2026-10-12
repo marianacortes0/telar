@@ -1,0 +1,79 @@
+---
+import RamaLayout from '../layouts/RamaLayout.astro';
+import NivelesRama from '../components/ui/NivelesRama.astro';
+import { AI, COMBOS, desdeMinimo, formatoCOP } from '../lib/precios';
+import { MENSAJES } from '../lib/whatsapp';
+import AsistenteIA from '../components/escenas/AsistenteIA.astro';
+import imgClinica from '../assets/ramas/ai-clinica.jpg';
+import imgTienda from '../assets/ramas/ai-tienda.jpg';
+import imgInmobiliaria from '../assets/ramas/ai-inmobiliaria.jpg';
+
+const desde = desdeMinimo(AI);
+
+const casos = [
+  {
+    titulo: 'En una clínica',
+    texto:
+      'El asistente responde precios y horarios por WhatsApp y agenda la cita. Si el paciente pide hablar con alguien, pasa la conversación a recepción.',
+    imagen: { src: imgClinica, alt: 'Recepción de una clínica que recibe por WhatsApp las citas agendadas por el asistente' },
+  },
+  {
+    titulo: 'En una tienda',
+    texto:
+      '«¿Todavía tienen?» deja de ser una pregunta que alguien contesta a mano a las 11 de la noche.',
+    imagen: { src: imgTienda, alt: 'Tienda cerrada de noche mientras el asistente responde los mensajes de WhatsApp' },
+  },
+  {
+    titulo: 'En una inmobiliaria',
+    texto:
+      'El mismo asistente atiende por WhatsApp y por la web o Instagram, con la misma información en los dos canales.',
+    imagen: { src: imgInmobiliaria, alt: 'Inmobiliaria que atiende por WhatsApp, la web e Instagram desde un mismo asistente' },
+  },
+];
+
+const faq = [
+  {
+    id: 'modelo',
+    pregunta: '¿Con qué IA funciona?',
+    respuesta:
+      'Con modelos líderes como Claude o GPT, elegidos según su caso. Usted no compra licencias: el uso del modelo se cobra por consumo, según el volumen de mensajes, y se lo mostramos en la cotización.',
+  },
+  {
+    id: 'errores',
+    pregunta: '¿El asistente se puede equivocar?',
+    respuesta:
+      'Lo entrenamos solo con la información de su negocio y le ponemos límites claros. Cuando no está seguro, no inventa. Desde el nivel Conectado, pasa la conversación a una persona de su equipo.',
+  },
+  {
+    id: 'reemplazo',
+    pregunta: '¿Reemplaza a mi equipo?',
+    respuesta:
+      'No. Le quita de encima lo repetitivo para que su equipo atienda lo que de verdad necesita una persona. Atiende más sin contratar más.',
+  },
+];
+---
+
+<RamaLayout
+  titulo="Telar AI: asistente de WhatsApp con IA"
+  descripcion={`Asistente de WhatsApp con IA entrenado con la información de su negocio: responde a toda hora, agenda citas y pasa a un asesor. Desde ${formatoCOP(desde)}, IVA incluido.`}
+  rama="Telar AI"
+  capa="atencion"
+  heroTitulo="Atención que nunca duerme"
+  heroSub="Un asistente de WhatsApp con IA, entrenado con la información de su negocio, responde horarios, precios y disponibilidad a cualquier hora. Desde el nivel Conectado también agenda citas y pasa a un asesor."
+  desde={desde}
+  waMensaje={MENSAJES.ai}
+  problema={{
+    titulo: 'Su equipo responde lo mismo veinte veces al día',
+    parrafos: [
+      'Horarios, precios, disponibilidad, «¿todavía tienen?». Las mismas preguntas llegan a toda hora y alguien tiene que contestarlas una por una.',
+      'Un asistente entrenado con la información de su negocio responde solo y pasa a una persona únicamente cuando de verdad hace falta. <em>Atiende más sin contratar más.</em>',
+    ],
+  }}
+  combo={COMBOS.negocioEnLinea}
+  casos={casos}
+  faq={faq}
+  cierreTitulo="¿Le montamos su asistente?"
+>
+  <AsistenteIA slot="escena" />
+  <NivelesRama rama="Telar AI" linea={AI} />
+</RamaLayout>
