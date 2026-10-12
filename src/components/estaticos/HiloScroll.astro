@@ -67,12 +67,12 @@ import LogoTelar from '../marca/LogoTelar.astro';
     opacity: 1;
   }
 
-  /* ── El emblema que rueda por el hilo (pantallas medianas y grandes) ── */
+  /* ── El emblema que rueda por el hilo (pantallas anchas, con margen libre) ── */
   .hilo-logo {
     display: none;
   }
 
-  @media (min-width: 48rem) {
+  @media (min-width: 80rem) {
     .hilo-scroll {
       left: max(1rem, 1.8vw);
       /* Recorrido: desde debajo de la cabecera hasta casi el borde inferior */
@@ -135,7 +135,7 @@ import LogoTelar from '../marca/LogoTelar.astro';
     }
   }
 
-  @media (min-width: 80rem) {
+  @media (min-width: 100rem) {
     .hilo-logo {
       width: 46px;
       height: 46px;

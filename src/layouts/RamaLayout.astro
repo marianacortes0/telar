@@ -423,6 +423,16 @@ const descuento = `${Math.round(DESCUENTO_COMBO * 100)} %`;
       gap: 0.35rem;
     }
   }
+  /* Celulares angostos (≤ 400 px): sin íconos para que quepan las tres ramas */
+  @media (max-width: 25rem) {
+    .rama-tab :global(.tab-icono) {
+      display: none;
+    }
+    .rama-tab {
+      padding-inline: 0.3rem;
+      font-size: 0.84rem;
+    }
+  }
 
   .subtitulo {
     color: var(--color-humo);
@@ -438,7 +448,7 @@ const descuento = `${Math.round(DESCUENTO_COMBO * 100)} %`;
   }
   .combo-etiqueta {
     font-family: var(--fuente-mono);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--color-oro);

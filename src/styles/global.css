@@ -307,7 +307,7 @@ a { color: inherit; }
 }
 .panel-grupo-titulo {
   font-family: var(--fuente-mono);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-teal-luz);
@@ -467,7 +467,7 @@ a { color: inherit; }
 }
 .tabla-precios thead th {
   font-family: var(--fuente-mono);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-humo);

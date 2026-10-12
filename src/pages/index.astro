@@ -285,8 +285,9 @@ const wa = linkWhatsApp(MENSAJES.general);
       transform: scale(1.05);
     }
   }
-  /* En pantallas anchas la ilustración llena la sección y el texto va en su cielo oscuro */
-  @media (min-width: 48rem) {
+  /* En pantallas anchas la ilustración llena la sección y el texto va en su cielo oscuro.
+     Por debajo de 80rem el texto taparía los edificios: va arriba y el dibujo debajo. */
+  @media (min-width: 80rem) {
     .presentacion {
       min-height: min(calc(100vw * 1116 / 1775), 52rem);
       padding-bottom: clamp(4rem, 9vw, 7rem);
@@ -482,8 +483,9 @@ const wa = linkWhatsApp(MENSAJES.general);
     }
   }
 
-  /* En pantallas anchas la ilustración llena la sección: título y pasos en el cielo */
-  @media (min-width: 64rem) {
+  /* En pantallas anchas la ilustración llena la sección: título y pasos en el cielo.
+     Por debajo de 80rem no hay espacio: el texto va arriba y el dibujo completo debajo. */
+  @media (min-width: 80rem) {
     .meta {
       min-height: calc(100vw * 1116 / 2000);
     }
@@ -512,9 +514,9 @@ const wa = linkWhatsApp(MENSAJES.general);
       inset: 0;
       background: linear-gradient(
         180deg,
-        color-mix(in srgb, var(--color-fondo) 55%, transparent) 0,
-        color-mix(in srgb, var(--color-fondo) 35%, transparent) 30%,
-        transparent 50%
+        color-mix(in srgb, var(--color-fondo) 78%, transparent) 0,
+        color-mix(in srgb, var(--color-fondo) 62%, transparent) 32%,
+        transparent 55%
       );
     }
   }

@@ -171,7 +171,7 @@ const wa = linkWhatsApp(MENSAJES.general);
 
   .columna h2 {
     font-family: var(--fuente-mono);
-    font-size: 0.72rem;
+    font-size: 0.78rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-teal-luz);
@@ -189,6 +189,21 @@ const wa = linkWhatsApp(MENSAJES.general);
     text-decoration: none;
     display: inline-block;
     padding: 0.15rem 0;
+  }
+  /* En pantallas táctiles cada enlace mide al menos 44 px de alto */
+  @media (max-width: 63.99rem) {
+    .columna ul {
+      gap: 0;
+    }
+    .columna a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 2.75rem;
+      padding: 0;
+    }
+    .columna h2 {
+      margin-bottom: 0.25rem;
+    }
   }
   .columna a:hover {
     color: var(--color-lino);
