@@ -639,3 +639,12 @@ a { color: inherit; }
   body, a, button, [role='button'], summary { cursor: auto; }
   .cursor-nucleo, .cursor-anillo { display: none; }
 }
+
+/* Fondos ilustrados: imagen y luces aparecen juntas cuando la imagen cargó (scripts/fondos.js) */
+.js [data-fondo] {
+  opacity: 0;
+  transition: opacity 0.7s var(--ease-salida);
+}
+.js [data-fondo].cargado {
+  opacity: 1;
+}

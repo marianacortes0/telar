@@ -2,8 +2,10 @@
 import Base from '../layouts/Base.astro';
 import TejidoHero from '../components/trama/TejidoHero.astro';
 import Pasos from '../components/estaticos/Pasos.astro';
-import FAQ from '../components/islas/FAQ.tsx';
+import SeccionFAQ from '../components/estaticos/SeccionFAQ.astro';
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import fondoPasos from '../assets/ramas/mensaje-a-servicio.jpg';
 import { SUSCRIPCION, formatoCOP } from '../lib/precios';
 import { linkWhatsApp, MENSAJES } from '../lib/whatsapp';
 
@@ -144,12 +146,33 @@ const wa = linkWhatsApp(MENSAJES.cotizar);
     <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">Cotizar por WhatsApp</a>
   </TejidoHero>
 
-  <section class="seccion banda">
+  <section class="seccion banda proceso">
+    <!-- El celular, el contrato y el tablero: el camino de la cotización al servicio -->
+    <div class="proceso-fondo" data-fondo aria-hidden="true">
+      <Image src={fondoPasos} alt="" widths={[800, 1200, 1600, 2000, 2400]} sizes="100vw" class="proceso-img" />
+      <svg viewBox="0 0 2000 1116" preserveAspectRatio="xMaxYMid slice" focusable="false">
+        <defs>
+          <radialGradient id="luz-proceso">
+            <stop offset="0%" stop-color="#ffe7a8" stop-opacity="0.75"></stop>
+            <stop offset="100%" stop-color="#ffe7a8" stop-opacity="0"></stop>
+          </radialGradient>
+        </defs>
+        <ellipse class="proceso-luz" cx="1745" cy="245" rx="190" ry="160" fill="url(#luz-proceso)"></ellipse>
+        <circle class="proceso-latido" cx="1265" cy="540" r="60"></circle>
+        <circle class="proceso-latido" cx="1815" cy="485" r="70" style="--retraso:0.9s"></circle>
+        <circle class="proceso-latido" cx="1760" cy="770" r="60" style="--retraso:1.8s"></circle>
+        <circle class="proceso-chispa" cx="1523" cy="153" r="14"></circle>
+        <circle class="proceso-chispa" cx="1420" cy="497" r="14" style="--retraso:1.2s"></circle>
+        <circle class="proceso-chispa" cx="60" cy="290" r="14" style="--retraso:2.1s"></circle>
+      </svg>
+    </div>
     <div class="contenedor">
-      <header class="encabezado-seccion" data-revelar>
-        <h2>De su mensaje a su servicio activo</h2>
-      </header>
-      <Pasos pasos={pasos} />
+      <div class="proceso-texto">
+        <header class="encabezado-seccion" data-revelar>
+          <h2>De su mensaje a su servicio activo</h2>
+        </header>
+        <Pasos pasos={pasos} />
+      </div>
     </div>
   </section>
 
@@ -262,17 +285,155 @@ const wa = linkWhatsApp(MENSAJES.cotizar);
     </div>
   </section>
 
-  <section class="seccion">
-    <div class="contenedor bloque-estrecho">
-      <header class="encabezado-seccion" data-revelar>
-        <h2>Preguntas frecuentes</h2>
-      </header>
-      <FAQ client:visible items={faq} />
-    </div>
-  </section>
+  <SeccionFAQ titulo="Preguntas frecuentes" items={faq} />
 </Base>
 
 <style>
+  /* ── De su mensaje a su servicio activo: ilustración a la derecha ── */
+  .proceso {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .proceso-fondo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .proceso-img,
+  .proceso-fondo svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    animation: acercar-proceso 26s ease-in-out infinite alternate;
+    transform-origin: 80% 50%;
+  }
+  .proceso-img {
+    object-fit: cover;
+    object-position: 100% 50%;
+  }
+  /* Velo: oscuro donde va el texto, despejado sobre los dibujos de la derecha */
+  .proceso-fondo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-abismo) 82%, transparent),
+      color-mix(in srgb, var(--color-abismo) 60%, transparent)
+    );
+  }
+  .proceso-luz {
+    mix-blend-mode: screen;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: respirar-proceso 4.5s ease-in-out infinite;
+  }
+  .proceso-latido {
+    fill: none;
+    stroke: var(--color-oro);
+    stroke-width: 5;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: latir-proceso 2.8s var(--ease-salida) infinite;
+    animation-delay: var(--retraso, 0s);
+  }
+  .proceso-chispa {
+    fill: #fff3cf;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: chispa-proceso 3s ease-in-out infinite;
+    animation-delay: var(--retraso, 0s);
+  }
+  @keyframes acercar-proceso {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.05);
+    }
+  }
+  @keyframes respirar-proceso {
+    0%,
+    100% {
+      opacity: 0.2;
+      transform: scale(0.92);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.06);
+    }
+  }
+  @keyframes latir-proceso {
+    0% {
+      opacity: 0.8;
+      transform: scale(0.6);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.7);
+    }
+  }
+  @keyframes chispa-proceso {
+    0%,
+    100% {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    50% {
+      opacity: 0.9;
+      transform: scale(1.4);
+    }
+  }
+  /* En pantallas anchas el texto ocupa la izquierda y los dibujos se ven completos */
+  @media (min-width: 64rem) {
+    .proceso {
+      min-height: min(calc(100vw * 1116 / 2000), 46rem);
+      display: grid;
+      align-items: center;
+    }
+    .proceso-texto {
+      max-width: 54%;
+    }
+    .proceso-texto :global(.pasos) {
+      gap: 1.75rem 2rem;
+    }
+    .proceso-fondo::after {
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--color-abismo) 80%, transparent) 0,
+        color-mix(in srgb, var(--color-abismo) 55%, transparent) 45%,
+        transparent 65%
+      );
+    }
+  }
+  /* Pantallas medianas: el celular del dibujo cae detrás del texto, así que el velo llega más lejos */
+  @media (min-width: 64rem) and (max-width: 89.99rem) {
+    .proceso-fondo::after {
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--color-abismo) 88%, transparent) 0,
+        color-mix(in srgb, var(--color-abismo) 80%, transparent) 50%,
+        transparent 75%
+      );
+    }
+    .proceso-latido:first-of-type {
+      display: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .proceso-img,
+    .proceso-fondo svg,
+    .proceso-luz,
+    .proceso-latido,
+    .proceso-chispa {
+      animation: none;
+    }
+  }
+
   /* ── Cabecera de la suscripción ───────────────────────────── */
   .susc-cabeza {
     max-width: 44rem;

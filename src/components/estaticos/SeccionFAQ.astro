@@ -1,0 +1,80 @@
+---
+/**
+ * Sección de preguntas frecuentes con la ilustración "del local a la ciudad" de
+ * fondo. La ilustración va atenuada y abajo; las preguntas quedan arriba, sobre
+ * la parte oscura, para que se lean sin esfuerzo.
+ */
+import { Image } from 'astro:assets';
+import FAQ, { type ItemFAQ } from '../islas/FAQ.tsx';
+import fondo from '../../assets/ramas/local-a-la-ciudad.jpg';
+
+interface Props {
+  titulo: string;
+  items: ItemFAQ[];
+}
+const { titulo, items } = Astro.props;
+---
+
+<section class="seccion faq-seccion">
+  <div class="faq-fondo" data-fondo aria-hidden="true">
+    <Image src={fondo} alt="" widths={[800, 1200, 1600, 2000, 2400]} sizes="100vw" class="faq-img" />
+  </div>
+  <div class="contenedor bloque-estrecho">
+    <header class="encabezado-seccion" data-revelar>
+      <h2>{titulo}</h2>
+    </header>
+    <FAQ client:visible items={items} />
+  </div>
+</section>
+
+<style>
+  .faq-seccion {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    /* Espacio abajo para que se vea el dibujo debajo de la última pregunta */
+    padding-bottom: clamp(6rem, 18vw, 16rem);
+  }
+  .faq-fondo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+  .faq-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 100%;
+    opacity: 0.55;
+    animation: acercar-faq 28s ease-in-out infinite alternate;
+    transform-origin: 50% 100%;
+  }
+  /* Velo: oscuro arriba (título y preguntas) y se aclara hacia el dibujo de abajo */
+  .faq-fondo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      var(--color-abismo) 0,
+      color-mix(in srgb, var(--color-abismo) 80%, transparent) 35%,
+      color-mix(in srgb, var(--color-abismo) 25%, transparent) 75%,
+      color-mix(in srgb, var(--color-abismo) 60%, transparent) 100%
+    );
+  }
+  @keyframes acercar-faq {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.04);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .faq-img {
+      animation: none;
+    }
+  }
+</style>

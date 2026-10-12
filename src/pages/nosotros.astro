@@ -5,15 +5,16 @@ import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
 import fotoMariana from '../assets/equipo/mariana.png';
 import fotoAndres from '../assets/equipo/andres.png';
+import fondoHilos from '../assets/ramas/nosotros-hilos.jpg';
 import { NEGOCIO } from '../lib/constantes';
 import { CAPAS, NAV_RAMAS } from '../lib/navegacion';
 import { linkWhatsApp, MENSAJES } from '../lib/whatsapp';
 
 const cifras = [
-  { valor: String(CAPAS.length), texto: 'capas de servicio' },
-  { valor: String(NAV_RAMAS.length), texto: 'ramas especializadas' },
-  { valor: '1', texto: 'suscripción por cliente' },
-  { valor: 'BIC', texto: 'sociedad de beneficio e interés colectivo' },
+  { valor: String(CAPAS.length), texto: 'capas de servicio', icono: 'lucide:layers' },
+  { valor: String(NAV_RAMAS.length), texto: 'ramas especializadas', icono: 'lucide:network' },
+  { valor: '1', texto: 'suscripción por cliente', icono: 'lucide:file-lock-2' },
+  { valor: 'BIC', texto: 'sociedad de beneficio e interés colectivo', icono: 'lucide:heart-handshake' },
 ];
 
 const fundadores = [
@@ -49,7 +50,7 @@ const waTrabajar = linkWhatsApp(MENSAJES.trabajar);
   </TejidoHero>
 
   <!-- Quiénes somos -->
-  <section class="seccion">
+  <section class="seccion somos-seccion">
     <div class="contenedor">
       <div class="somos">
         <div class="somos-titulo" data-revelar>
@@ -70,11 +71,38 @@ const waTrabajar = linkWhatsApp(MENSAJES.trabajar);
         </div>
       </div>
 
+      <!-- Los cuatro frentes, de la puerta al tablero, tejidos por los mismos hilos -->
+      <div class="hilos" data-fondo aria-hidden="true">
+        <Image
+          src={fondoHilos}
+          alt=""
+          widths={[800, 1200, 1600, 2000, 2400]}
+          sizes="100vw"
+          class="hilos-img"
+        />
+        <svg viewBox="0 0 2000 820" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <defs>
+            <radialGradient id="luz-hilos">
+              <stop offset="0%" stop-color="#ffe7a8" stop-opacity="0.8"></stop>
+              <stop offset="100%" stop-color="#ffe7a8" stop-opacity="0"></stop>
+            </radialGradient>
+          </defs>
+          <ellipse class="hilos-luz" cx="382" cy="245" rx="110" ry="130" fill="url(#luz-hilos)"></ellipse>
+          <ellipse class="hilos-luz" cx="1358" cy="205" rx="80" ry="80" fill="url(#luz-hilos)" style="--retraso:1.5s"></ellipse>
+          <circle class="hilos-latido" cx="1693" cy="345" r="70"></circle>
+          <circle class="hilos-latido oro" cx="1875" cy="77" r="16" style="--retraso:1s"></circle>
+          <circle class="hilos-latido verde" cx="715" cy="238" r="46" style="--retraso:2s"></circle>
+        </svg>
+      </div>
+
       <dl class="cifras">
         {
           cifras.map((c, i) => (
             <div class="cifra" data-revelar style={`--i:${i}`}>
-              <dt>{c.valor}</dt>
+              <dt>
+                <span>{c.valor}</span>
+                <Icon name={c.icono} class="cifra-icono" />
+              </dt>
               <dd>{c.texto}</dd>
             </div>
           ))
@@ -264,20 +292,122 @@ const waTrabajar = linkWhatsApp(MENSAJES.trabajar);
     }
   }
 
+  /* Ilustración de los hilos: de borde a borde, con las cifras encima */
+  .somos-seccion {
+    overflow-x: clip;
+  }
+  .hilos {
+    position: relative;
+    width: 100vw;
+    margin: clamp(1.5rem, 4vw, 3rem) 0 0 calc(50% - 50vw);
+    aspect-ratio: 2000 / 820;
+    overflow: hidden;
+    -webkit-mask-image:
+      linear-gradient(180deg, transparent 0, #000 14%, #000 90%, transparent 100%),
+      linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(180deg, transparent 0, #000 14%, #000 90%, transparent 100%),
+      linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+    mask-composite: intersect;
+  }
+  .hilos-img,
+  .hilos svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    animation: acercar-hilos 28s ease-in-out infinite alternate;
+  }
+  .hilos-img {
+    object-fit: cover;
+  }
+  .hilos-luz {
+    mix-blend-mode: screen;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: respirar-hilos 4.5s ease-in-out infinite;
+    animation-delay: var(--retraso, 0s);
+  }
+  .hilos-latido {
+    fill: none;
+    stroke: var(--color-teal-luz);
+    stroke-width: 5;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: latir-hilos 2.8s var(--ease-salida) infinite;
+    animation-delay: var(--retraso, 0s);
+  }
+  .hilos-latido.oro {
+    stroke: var(--color-oro);
+  }
+  .hilos-latido.verde {
+    stroke: #22c55e;
+  }
+  @keyframes acercar-hilos {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.04);
+    }
+  }
+  @keyframes respirar-hilos {
+    0%,
+    100% {
+      opacity: 0.25;
+      transform: scale(0.9);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(1.08);
+    }
+  }
+  @keyframes latir-hilos {
+    0% {
+      opacity: 0.9;
+      transform: scale(0.6);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.8);
+    }
+  }
+
   .cifras {
-    margin: clamp(3rem, 7vw, 4.5rem) 0 0;
+    position: relative;
+    /* Las tarjetas se montan sobre los hilos de la ilustración */
+    margin: -12vw 0 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    border-top: 1px solid var(--color-borde);
+    gap: 0.75rem;
   }
   .cifra {
-    padding: 1.75rem 1.25rem 0 0;
+    padding: 1.25rem 1.25rem 1.4rem;
+    border: 1px solid var(--color-borde);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--color-abismo) 78%, transparent);
+    backdrop-filter: blur(8px);
   }
   .cifra dt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
     font-family: var(--fuente-display);
     font-size: clamp(2.4rem, 6vw, 3.6rem);
     line-height: 1;
     color: var(--color-lino);
+  }
+  .cifra-icono {
+    width: clamp(1.8rem, 3.5vw, 2.6rem);
+    height: clamp(1.8rem, 3.5vw, 2.6rem);
+    flex: none;
+    color: var(--color-teal-luz);
+  }
+  .cifra:nth-child(even) .cifra-icono {
+    color: var(--color-oro);
   }
   .cifra dd {
     margin: 0.6rem 0 0;
@@ -289,10 +419,15 @@ const waTrabajar = linkWhatsApp(MENSAJES.trabajar);
   @media (min-width: 64rem) {
     .cifras {
       grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
     }
-    .cifra + .cifra {
-      padding-left: 1.75rem;
-      border-left: 1px solid var(--color-borde);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hilos-img,
+    .hilos svg,
+    .hilos-luz,
+    .hilos-latido {
+      animation: none;
     }
   }
 

@@ -1,0 +1,215 @@
+---
+/**
+ * Telar Teams: antes y después en una sola imagen. A la izquierda la oficina
+ * gris del Excel (la lámpara parpadea); a la derecha el equipo que celebra frente
+ * al panel de logros (destellos, medallas que brillan y el medidor que late).
+ */
+import { Image } from 'astro:assets';
+import Escena from './Escena.astro';
+import foto from '../../assets/ramas/teams-escena.jpg';
+
+// Coordenadas sobre la imagen, en un lienzo de 2000 × 1116 (misma proporción).
+const destellos = [
+  { x: 1310, y: 265, r: 26 },
+  { x: 1395, y: 205, r: 20 },
+  { x: 1690, y: 330, r: 22 },
+  { x: 1862, y: 305, r: 30 },
+  { x: 1935, y: 195, r: 20 },
+  { x: 1800, y: 225, r: 18 },
+  { x: 1290, y: 450, r: 18 },
+  { x: 1955, y: 520, r: 22 },
+  { x: 1535, y: 620, r: 16 },
+];
+const medallas = [
+  { x: 1490, y: 393 },
+  { x: 1548, y: 395 },
+  { x: 1608, y: 382 },
+];
+
+/** Estrella de cuatro puntas centrada en (x, y). */
+const estrella = ({ x, y, r }: { x: number; y: number; r: number }) => {
+  const c = r * 0.28;
+  return `M${x} ${y - r}L${x + c} ${y - c}L${x + r} ${y}L${x + c} ${y + c}L${x} ${y + r}L${x - c} ${y + c}L${x - r} ${y}L${x - c} ${y - c}Z`;
+};
+---
+
+<Escena>
+  <div class="marco">
+    <Image
+      src={foto}
+      alt="Antes, un empleado aburrido frente a un Excel en una oficina gris. Después, su equipo celebra frente a un panel con medallas, ranking y metas"
+      widths={[480, 800, 1200, 1600]}
+      sizes="(min-width: 64rem) 36rem, 92vw"
+      class="foto"
+    />
+    <svg class="red" viewBox="0 0 2000 1116" aria-hidden="true" focusable="false">
+      <defs>
+        <radialGradient id="luz-teams">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"></stop>
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0"></stop>
+        </radialGradient>
+        <radialGradient id="brillo-teams">
+          <stop offset="0%" stop-color="#ffe7a8" stop-opacity="0.9"></stop>
+          <stop offset="100%" stop-color="#ffe7a8" stop-opacity="0"></stop>
+        </radialGradient>
+      </defs>
+
+      <!-- Antes: la lámpara de la oficina vacía parpadea -->
+      <ellipse class="lampara" cx="615" cy="180" rx="250" ry="40" fill="url(#luz-teams)"></ellipse>
+
+      <!-- La línea que separa el antes del después -->
+      <line class="corte" x1="1208" y1="0" x2="812" y2="1116"></line>
+
+      <!-- Después: medallas que brillan, el medidor que late y destellos de celebración -->
+      {
+        medallas.map((m, i) => (
+          <circle class="medalla" cx={m.x} cy={m.y} r="34" fill="url(#brillo-teams)" style={`--i:${i}`} />
+        ))
+      }
+      <circle class="medidor" cx="1768" cy="402" r="95"></circle>
+      {destellos.map((d, i) => <path class="destello" d={estrella(d)} style={`--i:${i}`} />)}
+    </svg>
+  </div>
+</Escena>
+
+<style>
+  .marco {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--color-borde);
+    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.45);
+  }
+  .foto {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .red {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .lampara {
+    mix-blend-mode: screen;
+    opacity: 0.45;
+    animation: parpadear 6s linear infinite;
+  }
+  @keyframes parpadear {
+    0%,
+    100% {
+      opacity: 0.45;
+    }
+    4% {
+      opacity: 0.08;
+    }
+    7% {
+      opacity: 0.4;
+    }
+    9% {
+      opacity: 0.12;
+    }
+    12%,
+    60% {
+      opacity: 0.45;
+    }
+    63% {
+      opacity: 0.15;
+    }
+    66% {
+      opacity: 0.45;
+    }
+  }
+
+  .corte {
+    stroke: var(--color-oro);
+    stroke-width: 5;
+    stroke-linecap: round;
+    opacity: 0.3;
+    animation: encender-corte 4s ease-in-out infinite;
+  }
+  @keyframes encender-corte {
+    0%,
+    100% {
+      opacity: 0.2;
+    }
+    50% {
+      opacity: 0.85;
+    }
+  }
+
+  .medalla {
+    mix-blend-mode: screen;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: brillar 3s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.5s);
+  }
+  @keyframes brillar {
+    0%,
+    100% {
+      opacity: 0;
+      transform: scale(0.6);
+    }
+    40% {
+      opacity: 0.9;
+      transform: scale(1.1);
+    }
+  }
+
+  .medidor {
+    fill: none;
+    stroke: var(--color-oro);
+    stroke-width: 6;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: latir-medidor 2.6s var(--ease-salida) infinite;
+  }
+  @keyframes latir-medidor {
+    0% {
+      opacity: 0.8;
+      transform: scale(0.8);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.5);
+    }
+  }
+
+  .destello {
+    fill: #fff3cf;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: centellear 2.4s ease-in-out infinite;
+    animation-delay: calc(var(--i) * 0.37s);
+  }
+  @keyframes centellear {
+    0%,
+    100% {
+      opacity: 0;
+      transform: scale(0.2) rotate(0deg);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1) rotate(45deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lampara,
+    .corte,
+    .medalla,
+    .medidor,
+    .destello {
+      animation: none;
+    }
+    .corte {
+      opacity: 0.5;
+    }
+  }
+</style>

@@ -3,6 +3,9 @@ import Base from '../layouts/Base.astro';
 import TejidoHero from '../components/trama/TejidoHero.astro';
 import TablaPrecios from '../components/ui/TablaPrecios.astro';
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import fondoParaTodos from '../assets/ramas/para-todos.jpg';
+import fondoBarrio from '../assets/ramas/para-todos-barrio.jpg';
 import { PLAN_SOCIAL, formatoCOP } from '../lib/precios';
 import { linkWhatsApp, MENSAJES } from '../lib/whatsapp';
 
@@ -92,6 +95,10 @@ const wa = linkWhatsApp(MENSAJES.planSocial);
   <TejidoHero
     titulo="Telar es para todos"
     subtitulo="Cada quien paga según puede."
+    fondo={{
+      src: fondoParaTodos,
+      alt: 'Personas de distintas edades y oficios tejen juntas en un telar que conecta la balanza del precio justo con una puerta abierta',
+    }}
   >
     <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">Quiero aplicar</a>
     <a href="#quien" class="btn-linea">Quién puede acceder</a>
@@ -135,14 +142,31 @@ const wa = linkWhatsApp(MENSAJES.planSocial);
     </div>
   </section>
 
-  <section class="seccion">
-    <div class="contenedor bloque-lectura">
-      <h2 data-revelar>La ciudad inteligente también llega al barrio y a la vereda</h2>
-      <p data-revelar style="--i:1">
+  <section class="seccion barrio">
+    <div class="barrio-fondo" data-fondo aria-hidden="true">
+      <Image
+        src={fondoBarrio}
+        alt=""
+        widths={[800, 1200, 1600, 2000, 2400]}
+        sizes="100vw"
+        class="barrio-img"
+      />
+      <svg viewBox="0 0 2000 1116" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <circle class="barrio-luz" cx="1000" cy="180" r="150"></circle>
+        <circle class="barrio-luz" cx="545" cy="150" r="80" style="--retraso:1.2s"></circle>
+        <circle class="barrio-luz" cx="1565" cy="160" r="70" style="--retraso:2.1s"></circle>
+        <circle class="barrio-luz" cx="1890" cy="650" r="60" style="--retraso:3s"></circle>
+      </svg>
+    </div>
+    <div class="contenedor">
+      <div class="barrio-texto bloque-lectura" data-revelar>
+      <h2>La ciudad inteligente también llega al barrio y a la vereda</h2>
+      <p>
         Una tienda de barrio, un negocio campesino o una junta de acción comunal pueden tener lo
         mismo que una empresa grande: atender por WhatsApp, medir su consumo o tener su página. Una
         ciudad inteligente de verdad no deja a nadie por fuera.
       </p>
+      </div>
     </div>
   </section>
 
@@ -239,6 +263,94 @@ const wa = linkWhatsApp(MENSAJES.planSocial);
   @media (min-width: 72rem) {
     .quienes {
       grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* ── Barrio y vereda: ilustración de fondo con el texto en una tarjeta ── */
+  .barrio {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: grid;
+    align-items: center;
+    min-height: clamp(34rem, 48vw, 46rem);
+  }
+  .barrio-fondo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    animation: acercar-barrio 26s ease-in-out infinite alternate;
+  }
+  .barrio-fondo::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    /* Se funde con las secciones de arriba y abajo */
+    background: linear-gradient(
+      180deg,
+      var(--color-fondo) 0,
+      transparent 14%,
+      transparent 86%,
+      var(--color-fondo) 100%
+    );
+  }
+  .barrio-img,
+  .barrio-fondo svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .barrio-img {
+    object-fit: cover;
+  }
+  .barrio-luz {
+    fill: #fff3cf;
+    mix-blend-mode: soft-light;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: latir-barrio 4s ease-in-out infinite;
+    animation-delay: var(--retraso, 0s);
+  }
+  .barrio-texto {
+    max-width: 34rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 1px solid var(--color-borde);
+    border-radius: 18px;
+    background: color-mix(in srgb, var(--color-abismo) 84%, transparent);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4);
+  }
+  .barrio-texto h2 {
+    margin-top: 0;
+  }
+  .barrio-texto p {
+    margin-bottom: 0;
+  }
+  @keyframes acercar-barrio {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.07);
+    }
+  }
+  @keyframes latir-barrio {
+    0%,
+    100% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.1);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .barrio-fondo,
+    .barrio-luz {
+      animation: none;
     }
   }
 

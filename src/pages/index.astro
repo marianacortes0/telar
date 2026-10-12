@@ -3,8 +3,24 @@ import Base from '../layouts/Base.astro';
 import TejidoHero from '../components/trama/TejidoHero.astro';
 import Pasos from '../components/estaticos/Pasos.astro';
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import fondoCierre from '../assets/ramas/presentacion.jpg';
+import fondoParaTodos from '../assets/ramas/boton-para-todos.jpg';
+import fondoMeta from '../assets/ramas/local-a-la-ciudad.jpg';
 import { CAPAS } from '../lib/navegacion';
 import { linkWhatsApp, MENSAJES } from '../lib/whatsapp';
+
+// Nodos de la red sobre la ilustración del cierre (lienzo de 1775 × 1116).
+const nodosCierre = [
+  { x: 178, y: 890 },
+  { x: 440, y: 937 },
+  { x: 835, y: 937 },
+  { x: 333, y: 780 },
+  { x: 652, y: 623 },
+  { x: 1110, y: 830 },
+  { x: 1410, y: 648 },
+  { x: 1275, y: 735 },
+];
 
 // La visión, contada como meta: del local a la ciudad.
 const meta = [
@@ -38,6 +54,7 @@ const wa = linkWhatsApp(MENSAJES.general);
   <TejidoHero
     titulo="Tejemos la ciudad inteligente, empezando por su negocio"
     subtitulo="Acceso, atención, automatización y datos: cuatro hilos tejidos en una sola trama para su negocio, su casa o su comunidad."
+    video={{ src: '/video/telar.mp4', poster: '/video/telar-poster.jpg' }}
   >
     <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">
       Hablemos por WhatsApp
@@ -76,18 +93,59 @@ const wa = linkWhatsApp(MENSAJES.general);
     </div>
   </section>
 
-  <section class="seccion banda">
+  <section class="seccion banda meta">
     <div class="contenedor rejilla-meta">
       <header class="encabezado-seccion" data-revelar>
         <h2>De su local a la ciudad</h2>
       </header>
       <Pasos pasos={meta} />
     </div>
+    <!-- Del local (abajo a la izquierda) al barrio, la vereda, la ciudad y el país -->
+    <div class="meta-fondo" data-fondo aria-hidden="true">
+      <Image
+        src={fondoMeta}
+        alt=""
+        widths={[800, 1200, 1600, 2000, 2400]}
+        sizes="100vw"
+        class="meta-img"
+      />
+      <svg viewBox="0 0 2000 1116" preserveAspectRatio="xMidYMax slice" focusable="false">
+        <defs>
+          <radialGradient id="luz-meta">
+            <stop offset="0%" stop-color="#ffe7a8" stop-opacity="0.8"></stop>
+            <stop offset="100%" stop-color="#ffe7a8" stop-opacity="0"></stop>
+          </radialGradient>
+        </defs>
+        <ellipse class="meta-luz" cx="360" cy="780" rx="60" ry="60" fill="url(#luz-meta)"></ellipse>
+        <ellipse class="meta-luz" cx="1840" cy="150" rx="150" ry="150" fill="url(#luz-meta)" style="--retraso:2s"></ellipse>
+        <circle class="meta-latido" cx="600" cy="972" r="22"></circle>
+        <circle class="meta-latido" cx="1884" cy="323" r="18" style="--retraso:1.4s"></circle>
+      </svg>
+    </div>
   </section>
 
   <section class="seccion">
     <div class="contenedor">
       <a href="/telar-para-todos" class="card para-todos" data-revelar>
+        <span class="pt-fondo" data-fondo aria-hidden="true">
+          <Image
+            src={fondoParaTodos}
+            alt=""
+            widths={[600, 1000, 1400, 2000]}
+            sizes="(min-width: 80rem) 76rem, 100vw"
+            class="pt-img"
+          />
+          <svg viewBox="0 0 2000 1046" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <defs>
+              <radialGradient id="luz-pt">
+                <stop offset="0%" stop-color="#ffe7a8" stop-opacity="0.7"></stop>
+                <stop offset="100%" stop-color="#ffe7a8" stop-opacity="0"></stop>
+              </radialGradient>
+            </defs>
+            <ellipse class="pt-luz" cx="1040" cy="300" rx="260" ry="200" fill="url(#luz-pt)"></ellipse>
+            <ellipse class="pt-luz" cx="1690" cy="230" rx="130" ry="220" fill="url(#luz-pt)" style="--retraso:2s"></ellipse>
+          </svg>
+        </span>
         <span class="pt-titulo">Telar es para todos</span>
         <span class="pt-texto">Cada quien paga según puede.</span>
         <span class="pt-enlace">Conozca Telar para todos <span aria-hidden="true">→</span></span>
@@ -95,18 +153,174 @@ const wa = linkWhatsApp(MENSAJES.general);
     </div>
   </section>
 
-  <section class="seccion cierre">
-    <div class="contenedor bloque-estrecho centrado" data-revelar>
-      <h2>¿Tejemos lo suyo?</h2>
-      <p class="intro">Cuéntenos qué necesita. La primera conversación no cuesta nada.</p>
-      <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">
-        Escribir por WhatsApp
-      </a>
+  <section class="seccion presentacion">
+    <div class="contenedor">
+      <div class="presentacion-texto" data-revelar>
+        <h2>¿Tejemos lo suyo?</h2>
+        <p class="intro">Cuéntenos qué necesita. La primera conversación no cuesta nada.</p>
+        <a href={wa} target="_blank" rel="noopener noreferrer" class="btn-oro">
+          Escribir por WhatsApp
+        </a>
+      </div>
+    </div>
+    <div class="presentacion-fondo" data-fondo>
+      <Image
+        src={fondoCierre}
+        alt="Del local, la casa y la oficina al barrio, la vereda, Bogotá y Colombia, todo conectado por hilos de luz"
+        widths={[800, 1200, 1600, 2000, 2400]}
+        sizes="100vw"
+        class="presentacion-img"
+      />
+      <svg viewBox="0 0 1775 1116" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false">
+        <circle class="presentacion-wa" cx="228" cy="490" r="60"></circle>
+        <defs>
+          <radialGradient id="luz-mapa">
+            <stop offset="0%" stop-color="#ffd27a" stop-opacity="0.6"></stop>
+            <stop offset="100%" stop-color="#ffd27a" stop-opacity="0"></stop>
+          </radialGradient>
+        </defs>
+        <circle class="presentacion-mapa" cx="1600" cy="320" r="260" fill="url(#luz-mapa)"></circle>
+        {
+          nodosCierre.map((n, i) => (
+            <circle class="presentacion-nodo" cx={n.x} cy={n.y} r="26" style={`--i:${i}`} />
+          ))
+        }
+      </svg>
     </div>
   </section>
 </Base>
 
 <style>
+  /* ── Cierre: la ilustración del local a la ciudad, de fondo ── */
+  .presentacion {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-bottom: 0;
+  }
+  .presentacion-texto {
+    max-width: 30rem;
+  }
+  .presentacion-texto h2 {
+    margin: 0 0 0.75rem;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.1;
+  }
+  .presentacion-texto .intro {
+    margin: 0 0 1.75rem;
+  }
+  .presentacion-fondo {
+    position: relative;
+    margin-top: 1.5rem;
+    aspect-ratio: 1775 / 1116;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 15%, #000 88%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0, #000 15%, #000 88%, transparent 100%);
+  }
+  .presentacion-img,
+  .presentacion-fondo svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .presentacion-img {
+    object-fit: cover;
+    object-position: 50% 0;
+  }
+  .presentacion-fondo > * {
+    animation: acercar-presentacion 26s ease-in-out infinite alternate;
+    transform-origin: 70% 40%;
+  }
+  .presentacion-nodo,
+  .presentacion-wa {
+    fill: none;
+    stroke-width: 5;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: latir-presentacion 2.8s var(--ease-salida) infinite;
+  }
+  .presentacion-nodo {
+    stroke: var(--color-oro);
+    animation-delay: calc(var(--i) * 0.35s);
+  }
+  .presentacion-wa {
+    stroke: #25d366;
+    stroke-width: 6;
+  }
+  .presentacion-mapa {
+    mix-blend-mode: screen;
+    opacity: 0.2;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: respirar-presentacion 5s ease-in-out infinite;
+  }
+  @keyframes acercar-presentacion {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.06);
+    }
+  }
+  @keyframes latir-presentacion {
+    0% {
+      opacity: 0.9;
+      transform: scale(0.5);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.8);
+    }
+  }
+  @keyframes respirar-presentacion {
+    0%,
+    100% {
+      opacity: 0.15;
+      transform: scale(0.95);
+    }
+    50% {
+      opacity: 0.45;
+      transform: scale(1.05);
+    }
+  }
+  /* En pantallas anchas la ilustración llena la sección y el texto va en su cielo oscuro */
+  @media (min-width: 48rem) {
+    .presentacion {
+      min-height: min(calc(100vw * 1116 / 1775), 52rem);
+      padding-bottom: clamp(4rem, 9vw, 7rem);
+    }
+    .presentacion-fondo {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      margin: 0;
+      aspect-ratio: auto;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0, #000 10%, #000 90%, transparent 100%);
+    }
+    /* Velo a la izquierda para que el texto se lea siempre */
+    .presentacion-fondo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        100deg,
+        color-mix(in srgb, var(--color-fondo) 70%, transparent) 0,
+        transparent 50%
+      );
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .presentacion-fondo > *,
+    .presentacion-nodo,
+    .presentacion-wa,
+    .presentacion-mapa {
+      animation: none;
+    }
+  }
+
   .capas {
     display: grid;
     gap: 1rem;
@@ -192,26 +406,133 @@ const wa = linkWhatsApp(MENSAJES.general);
     display: grid;
     gap: 2.5rem;
   }
+
+  /* ── De su local a la ciudad: la ilustración cuenta el mismo recorrido ── */
+  .meta {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-bottom: 0;
+  }
+  .meta-fondo {
+    position: relative;
+    margin-top: 1rem;
+    aspect-ratio: 2000 / 1116;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 30%);
+    mask-image: linear-gradient(180deg, transparent 0, #000 30%);
+  }
+  .meta-img,
+  .meta-fondo svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    animation: acercar-meta 26s ease-in-out infinite alternate;
+    transform-origin: 50% 100%;
+  }
+  .meta-img {
+    object-fit: cover;
+    object-position: 50% 100%;
+  }
+  .meta-luz {
+    mix-blend-mode: screen;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: respirar-meta 4.5s ease-in-out infinite;
+    animation-delay: var(--retraso, 0s);
+  }
+  .meta-latido {
+    fill: none;
+    stroke: var(--color-oro);
+    stroke-width: 5;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: latir-meta 2.6s var(--ease-salida) infinite;
+    animation-delay: var(--retraso, 0s);
+  }
+  @keyframes acercar-meta {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.04);
+    }
+  }
+  @keyframes respirar-meta {
+    0%,
+    100% {
+      opacity: 0.25;
+      transform: scale(0.9);
+    }
+    50% {
+      opacity: 0.85;
+      transform: scale(1.1);
+    }
+  }
+  @keyframes latir-meta {
+    0% {
+      opacity: 0.9;
+      transform: scale(0.6);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(2.2);
+    }
+  }
+
+  /* En pantallas anchas la ilustración llena la sección: título y pasos en el cielo */
   @media (min-width: 64rem) {
-    .rejilla-meta {
-      grid-template-columns: 0.8fr 1.2fr;
-      gap: 4rem;
-      align-items: start;
+    .meta {
+      min-height: calc(100vw * 1116 / 2000);
     }
     .rejilla-meta .encabezado-seccion {
       margin-bottom: 0;
-      position: sticky;
-      top: 5rem;
     }
+    /* Un paso por columna, cada uno sobre su parte del dibujo */
     .rejilla-meta :global(.pasos) {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 62rem;
+    }
+    .meta-fondo {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      margin: 0;
+      aspect-ratio: auto;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+    }
+    /* Velo arriba para que los pasos se lean sobre los hilos */
+    .meta-fondo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-fondo) 55%, transparent) 0,
+        color-mix(in srgb, var(--color-fondo) 35%, transparent) 30%,
+        transparent 50%
+      );
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .meta-img,
+    .meta-fondo svg,
+    .meta-luz,
+    .meta-latido {
+      animation: none;
     }
   }
 
   .para-todos {
     display: grid;
-    gap: 0.5rem;
-    padding: clamp(1.75rem, 5vw, 2.75rem);
+    gap: 0.3rem;
+    max-width: 44rem;
+    margin-inline: auto;
+    padding: clamp(1.25rem, 3vw, 1.6rem) clamp(1.25rem, 3vw, 1.75rem);
     text-decoration: none;
     color: var(--color-lino);
     border-color: color-mix(in srgb, var(--color-oro) 40%, var(--color-borde));
@@ -222,32 +543,105 @@ const wa = linkWhatsApp(MENSAJES.general);
   }
   .pt-titulo {
     font-family: var(--fuente-display);
-    font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+    font-size: clamp(1.35rem, 3vw, 1.7rem);
     line-height: 1.1;
   }
   .pt-texto {
     color: var(--color-humo);
-    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+    font-size: 0.98rem;
   }
   .pt-enlace {
     margin-top: 0.5rem;
     color: var(--color-oro);
     font-weight: 600;
   }
+
+  /* Ilustración de fondo: arriba de la tarjeta en celular, detrás del texto en pantallas anchas */
+  .para-todos {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .pt-fondo {
+    position: relative;
+    display: block;
+    margin: calc(-1 * clamp(1.25rem, 3vw, 1.6rem)) calc(-1 * clamp(1.25rem, 3vw, 1.75rem));
+    margin-bottom: 0.75rem;
+    aspect-ratio: 5 / 2;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(180deg, #000 75%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 75%, transparent 100%);
+    transition:
+      scale var(--dur-medio) var(--ease-precision),
+      opacity 0.7s var(--ease-salida);
+  }
+  .para-todos:hover .pt-fondo {
+    scale: 1.03;
+  }
+  .pt-img,
+  .pt-fondo svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    animation: acercar-pt 24s ease-in-out infinite alternate;
+  }
+  .pt-img {
+    object-fit: cover;
+  }
+  .pt-luz {
+    mix-blend-mode: screen;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: respirar-pt 4.5s ease-in-out infinite;
+    animation-delay: var(--retraso, 0s);
+  }
+  @keyframes acercar-pt {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.06);
+    }
+  }
+  @keyframes respirar-pt {
+    0%,
+    100% {
+      opacity: 0.25;
+      transform: scale(0.92);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.06);
+    }
+  }
   @media (min-width: 48rem) {
     .para-todos {
-      grid-template-columns: 1fr auto;
-      align-items: center;
-      column-gap: 2rem;
+      align-content: center;
+      min-height: 10.5rem;
     }
-    .pt-titulo,
-    .pt-texto {
-      grid-column: 1;
+    .para-todos > :not(.pt-fondo) {
+      max-width: 17rem;
     }
-    .pt-enlace {
-      grid-column: 2;
-      grid-row: 1 / span 2;
+    /* La ilustración ocupa la derecha y se funde hacia el texto */
+    .pt-fondo {
+      position: absolute;
+      inset: 0 0 0 38%;
+      z-index: -1;
       margin: 0;
+      aspect-ratio: auto;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 22%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 22%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pt-img,
+    .pt-fondo svg,
+    .pt-luz {
+      animation: none;
+    }
+    .pt-fondo {
+      transition: none;
     }
   }
 </style>

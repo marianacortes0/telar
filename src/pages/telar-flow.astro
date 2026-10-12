@@ -3,6 +3,10 @@ import RamaLayout from '../layouts/RamaLayout.astro';
 import NivelesRama from '../components/ui/NivelesRama.astro';
 import { FLOW, desdeMinimo, formatoCOP } from '../lib/precios';
 import { MENSAJES } from '../lib/whatsapp';
+import FlujoDatos from '../components/escenas/FlujoDatos.astro';
+import imgFormulario from '../assets/ramas/flow-formulario.jpg';
+import imgCrm from '../assets/ramas/flow-crm.jpg';
+import imgPedidos from '../assets/ramas/flow-pedidos.jpg';
 
 const desde = desdeMinimo(FLOW);
 
@@ -11,16 +15,19 @@ const casos = [
     titulo: 'Del formulario a la hoja',
     texto:
       'Cada respuesta llega ordenada a la hoja de cálculo y al equipo le llega el aviso, sin que nadie copie nada.',
+    imagen: { src: imgFormulario, alt: 'Las respuestas de un formulario llegan solas a una hoja de cálculo y el equipo recibe el aviso' },
   },
   {
     titulo: 'Del chat al CRM',
     texto:
       'El cliente que escribe por WhatsApp queda registrado en el CRM con sus datos y su historial.',
+    imagen: { src: imgCrm, alt: 'Un chat de WhatsApp queda registrado en el CRM con los datos del cliente' },
   },
   {
     titulo: 'Pedidos con condiciones',
     texto:
       'Si el pedido pasa de cierto monto, va a aprobación; si no, sigue solo y el cliente recibe el aviso por WhatsApp.',
+    imagen: { src: imgPedidos, alt: 'Un pedido pasa por aprobación y el cliente recibe el aviso por WhatsApp' },
   },
 ];
 
@@ -66,5 +73,6 @@ const faq = [
   faq={faq}
   cierreTitulo="¿Qué proceso quiere dejar de hacer a mano?"
 >
+  <FlujoDatos slot="escena" />
   <NivelesRama rama="Telar Flow" linea={FLOW} />
 </RamaLayout>

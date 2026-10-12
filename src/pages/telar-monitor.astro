@@ -3,6 +3,10 @@ import RamaLayout from '../layouts/RamaLayout.astro';
 import NivelesRama from '../components/ui/NivelesRama.astro';
 import { MONITOR, desdeMinimo, formatoCOP } from '../lib/precios';
 import { MENSAJES } from '../lib/whatsapp';
+import TableroEnergia from '../components/escenas/TableroEnergia.astro';
+import imgCocina from '../assets/ramas/monitor-cocina.jpg';
+import imgSolar from '../assets/ramas/monitor-solar.jpg';
+import imgSedes from '../assets/ramas/monitor-sedes.jpg';
 
 const desde = desdeMinimo(MONITOR);
 
@@ -11,15 +15,18 @@ const casos = [
     titulo: 'En una cocina',
     texto:
       'El tablero muestra a qué hora se dispara el consumo y qué equipo lo causa. La factura deja de ser una sorpresa.',
+    imagen: { src: imgCocina, alt: 'Cocina de restaurante con una alerta de consumo en el tablero' },
   },
   {
     titulo: 'Con paneles solares',
     texto:
       'Usted ve cuánto producen frente a lo que consume, día a día, y sabe si rinden lo que deberían.',
+    imagen: { src: imgSolar, alt: 'Casa con paneles solares y su tablero de producción frente a consumo' },
   },
   {
     titulo: 'Con varias sedes',
     texto: 'El consumo de todas las sedes en un solo tablero, para comparar y decidir con números.',
+    imagen: { src: imgSedes, alt: 'El consumo de tres sedes reunido en un solo tablero' },
   },
 ];
 
@@ -64,5 +71,6 @@ const faq = [
   faq={faq}
   cierreTitulo="¿Qué quiere empezar a medir?"
 >
+  <TableroEnergia slot="escena" />
   <NivelesRama rama="Telar Monitor" linea={MONITOR} />
 </RamaLayout>

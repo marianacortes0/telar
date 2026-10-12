@@ -1,0 +1,249 @@
+---
+/**
+ * Telar AI: antes y después. Primero el equipo desbordado por las mismas
+ * preguntas (los teléfonos timbran); luego el asistente de IA que responde solo
+ * (ondas desde su pecho y un halo que respira). Las dos imágenes se alternan.
+ */
+import { Image } from 'astro:assets';
+import Escena from './Escena.astro';
+import antes from '../../assets/ramas/ai-antes.jpg';
+import despues from '../../assets/ramas/ai-despues.jpg';
+
+// Teléfonos de la imagen "antes", en un lienzo de 1200 × 960 (misma proporción).
+const telefonos = [
+  { x: 160, y: 790 },
+  { x: 1040, y: 790 },
+  { x: 215, y: 640 },
+];
+---
+
+<Escena ancho="34rem">
+  <div class="marco">
+    <div class="lienzo">
+      <div class="capa">
+        <Image
+          src={antes}
+          alt="Un empleado con audífonos desbordado por preguntas repetidas: horarios, precios, disponibilidad, envíos"
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 64rem) 34rem, 92vw"
+          class="foto"
+        />
+        <svg class="red" viewBox="0 0 1200 960" aria-hidden="true" focusable="false">
+          {
+            telefonos.map((t, i) => (
+              <circle class="timbre" cx={t.x} cy={t.y} r="62" style={`--i:${i}`} />
+            ))
+          }
+        </svg>
+      </div>
+
+      <div class="capa segunda">
+        <Image
+          src={despues}
+          alt="Un asistente de IA responde los mensajes de los clientes en una tablet"
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 64rem) 34rem, 92vw"
+          class="foto"
+        />
+        <svg class="red" viewBox="0 0 1200 960" aria-hidden="true" focusable="false">
+          <defs>
+            <radialGradient id="halo-ia">
+              <stop offset="0%" stop-color="#4fc3f7" stop-opacity="0.55"></stop>
+              <stop offset="100%" stop-color="#4fc3f7" stop-opacity="0"></stop>
+            </radialGradient>
+          </defs>
+          <ellipse class="halo" cx="780" cy="300" rx="200" ry="200" fill="url(#halo-ia)"></ellipse>
+          <ellipse class="halo piso" cx="790" cy="765" rx="330" ry="26" fill="url(#halo-ia)"></ellipse>
+          <circle class="onda" cx="789" cy="547" r="40"></circle>
+          <circle class="onda" cx="789" cy="547" r="40"></circle>
+          <circle class="onda" cx="789" cy="547" r="40"></circle>
+        </svg>
+      </div>
+    </div>
+
+    <p class="rotulo" aria-hidden="true">Sin asistente</p>
+    <p class="rotulo segunda" aria-hidden="true">Con Telar AI</p>
+  </div>
+</Escena>
+
+<style>
+  .marco {
+    position: relative;
+    /* Espacio para el rótulo, debajo de la imagen */
+    padding-bottom: 2.4rem;
+  }
+  .lienzo {
+    position: relative;
+    /* Las imágenes se funden con el fondo por los cuatro bordes */
+    -webkit-mask-image:
+      linear-gradient(180deg, transparent 0, #000 4%, #000 90%, transparent 100%),
+      linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(180deg, transparent 0, #000 4%, #000 90%, transparent 100%),
+      linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+    mask-composite: intersect;
+  }
+
+  /* Antes y después se alternan: la segunda va encima y entra y sale con un fundido */
+  .capa {
+    position: relative;
+  }
+  .capa.segunda {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    animation: alternar-ia 14s ease-in-out infinite;
+  }
+  .foto {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .red {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Rótulo que acompaña cada imagen */
+  .rotulo {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    translate: -50% 0;
+    margin: 0;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-borde);
+    background: color-mix(in srgb, var(--color-abismo) 85%, transparent);
+    font-family: var(--fuente-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--color-humo);
+    animation: alternar-ia-inverso 14s ease-in-out infinite;
+  }
+  .rotulo.segunda {
+    color: var(--color-oro);
+    border-color: color-mix(in srgb, var(--color-oro) 45%, transparent);
+    opacity: 0;
+    animation-name: alternar-ia;
+  }
+  @keyframes alternar-ia {
+    0%,
+    42% {
+      opacity: 0;
+    }
+    50%,
+    92% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes alternar-ia-inverso {
+    0%,
+    42% {
+      opacity: 1;
+    }
+    50%,
+    92% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  /* Antes: los teléfonos timbran sin parar */
+  .timbre {
+    fill: none;
+    stroke: var(--color-oro);
+    stroke-width: 5;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: timbrar 1.6s var(--ease-salida) infinite;
+    animation-delay: calc(var(--i) * 0.5s);
+  }
+  @keyframes timbrar {
+    0% {
+      opacity: 0.9;
+      transform: scale(0.6);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.6);
+    }
+  }
+
+  /* Después: el asistente responde con calma */
+  .halo {
+    mix-blend-mode: screen;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: respirar-ia 4s ease-in-out infinite;
+  }
+  .halo.piso {
+    animation-delay: 2s;
+  }
+  .onda {
+    fill: none;
+    stroke: #4fc3f7;
+    stroke-width: 5;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: responder 3s var(--ease-salida) infinite;
+  }
+  .onda:nth-of-type(2) {
+    animation-delay: 1s;
+  }
+  .onda:nth-of-type(3) {
+    animation-delay: 2s;
+  }
+  @keyframes respirar-ia {
+    0%,
+    100% {
+      opacity: 0.35;
+      transform: scale(0.94);
+    }
+    50% {
+      opacity: 0.9;
+      transform: scale(1.06);
+    }
+  }
+  @keyframes responder {
+    0% {
+      opacity: 0.85;
+      transform: scale(0.8);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(3.4);
+    }
+  }
+
+  /* Sin movimiento: se queda el después, que es lo que Telar AI ofrece */
+  @media (prefers-reduced-motion: reduce) {
+    .capa.segunda,
+    .rotulo,
+    .timbre,
+    .halo,
+    .onda {
+      animation: none;
+    }
+    .capa.segunda,
+    .rotulo.segunda {
+      opacity: 1;
+    }
+    .rotulo:not(.segunda) {
+      opacity: 0;
+    }
+  }
+</style>

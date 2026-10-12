@@ -29,6 +29,8 @@ const {
 const base = Astro.site ?? new URL(Astro.url.origin);
 const canonical = new URL(Astro.url.pathname, base);
 const og = new URL(imagen, base);
+// En el inicio la pestaña dice solo "Telar"; en las demás, "Página · Telar".
+const tituloPestana = Astro.url.pathname === '/' ? NEGOCIO.nombre : `${titulo} · ${NEGOCIO.nombre}`;
 
 const schema = {
   '@context': 'https://schema.org',
@@ -57,7 +59,7 @@ const schema = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
 
-    <title>{titulo} · {NEGOCIO.nombre}</title>
+    <title>{tituloPestana}</title>
     <meta name="description" content={descripcion} />
     <link rel="canonical" href={canonical} />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -99,6 +101,7 @@ const schema = {
 
     <script>
       import '../scripts/revelar.js';
+      import '../scripts/fondos.js';
     </script>
   </body>
 </html>

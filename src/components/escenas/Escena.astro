@@ -14,7 +14,7 @@ const { ancho = '36rem' } = Astro.props;
 
 <figure class="escena" data-revelar style={`--i:2; --ancho:${ancho}`}>
   <span class="resplandor" aria-hidden="true"></span>
-  <div class="flotante">
+  <div class="flotante" data-fondo>
     <slot />
   </div>
 </figure>

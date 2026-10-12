@@ -3,6 +3,10 @@ import RamaLayout from '../layouts/RamaLayout.astro';
 import NivelesRama from '../components/ui/NivelesRama.astro';
 import { AI, COMBOS, desdeMinimo, formatoCOP } from '../lib/precios';
 import { MENSAJES } from '../lib/whatsapp';
+import AsistenteIA from '../components/escenas/AsistenteIA.astro';
+import imgClinica from '../assets/ramas/ai-clinica.jpg';
+import imgTienda from '../assets/ramas/ai-tienda.jpg';
+import imgInmobiliaria from '../assets/ramas/ai-inmobiliaria.jpg';
 
 const desde = desdeMinimo(AI);
 
@@ -11,16 +15,19 @@ const casos = [
     titulo: 'En una clínica',
     texto:
       'El asistente responde precios y horarios por WhatsApp y agenda la cita. Si el paciente pide hablar con alguien, pasa la conversación a recepción.',
+    imagen: { src: imgClinica, alt: 'Recepción de una clínica que recibe por WhatsApp las citas agendadas por el asistente' },
   },
   {
     titulo: 'En una tienda',
     texto:
       '«¿Todavía tienen?» deja de ser una pregunta que alguien contesta a mano a las 11 de la noche.',
+    imagen: { src: imgTienda, alt: 'Tienda cerrada de noche mientras el asistente responde los mensajes de WhatsApp' },
   },
   {
     titulo: 'En una inmobiliaria',
     texto:
       'El mismo asistente atiende por WhatsApp y por la web o Instagram, con la misma información en los dos canales.',
+    imagen: { src: imgInmobiliaria, alt: 'Inmobiliaria que atiende por WhatsApp, la web e Instagram desde un mismo asistente' },
   },
 ];
 
@@ -67,5 +74,6 @@ const faq = [
   faq={faq}
   cierreTitulo="¿Le montamos su asistente?"
 >
+  <AsistenteIA slot="escena" />
   <NivelesRama rama="Telar AI" linea={AI} />
 </RamaLayout>
